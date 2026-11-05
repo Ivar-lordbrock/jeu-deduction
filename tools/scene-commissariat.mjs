@@ -161,7 +161,7 @@ const personnages = {
   hale: perso('agent-sergent', { ...hale, reflets: [[-2.5, -2, TEAL, 0.45], [3, -1.5, AMBRE, 0.7]], nom: 'hale' }),
   coyle: perso('temoin-assise', { ...coyle, reflets: [[-2.5, -2, TEAL, 0.6], [3, -1, AMBRE, 0.5]], nom: 'coyle' }),
   harrow: perso('commissaire-brandit', { ...harrow, miroir: true, reflets: [[-3, -1.5, AMBRE, 0.7], [2.5, -2, TEAL, 0.45]], nom: 'harrow' }),
-  pell: perso('journaliste-carnet', { ...pell, miroir: true, reflets: [[-3, -1.5, AMBRE, 0.6], [2.5, -2, TEAL, 0.55]], nom: 'pell' }),
+  pell: perso('journaliste-billet', { ...pell, miroir: true, reflets: [[-3, -1.5, AMBRE, 0.6], [2.5, -2, TEAL, 0.55]], nom: 'pell' }),
   agentDehors: perso('agent-ronde', { x: 1545, y: 560, s: 0.55, miroir: true, ombre: '#4d6461', nom: 'agent-dehors' }),
 };
 
@@ -421,7 +421,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" widt
   <g fill="none" stroke="#0b1413" stroke-width="4">
     <polygon points="${quadMur(porte.x1 + 4, porte.x2 - 4, 420, 520)}"/><polygon points="${quadMur(porte.x1 + 4, porte.x2 - 4, 534, 624)}"/>
   </g>
-  <circle cx="1405" cy="${num(ym(1405, 430))}" r="7" fill="#c9a24a"/>
+  <circle cx="1538" cy="${num(ym(1538, 430))}" r="7" fill="#c9a24a"/>
   <path d="M${porte.x1} ${num(ym(porte.x1, 170))} L${porte.x1} ${num(ym(porte.x1, 640))}" stroke="#56716c" stroke-width="1.5" opacity="0.45"/>
   <!-- lanterne sourde accrochée près de la porte -->
   <path d="M1568 ${num(ym(1568, 200))} V${num(ym(1568, 200) + 18)}" stroke="#0e1716" stroke-width="3"/>
@@ -471,7 +471,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" widt
   <rect x="410" y="${COMPTOIR}" width="490" height="12" fill="#1d2e2c"/>
   <path d="M410 ${COMPTOIR} H900" stroke="#c99a4e" stroke-width="2.5" opacity="0.7"/>
 
-  <!-- Le sergent Hale, derrière le comptoir, la tête basse : trois chevrons sur la manche -->
+  <!-- L’adjoint William Stone, derrière le comptoir, la tête basse : trois chevrons sur la manche -->
   <g clip-path="url(#derriereComptoir)">${personnages.hale}</g>
 
   <!-- registre de garde ouvert sur son pupitre, plume, encrier -->
@@ -495,7 +495,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" widt
   <path d="M850 372 Q846 364 850 354 Q854 364 850 372 Z" fill="#fff6d8"/>
   <path d="M838 ${COMPTOIR} C836 402 840 392 850 390" fill="none" stroke="#e8b452" stroke-width="1.4" opacity="0.7"/>
 
-  <!-- Banc le long du mur gauche, et Mrs Coyle qui attend sa déposition -->
+  <!-- Banc le long du mur gauche, et Elisabeth Coyle qui attend sa déposition -->
   ${banc}
   <ellipse cx="${num(coyle.x + 70)}" cy="${coyle.y}" rx="110" ry="9" fill="#000" opacity="0.45"/>
   ${personnages.coyle}
@@ -539,11 +539,11 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" widt
   <path d="M945 708 L948 798 M985 706 L982 798" stroke="#5a4a30" stroke-width="1.5"/>
   <path d="M895 784 H1035" stroke="#7d746a" stroke-width="1" opacity="0.6"/>
 
-  <!-- Pell, reporter du Comet, devant la porte : melon, crayon derrière l'oreille, manteau à carreaux, carnet -->
+  <!-- Tim Bradford, reporter du Comet, devant la porte : melon, crayon derrière l’oreille, manteau à carreaux, le petit mot de son oncle -->
   <ellipse cx="${num(pell.x - 30)}" cy="${pell.y}" rx="80" ry="9" fill="#000" opacity="0.55"/>
   ${personnages.pell}
 
-  <!-- Sir Edmund Harrow, l'homme aux médailles : uniforme galonné, journal froissé brandi, cravache -->
+  <!-- Le chef Alan Winkoff, l’homme aux médailles : uniforme galonné, journal froissé brandi, cravache -->
   <ellipse cx="${num(harrow.x - 20)}" cy="${harrow.y}" rx="96" ry="11" fill="#000" opacity="0.55"/>
   ${personnages.harrow}
 

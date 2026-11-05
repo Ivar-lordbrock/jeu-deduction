@@ -784,6 +784,7 @@ kbd {
   box-shadow: 0 0 0 9999px rgb(3 7 7 / 0.42), 0 0 24px rgb(226 174 76 / 0.45);
   animation: ring 1.6s ease-in-out infinite;
 }
+.guide-ring.free { box-shadow: 0 0 24px rgb(226 174 76 / 0.45); }
 @keyframes ring {
   50% { border-color: #f6dd9c; }
 }

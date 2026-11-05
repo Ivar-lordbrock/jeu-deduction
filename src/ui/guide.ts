@@ -29,6 +29,8 @@ interface Step {
   done?: (s: Session, base: Snapshot) => boolean;
   /** Élément mis en lumière ; sans cible, la bulle s'affiche au centre. */
   target?: () => Element | null;
+  /** Le joueur explore librement : l'anneau ne voile pas le reste de l'écran (le carnet se remplit). */
+  free?: boolean;
   /** Texte du bouton principal (« Suivant → » par défaut). */
   button?: string;
   enter?: () => void;
@@ -68,6 +70,8 @@ export function createGuide(root: HTMLElement, s: Session, hooks: GuideHooks): G
   const { first, doc } = tutorialZones(data.zones, data.words);
   const zoneEl = (z: Zone) => q(`.zone[data-zone="${CSS.escape(z.id)}"]`);
   const panelOr = (z: Zone) => (s.openZone === z.id ? q('.zone-panel') : zoneEl(z));
+  // La scène et la fiche ouverte par-dessus : l'anneau les entoure ensemble, sans couper la fiche.
+  const sceneArea = () => q('.scene-area');
   const wordsOf = (z: Zone) => zoneWords(z).filter((w) => data.words[w]);
   const got = (z: Zone) => wordsOf(z).filter((w) => s.progress.collected.includes(w)).length;
   const exploreGoal = Math.min(data.zones.length, 6);
@@ -111,7 +115,7 @@ export function createGuide(root: HTMLElement, s: Session, hooks: GuideHooks): G
     {
       title: 'La scène',
       text: 'Voici l\'instant figé de l\'affaire. Tout ce qui s\'éclaire au survol de la souris peut être examiné : personnages, objets, documents.',
-      target: () => q('.scene'),
+      target: sceneArea,
     },
     ...maybe(first, {
       title: 'Examiner',
@@ -151,7 +155,8 @@ export function createGuide(root: HTMLElement, s: Session, hooks: GuideHooks): G
       text: 'Examinez le reste de la scène et notez tout ce qui vous semble important. Certains mots ne servent à rien : à vous de faire le tri.',
       task: () => `Examinez au moins ${exploreGoal} éléments (${Math.min(s.progress.seenZones.length, exploreGoal)}/${exploreGoal}).`,
       done: () => s.progress.seenZones.length >= exploreGoal,
-      target: () => q('.scene'),
+      target: sceneArea,
+      free: true,
     },
     ...maybe(data.pages.length, {
       title: 'La gazette',
@@ -262,7 +267,7 @@ export function createGuide(root: HTMLElement, s: Session, hooks: GuideHooks): G
 
     const last = index === steps.length - 1;
     layer.replaceChildren(
-      h('div', { class: target ? 'guide-ring' : 'guide-dim' }),
+      h('div', { class: target ? `guide-ring${step.free ? ' free' : ''}` : 'guide-dim' }),
       h(
         'div',
         { class: `guide-bubble${target ? '' : ' center'}`, role: 'dialog', 'aria-label': 'Tutoriel', 'aria-live': 'polite' },
@@ -328,12 +333,33 @@ export function createGuide(root: HTMLElement, s: Session, hooks: GuideHooks): G
       x = clampX(r.left + r.width / 2 - bw / 2);
       y = r.top - gap - bh;
     } else {
-      // Cible immense (la scène entière…) : la bulle se pose dans son coin.
-      x = clampX(r.right - bw - 16);
-      y = clampY(r.bottom - bh - 16);
+      // Cible immense (la scène entière…) : la bulle se pose dans le coin qui cache le moins de choses.
+      ({ x, y } = bestCorner(r, bw, bh, clampX, clampY));
     }
     bubble.style.left = `${x}px`;
     bubble.style.top = `${y}px`;
+  }
+
+  /** Coin de la cible où la bulle cache le moins : surtout pas la fiche ouverte, puis le moins de zones à voir. */
+  function bestCorner(r: DOMRect, bw: number, bh: number, clampX: (x: number) => number, clampY: (y: number) => number) {
+    const inset = 16;
+    const corners = [
+      { x: r.right - bw - inset, y: r.bottom - bh - inset },
+      { x: r.left + inset, y: r.bottom - bh - inset },
+      { x: r.right - bw - inset, y: r.top + inset },
+      { x: r.left + inset, y: r.top + inset },
+    ].map((c) => ({ x: clampX(c.x), y: clampY(c.y) }));
+    const covered = (c: { x: number; y: number }, el: Element) => {
+      const b = el.getBoundingClientRect();
+      const w = Math.max(0, Math.min(c.x + bw, b.right) - Math.max(c.x, b.left));
+      const hh = Math.max(0, Math.min(c.y + bh, b.bottom) - Math.max(c.y, b.top));
+      return w * hh;
+    };
+    const panel = root.querySelector('.zone-panel');
+    const zones = [...root.querySelectorAll('.zone')];
+    const cost = (c: { x: number; y: number }) =>
+      (panel ? 10 * covered(c, panel) : 0) + zones.reduce((n, z) => n + covered(c, z) * (z.classList.contains('seen') ? 0.3 : 1), 0);
+    return corners.reduce((best, c) => (cost(c) < cost(best) ? c : best));
   }
 
   function dispose() {

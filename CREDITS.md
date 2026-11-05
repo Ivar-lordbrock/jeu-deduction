@@ -57,7 +57,7 @@ Personnages et décor de rue en silhouettes, venus d'[Openclipart](https://openc
 | `fiacre.svg` | « Old Carriage By Andrea Stockel Silhouette » | GDJ | [331921](https://openclipart.org/detail/331921) |
 | `omnibus.svg` | « horse drawn doubledecker 2 » | johnny_automatic | [5411](https://openclipart.org/detail/5411) |
 
-Dans la scène du commissariat, seules la foule, le fiacre et le réverbère vus par la fenêtre viennent d'Openclipart : `gentleman`, `monsieur-3`, `monsieur-7`, `fiacre` et `reverbere`. Les personnages (Hale, Harrow, Pell, Mrs Coyle et l'agent flou derrière la vitre) sont les silhouettes dessinées pour le jeu, plus bas.
+Dans la scène du commissariat, seules la foule, le fiacre et le réverbère vus par la fenêtre viennent d'Openclipart : `gentleman`, `monsieur-3`, `monsieur-7`, `fiacre` et `reverbere`. Les personnages (Winkoff, Stone, Tim Bradford, Elisabeth Coyle et l'agent flou derrière la vitre) sont les silhouettes dessinées pour le jeu, plus bas.
 
 ## Dessins originaux du projet
 

@@ -3,8 +3,8 @@
   "subtitle": "Une enquête sur Jack l'Éventreur, d'après les faits réels. Chaque scène est figée à l'instant clé : à vous de reconstituer ce qui s'est passé.",
   "setting": "Londres, automne 1888. Whitechapel et l'East End : ruelles, garnis, brouillard et becs de gaz.",
   "tone": "Enquête victorienne sombre et réaliste, fidèle aux faits. La violence reste hors champ : on enquête sur ce qu'elle laisse derrière elle, et les victimes sont traitées avec respect.",
-  "synopsis": "Le joueur est un petit reporter de l'East End qui rêve de devenir détective privé ; il reconstitue chaque affaire dans sa gazette. Automne 1888 : une série de meurtres frappe Whitechapel. Le 31 août à Buck's Row, puis le 8 septembre à Hanbury Street. Dans la nuit du 30 septembre, l'assassin tue deux fois, à Berner Street puis à Mitre Square ; à l'aube, le chef de la police fait effacer un message à la craie retrouvé à Goulston Street. Une lettre signée « Jack the Ripper », reçue par une agence de presse, est publiée : le nom fait le tour du monde. Le 16 octobre, le président du comité de vigilance reçoit un colis « From hell ». Le 9 novembre, la dernière victime est retrouvée dans sa chambre de Miller's Court ; la veille, le chef de la police a démissionné. L'assassin ne sera jamais identifié.",
-  "notes": "Les faits, les dates et les lieux sont réels. Par respect, les noms des personnes et des journaux sont changés :\n- Sir Charles Warren → Sir Edmund Harrow (chef de la police métropolitaine)\n- Sir Robert Anderson → Sir Robert Ansell (chef de la police judiciaire)\n- Henry Matthews → Henry Mallory (ministre de l'Intérieur)\n- Thomas Arnold → le surintendant Thomas Arden (division H)\n- Frederick Abberline → l'inspecteur Frederick Hollis\n- Edmund Reid → l'inspecteur Edmund Reeve\n- Major Henry Smith → le major Henry Sinclair (police de la City)\n- Daniel Halse → le détective Daniel Hurst (police de la City)\n- Alfred Long → l'agent Alfred Lane\n- Edward Watkins → l'agent Edward Walton\n- Louis Diemschutz → Louis Hartmann (le cocher de Berner Street)\n- Fanny Mortimer → Mrs Hannah Coyle (la voisine de Berner Street)\n- George Lusk → Joseph Larkin (comité de vigilance)\n- John Pizer, dit « Tablier de cuir » → John Pilcher\n- Victimes : Mary Ann Nichols → Ellen Holt ; Annie Chapman → Agnes Croft ; Elizabeth Stride → Elsa Lindqvist ; Catherine Eddowes → Kate Ashby ; Mary Jane Kelly → Jenny Doyle\n- Journaux : The Star → The Comet ; Illustrated London News → The London Pictorial ; The Times → The Daily Ledger ; Daily News → The Morning Courier ; Le Figaro → Le Matinal ; New York Herald → New York Sentinel ; Central News Agency → l'agence Mercury\nLe surnom « Jack the Ripper » (Jack l'Éventreur) et les lieux sont gardés. Le sergent Hale et le reporter Arthur Pell sont inventés.",
+  "synopsis": "Le joueur est un petit reporter de l'East End qui rêve de devenir détective privé ; il reconstitue chaque affaire dans sa gazette. Automne 1888 : une série de meurtres frappe Whitechapel. Le 31 août à Buck's Row, puis le 8 septembre à Hanbury Street. Dans la nuit du 30 septembre, l'assassin tue deux fois, à King's Row puis à Wallace Street ; au poste, le chef de la police découvre que The Comet sait déjà tout. Une lettre signée « Jack the Ripper », reçue par une agence de presse, est publiée : le nom fait le tour du monde. Le 16 octobre, le président du comité de vigilance reçoit un colis « From hell ». Le 9 novembre, la dernière victime est retrouvée dans sa chambre de Miller's Court ; la veille, le chef de la police a démissionné. L'assassin ne sera jamais identifié.",
+  "notes": "Les faits, les dates et les lieux sont réels. Par respect, les noms des personnes et des journaux sont changés :\n- Sir Charles Warren → Alan Winkoff (chef de la police métropolitaine)\n- Sir Robert Anderson → Sir Robert Ansell (chef de la police judiciaire)\n- Henry Matthews → Henry Mallory (ministre de l'Intérieur)\n- Thomas Arnold → le surintendant Thomas Arden (division H)\n- Frederick Abberline → l'inspecteur Frederick Hollis\n- Edmund Reid → l'inspecteur Edmund Reeve\n- Major Henry Smith → le major Henry Sinclair (police de la City)\n- Daniel Halse → le détective Daniel Hurst (police de la City)\n- Alfred Long → l'agent Alfred Lane\n- Edward Watkins → l'agent Edward Walton\n- Louis Diemschutz → Louis Hartmann (le cocher de Berner Street)\n- George Lusk → Joseph Larkin (comité de vigilance)\n- John Pizer, dit « Tablier de cuir » → John Pilcher\n- Victimes : Mary Ann Nichols → Ellen Holt ; Annie Chapman → Agnes Croft ; Elizabeth Stride → Elsa Lindqvist ; Catherine Eddowes → Kate Ashby ; Mary Jane Kelly → Jenny Doyle\n- Journaux : The Star → The Comet ; Illustrated London News → The London Pictorial ; The Times → The Daily Ledger ; Daily News → The Morning Courier ; Le Figaro → Le Matinal ; New York Herald → New York Sentinel ; Central News Agency → l'agence Mercury\nLe surnom « Jack the Ripper » (Jack l'Éventreur) et les lieux sont gardés. Chapitre 1, version de l'auteur : le double meurtre a lieu à King's Row et à Wallace Street (lieux inventés). Victimes : une inconnue et Margaret Jenkins, couturière ; témoin : Elisabeth Coyle. L'adjoint William Stone et son neveu Tim Stone, qui signe Tim Bradford, sont inventés.",
   "prologue": [
     {
       "heading": "Londres, automne 1888",
@@ -23,7 +23,7 @@
     },
     {
       "heading": "Scotland Yard est dépassée",
-      "text": "Sir Edmund Harrow, ancien général à la tête de la police métropolitaine, est sous le feu des critiques. Le chef de sa police judiciaire est en congé en Suisse. Ni photographies, ni empreintes digitales : on enquête à la lanterne.",
+      "text": "Le chef Alan Winkoff, à la tête de la police métropolitaine, est sous le feu des critiques. Le chef de sa police judiciaire est en congé en Suisse. Ni photographies, ni empreintes digitales : on enquête à la lanterne.",
       "image": "bulls-eye"
     },
     {
@@ -43,39 +43,38 @@
       "name": "Le joueur (vous)",
       "role": "Petit reporter de l'East End qui rêve de devenir détective privé",
       "motive": "Devancer les grands journaux et la police : écrire ce qui s'est vraiment passé.",
-      "notes": "Personnage du joueur, jamais montré. Rival : Arthur Pell, du Comet."
+      "notes": "Personnage du joueur, jamais montré. Rival : Tim Bradford, du Comet."
     },
     {
-      "id": "harrow",
-      "name": "Sir Edmund Harrow",
-      "role": "Chef de la police métropolitaine (Scotland Yard)",
-      "appearance": "Ancien général, corpulent, grosse barbe grise, uniforme galonné, médailles de campagne, cravache d'officier.",
-      "motive": "Éviter une émeute dans l'East End et sauver la réputation de la police, quitte à faire disparaître une preuve.",
-      "notes": "D'après Sir Charles Warren, chef de la police de 1886 au 8 novembre 1888. Il fit effacer le message de Goulston Street à l'aube du 30 septembre."
+      "id": "winkoff",
+      "name": "Alan Winkoff",
+      "role": "Chef de la police",
+      "appearance": "Corpulent, grosse barbe grise, uniforme galonné, médailles de campagne, cravache d'officier.",
+      "motive": "Trouver qui renseigne The Comet, et sauver la réputation de la police.",
+      "notes": "Inspiré de Sir Charles Warren, chef de la police de 1886 au 8 novembre 1888."
     },
     {
-      "id": "hale",
-      "name": "Sergent Thomas Hale",
-      "role": "Sergent de service au poste de Leman Street (division H)",
-      "appearance": "Uniforme bleu, trois chevrons sur la manche, matricule H 47, moustache brune.",
-      "motive": "Tenir le registre d'une nuit où les messages arrivent de partout. Les reporters lui offrent de l'argent pour la moindre nouvelle.",
-      "notes": "Inventé : il représente les policiers du poste cette nuit-là."
+      "id": "stone",
+      "name": "William Stone",
+      "role": "Adjoint du chef, de service au poste",
+      "appearance": "Uniforme bleu, trois chevrons sur la manche, écriture penchée.",
+      "motive": "Il doit accélérer l'enquête… mais c'est lui qui renseigne son neveu Tim, du Comet.",
+      "notes": "Inventé. Signe ses mots « W. S. »."
     },
     {
-      "id": "pell",
-      "name": "Arthur Pell",
+      "id": "tim",
+      "name": "Tim Stone, dit Tim Bradford",
       "role": "Reporter au Comet",
       "appearance": "Manteau à carreaux, chapeau melon, crayon derrière l'oreille.",
-      "motive": "Le scoop. Il paie les policiers pour leurs informations.",
-      "notes": "Inventé. The Comet s'inspire du Star, journal du soir qui mena campagne contre la police et lança la panique du « Tablier de cuir »."
+      "motive": "Le scoop. Son oncle, l'adjoint William Stone, lui donne les informations de la police.",
+      "notes": "Inventé. Signe ses articles « Tim Bradford ». The Comet s'inspire du Star."
     },
     {
       "id": "coyle",
-      "name": "Mrs Hannah Coyle",
-      "role": "Voisine du club de Berner Street, témoin",
+      "name": "Elisabeth Coyle",
+      "role": "Témoin, habitante de Wallace Street",
       "appearance": "Châle rouge, bonnet sombre.",
-      "motive": "Venue faire sa déposition : elle était sur le pas de sa porte peu avant une heure du matin.",
-      "notes": "D'après Fanny Mortimer, qui habitait Berner Street et n'avait vu personne passer."
+      "motive": "Venue faire sa déposition : à 2 h 30, elle a entendu crier et découvert le corps de Margaret Jenkins."
     },
     {
       "id": "arden",
@@ -120,16 +119,16 @@
       "notes": "D'après Annie Chapman, 47 ans."
     },
     {
-      "id": "lindqvist",
-      "name": "Elsa Lindqvist",
-      "role": "Victime, 30 septembre 1888, Berner Street",
-      "notes": "D'après Elizabeth Stride, 44 ans, née en Suède."
+      "id": "inconnue-kings-row",
+      "name": "L'inconnue de King's Row",
+      "role": "Victime, 30 septembre 1888, King's Row",
+      "notes": "Prostituée dont on ignore le nom, découverte par un cocher à 1 h du matin."
     },
     {
-      "id": "ashby",
-      "name": "Kate Ashby",
-      "role": "Victime, 30 septembre 1888, Mitre Square",
-      "notes": "D'après Catherine Eddowes, 46 ans. Relâchée du poste de Bishopsgate vers une heure du matin, trois quarts d'heure avant sa mort."
+      "id": "jenkins",
+      "name": "Margaret Jenkins",
+      "role": "Victime, 30 septembre 1888, Wallace Street",
+      "notes": "Couturière du quartier, découverte par Elisabeth Coyle à 2 h 30."
     },
     {
       "id": "doyle",
@@ -142,7 +141,7 @@
     {
       "id": "chapitre-1",
       "title": "L'onde de choc",
-      "summary": "30 septembre 1888 : deux meurtres en une nuit. À l'aube, un message à la craie est effacé ; une lettre signée « Jack the Ripper » attend dans les dossiers."
+      "summary": "30 septembre 1888 : deux meurtres en une nuit, à King's Row puis à Wallace Street. Au poste, le chef Alan Winkoff découvre que The Comet sait déjà tout."
     },
     {
       "id": "chapitre-2",
@@ -152,7 +151,7 @@
     {
       "id": "chapitre-3",
       "title": "Miller's Court",
-      "summary": "9 novembre 1888 : la dernière victime est retrouvée dans sa chambre de Dorset Street. La veille, Sir Edmund Harrow a démissionné."
+      "summary": "9 novembre 1888 : la dernière victime est retrouvée dans sa chambre de Dorset Street. La veille, le chef Alan Winkoff a démissionné."
     },
     {
       "id": "chapitre-4",

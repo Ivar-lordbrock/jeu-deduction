@@ -383,7 +383,7 @@ const OBJETS = {
   },
   convocation(D, sq, c, o) {
     const b = o.bras === 'F' ? sq.bF : sq.bN;
-    const f = repere(prise(b, c), o.rot ?? -14);
+    const f = repere(prise(b, c), o.rot ?? -14, o.taille ?? 1);
     D.accent('M -6 -10 L 40 -10 L 40 20 L -6 20 Z', f, PAPIER);
     D.trait('M 0 -2 L 30 -2 M 0 5 L 34 5 M 0 12 L 22 12', f, '#8d8468', 1.2);
   },
@@ -611,6 +611,13 @@ const journaliste = {
       jN: { h: 6, k: 0 }, jF: { h: -4, k: 0 },
       bN: { a: 12, e: 116, main: 'poing' }, bF: { a: 4, e: 24, main: 'poche' },
       objets: [{ type: 'carnet', bras: 'N', rot: 8, ferme: true }],
+    },
+    billet: {
+      nom: 'lit en douce un petit mot plié, le crayon derrière l’oreille',
+      lean: 4, tete: 16,
+      jN: { h: 6, k: 0 }, jF: { h: -4, k: 0 },
+      bN: { a: 26, e: 104, main: 'poing' }, bF: { a: 4, e: 24, main: 'poche' },
+      objets: [{ type: 'convocation', bras: 'N', rot: -24, taille: 0.85 }],
     },
     presse: {
       nom: 'marche vite, carnet en main',

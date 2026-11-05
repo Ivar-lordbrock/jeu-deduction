@@ -95,7 +95,7 @@ dans une phrase de réflexion, **▭ Faire une case** en fait une case à rempli
 
 L'affaire `src/cases/01-leman-street` (« La nuit du double meurtre ») est la première affaire
 et le tutoriel : le poste de Leman Street au matin du 30 septembre 1888, après le double
-meurtre de Berner Street et de Mitre Square. Sa scène est un SVG généré par
+meurtre de King's Row et de Wallace Street : qui a renseigné The Comet ? Sa scène est un SVG généré par
 `tools/scene-commissariat.mjs` (`npm run scene`) : une pièce en perspective dessinée pour le jeu,
 les silhouettes des personnages récurrents, et deux gravures de Doré dans la fenêtre et au mur.
 Le script affiche les rectangles des personnages, à reporter dans les zones de `case.json`.
