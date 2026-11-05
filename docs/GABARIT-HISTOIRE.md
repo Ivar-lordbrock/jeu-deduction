@@ -52,7 +52,7 @@ Pour chaque fait à deviner, l'indice de la scène qui le prouve. C'est le cœur
 
 | Fait à deviner | Indice qui le prouve |
 |----------------|----------------------|
-| Le vieil homme est Aldric | Sa chevalière aux armes des Valmont + le testament signé « Aldric de Valmont » |
+| L'homme aux médailles est Sir Edmund Harrow | Ses médailles + le dossier du tiroir : « sur ordre de Sir Edmund Harrow, chef de la police » |
 |                |                      |
 
 **La règle d'or :** chaque réponse doit pouvoir se déduire sans deviner, et une seule

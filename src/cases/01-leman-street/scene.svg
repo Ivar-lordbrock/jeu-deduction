@@ -1,0 +1,477 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <!-- Commissariat de Leman Street, dimanche 30 septembre 1888, 7 h 05.
+       Direction artistique « silhouettes en couches » : plans de plus en plus sombres vers l'avant,
+       brouillard vert-bleu, lumière ambre du gaz, personnages en ombres liserées de lumière.
+       Les papiers (indices) restent clairs pour ressortir dans la pénombre.
+       Les positions suivent les zones de case.json : ne pas déplacer un élément sans déplacer sa zone. -->
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#36524f"/>
+      <stop offset="1" stop-color="#28403d"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a2827"/>
+      <stop offset="1" stop-color="#080d0d"/>
+    </linearGradient>
+    <linearGradient id="fogOut" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b3c4bf"/>
+      <stop offset="1" stop-color="#7d9590"/>
+    </linearGradient>
+    <linearGradient id="doorGlass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a6b9b4"/>
+      <stop offset="1" stop-color="#6f8984"/>
+    </linearGradient>
+    <linearGradient id="floorFog" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8fa9a5" stop-opacity="0"/>
+      <stop offset="1" stop-color="#8fa9a5" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="windowShaft" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d7e6e2" stop-opacity="0.13"/>
+      <stop offset="1" stop-color="#d7e6e2" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="gasGlow">
+      <stop offset="0" stop-color="#ffd27a" stop-opacity="0.34"/>
+      <stop offset="0.45" stop-color="#f0b45a" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#f0b45a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="floorPool">
+      <stop offset="0" stop-color="#e8b45a" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#e8b45a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="streetLamp">
+      <stop offset="0" stop-color="#fff2c4" stop-opacity="0.95"/>
+      <stop offset="0.3" stop-color="#f3d58a" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#f3d58a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vignette" cx="0.5" cy="0.45" r="0.8">
+      <stop offset="0.5" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.72"/>
+    </radialGradient>
+    <pattern id="check" width="16" height="16" patternUnits="userSpaceOnUse">
+      <rect width="16" height="16" fill="#0a100f"/>
+      <path d="M0 8 H16 M8 0 V16" stroke="#1d2927" stroke-width="2"/>
+      <path d="M0 1 H16 M1 0 V16" stroke="#141d1c" stroke-width="1"/>
+    </pattern>
+    <pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+      <path d="M0 0 V5" stroke="#4a5550" stroke-width="1.1"/>
+    </pattern>
+  </defs>
+
+  <!-- ═══ Plan 1 : le mur, clair dans le brouillard ═══ -->
+  <rect width="1600" height="470" fill="url(#wall)"/>
+  <g fill="#2c4542" opacity="0.8">
+    <path d="M296 330 Q330 318 352 338 Q340 362 306 356 Z"/>
+    <path d="M1010 70 Q1060 58 1090 82 Q1066 104 1022 96 Z"/>
+    <path d="M520 380 Q560 372 590 392 Q560 408 528 400 Z"/>
+  </g>
+  <g fill="#3e5b57" opacity="0.7">
+    <path d="M880 300 Q912 292 930 310 Q906 326 884 318 Z"/>
+    <path d="M1240 120 Q1270 112 1290 128 Q1268 142 1246 136 Z"/>
+  </g>
+  <path d="M0 112 H1600" stroke="#22383a" stroke-width="4"/>
+  <path d="M0 116 H1600" stroke="#40605c" stroke-width="1" opacity="0.6"/>
+
+  <!-- Fenêtre : l'aube dans le brouillard, la rue en plans, la foule et les crieurs -->
+  <rect x="60" y="90" width="200" height="330" fill="url(#fogOut)"/>
+  <path d="M60 420 V214 H84 V200 H90 V214 H112 L126 196 L140 214 H160 V190 H166 V180 H172 V190 H196 V222 H228 V206 H236 V222 H260 V420 Z" fill="#91a8a3"/>
+  <rect x="60" y="232" width="200" height="30" fill="#c8d6d2" opacity="0.3"/>
+  <path d="M60 420 V262 H100 V246 H106 V262 H128 V270 H176 V252 H210 V240 H216 V252 H260 V420 Z" fill="#6c847f"/>
+  <g fill="#ebc77e">
+    <rect x="70" y="276" width="6" height="8"/><rect x="86" y="276" width="6" height="8"/><rect x="150" y="284" width="6" height="8"/>
+    <rect x="222" y="268" width="6" height="8"/><rect x="238" y="268" width="6" height="8"/>
+  </g>
+  <rect x="60" y="300" width="200" height="40" fill="#c8d6d2" opacity="0.28"/>
+  <circle cx="205" cy="170" r="80" fill="url(#streetLamp)"/>
+  <rect x="202" y="178" width="5" height="242" fill="#3a4d4b"/>
+  <path d="M195 160 L215 160 L211 180 L199 180 Z" fill="#fff3c4"/>
+  <path d="M193 160 L205 150 L217 160 Z" fill="#3a4d4b"/>
+  <g fill="#2e3f3d">
+    <circle cx="80" cy="372" r="14"/><rect x="66" y="346" width="28" height="10" rx="3"/>
+    <circle cx="118" cy="380" r="15"/><rect x="104" y="356" width="30" height="8"/><rect x="110" y="344" width="18" height="14"/>
+    <circle cx="160" cy="370" r="13"/><path d="M146 365 Q160 340 174 365 Z"/>
+    <circle cx="198" cy="384" r="15"/><rect x="183" y="358" width="30" height="9" rx="3"/>
+    <circle cx="238" cy="374" r="14"/><rect x="226" y="350" width="24" height="12"/>
+    <rect x="60" y="384" width="200" height="40"/>
+    <path d="M152 352 L156 326 L161 327 L158 354 Z"/>
+  </g>
+  <rect x="146" y="312" width="24" height="17" fill="#ddd2b0" transform="rotate(-12 158 320)"/>
+  <path d="M150 318 H166 M150 323 H162" stroke="#7a705a" stroke-width="1.2" transform="rotate(-12 158 320)"/>
+  <path d="M60 90 L130 90 L60 190 Z" fill="#ffffff" opacity="0.06"/>
+  <rect x="60" y="90" width="200" height="330" fill="none" stroke="#0c1514" stroke-width="14"/>
+  <line x1="160" y1="90" x2="160" y2="420" stroke="#0c1514" stroke-width="8"/>
+  <line x1="60" y1="255" x2="260" y2="255" stroke="#0c1514" stroke-width="8"/>
+  <rect x="48" y="418" width="224" height="14" fill="#142120"/>
+  <path d="M48 418 H272" stroke="#8fa9a5" stroke-width="1.5" opacity="0.5"/>
+
+  <!-- Gravure du London Pictorial punaisée au mur -->
+  <g transform="rotate(-2 425 220)">
+    <rect x="335" y="145" width="180" height="152" fill="#d3c8a5"/>
+    <text x="425" y="160" font-family="Georgia, serif" font-size="10" fill="#2a241c" text-anchor="middle" letter-spacing="1.2">THE LONDON PICTORIAL</text>
+    <line x1="345" y1="165" x2="505" y2="165" stroke="#2a241c" stroke-width="1"/>
+    <rect x="347" y="171" width="156" height="96" fill="#bdb394"/>
+    <rect x="347" y="171" width="156" height="96" fill="url(#hatch)"/>
+    <path d="M347 230 H503" stroke="#d3c8a5" stroke-width="10" opacity="0.5"/>
+    <g fill="#26221a">
+      <path d="M347 200 H362 V186 H370 V200 H392 L400 190 L408 200 H440 V182 H446 V200 H503 V214 H347 Z" opacity="0.45"/>
+      <circle cx="380" cy="215" r="6"/><rect x="373" y="221" width="14" height="38"/><path d="M372 208 Q380 196 388 208 Z"/>
+      <circle cx="410" cy="219" r="6"/><rect x="403" y="225" width="14" height="34"/><path d="M402 212 Q410 200 418 212 Z"/>
+      <circle cx="465" cy="222" r="5"/><rect x="459" y="227" width="12" height="32"/>
+    </g>
+    <circle cx="396" cy="236" r="9" fill="#f2d48a" opacity="0.5"/>
+    <circle cx="396" cy="236" r="4.5" fill="#f2d48a"/>
+    <rect x="347" y="171" width="156" height="96" fill="none" stroke="#3a3226" stroke-width="1.5"/>
+    <text x="425" y="280" font-family="Georgia, serif" font-size="9" font-style="italic" fill="#2a241c" text-anchor="middle">Whitechapel by night</text>
+    <text x="440" y="292" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="9" fill="#4a3a2a" text-anchor="middle" transform="rotate(-3 440 290)">Et toujours rien !</text>
+    <circle cx="425" cy="150" r="3" fill="#8a2a22"/>
+  </g>
+
+  <!-- Affiche de police au-dessus du comptoir -->
+  <g transform="rotate(1.5 606 182)">
+    <rect x="566" y="130" width="80" height="102" fill="#b8ad8c"/>
+    <text x="606" y="148" font-family="Georgia, serif" font-size="12" font-weight="bold" fill="#2a241c" text-anchor="middle" letter-spacing="1">POLICE</text>
+    <text x="606" y="160" font-family="Georgia, serif" font-size="8" fill="#2a241c" text-anchor="middle" letter-spacing="1.5">NOTICE</text>
+    <path d="M574 166 H638" stroke="#2a241c" stroke-width="1"/>
+    <path d="M576 174 H636 M576 181 H636 M576 188 H630 M576 195 H636 M576 202 H624 M576 212 H636 M576 219 H616" stroke="#5c5444" stroke-width="1.5"/>
+    <circle cx="606" cy="134" r="2.5" fill="#8a2a22"/>
+  </g>
+  <g transform="rotate(4 680 182)">
+    <rect x="656" y="150" width="48" height="62" fill="#a99f82"/>
+    <path d="M662 160 H698 M662 167 H698 M662 174 H690 M662 181 H698 M662 188 H684" stroke="#5c5444" stroke-width="1.3"/>
+    <circle cx="680" cy="154" r="2.2" fill="#8a2a22"/>
+  </g>
+
+  <!-- Casiers et pendule derrière le comptoir -->
+  <rect x="720" y="230" width="170" height="190" fill="#172625" stroke="#0b1413" stroke-width="4"/>
+  <g stroke="#0b1413" stroke-width="4">
+    <line x1="777" y1="230" x2="777" y2="420"/><line x1="833" y1="230" x2="833" y2="420"/>
+    <line x1="720" y1="293" x2="890" y2="293"/><line x1="720" y1="356" x2="890" y2="356"/>
+  </g>
+  <path d="M720 230 H890" stroke="#b08a45" stroke-width="2" opacity="0.6"/>
+  <g fill="#b3a98a" opacity="0.85">
+    <rect x="730" y="268" width="38" height="20"/><rect x="842" y="262" width="40" height="26"/>
+    <rect x="786" y="330" width="40" height="22"/><rect x="730" y="392" width="40" height="24"/><rect x="845" y="398" width="34" height="18"/>
+    <rect x="790" y="270" width="34" height="18" transform="rotate(-6 807 279)"/>
+  </g>
+  <g fill="#0d1615">
+    <rect x="732" y="318" width="34" height="34"/><rect x="848" y="320" width="30" height="32" rx="3"/>
+  </g>
+  <circle cx="805" cy="160" r="44" fill="#101a19"/>
+  <circle cx="805" cy="160" r="44" fill="none" stroke="#b08a45" stroke-width="1.5" opacity="0.5"/>
+  <circle cx="805" cy="160" r="36" fill="#d8cdaa"/>
+  <g stroke="#2a2018" stroke-width="2">
+    <line x1="805" y1="127" x2="805" y2="133"/><line x1="805" y1="187" x2="805" y2="193"/>
+    <line x1="772" y1="160" x2="778" y2="160"/><line x1="832" y1="160" x2="838" y2="160"/>
+  </g>
+  <g stroke="#2a2018" stroke-width="1">
+    <line x1="821.5" y1="131.4" x2="820" y2="134"/><line x1="833.6" y1="143.5" x2="831" y2="145"/>
+    <line x1="833.6" y1="176.5" x2="831" y2="175"/><line x1="821.5" y1="188.6" x2="820" y2="186"/>
+    <line x1="788.5" y1="188.6" x2="790" y2="186"/><line x1="776.4" y1="176.5" x2="779" y2="175"/>
+    <line x1="776.4" y1="143.5" x2="779" y2="145"/><line x1="788.5" y1="131.4" x2="790" y2="134"/>
+  </g>
+  <line x1="805" y1="160" x2="794" y2="177" stroke="#1a140e" stroke-width="4" stroke-linecap="round"/>
+  <line x1="805" y1="160" x2="819" y2="135" stroke="#1a140e" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="805" cy="160" r="3" fill="#1a140e"/>
+
+  <!-- Applique à gaz et conduite -->
+  <path d="M955 0 V120" stroke="#0e1716" stroke-width="5"/>
+  <path d="M955 120 L955 150 L925 150" fill="none" stroke="#3c3220" stroke-width="5"/>
+  <path d="M912 150 L938 150 L944 120 L906 120 Z" fill="#f6e7b8"/>
+  <path d="M920 142 Q925 128 930 142 Z" fill="#fff6d8"/>
+
+  <!-- Rayons du gaz et de la fenêtre -->
+  <g fill="#f0c05a" opacity="0.045">
+    <path d="M925 140 L690 900 L830 900 Z"/><path d="M925 140 L980 900 L1110 900 Z"/><path d="M925 140 L1240 470 L1300 430 Z"/>
+  </g>
+  <path d="M60 90 L260 90 L560 900 L230 900 Z" fill="url(#windowShaft)"/>
+
+  <!-- Lanternes sourdes accrochées près de la porte -->
+  <g>
+    <path d="M1320 196 H1350" stroke="#0e1716" stroke-width="4"/>
+    <path d="M1333 196 V212" stroke="#0e1716" stroke-width="2"/>
+    <rect x="1321" y="212" width="26" height="38" rx="3" fill="#0b1312"/>
+    <path d="M1319 212 Q1334 200 1349 212 Z" fill="#0b1312"/>
+    <circle cx="1334" cy="231" r="8" fill="#3b4f4c" stroke="#7d918e" stroke-width="1.5"/>
+    <path d="M1321 214 V248" stroke="#c9a24a" stroke-width="1.2" opacity="0.5"/>
+  </g>
+
+  <!-- Porte du commissariat : le jour gris derrière la vitre, un agent passe dehors -->
+  <rect x="1360" y="160" width="220" height="485" fill="#121e1d"/>
+  <rect x="1385" y="188" width="170" height="190" fill="url(#doorGlass)"/>
+  <g fill="#4d6461" opacity="0.75">
+    <path d="M1508 300 Q1508 268 1522 262 Q1536 268 1536 300 Z"/>
+    <circle cx="1522" cy="312" r="12"/>
+    <path d="M1496 378 V334 Q1522 316 1548 334 V378 Z"/>
+  </g>
+  <rect x="1385" y="188" width="170" height="190" fill="#ffffff" opacity="0.06"/>
+  <text x="1470" y="216" font-family="Georgia, serif" font-size="13" fill="#c9a24a" text-anchor="middle" letter-spacing="1" opacity="0.85">METROPOLITAN POLICE</text>
+  <text x="1470" y="238" font-family="Georgia, serif" font-size="12" fill="#c9a24a" text-anchor="middle" letter-spacing="2" opacity="0.85">H DIVISION</text>
+  <rect x="1385" y="188" width="170" height="190" fill="none" stroke="#0b1413" stroke-width="5"/>
+  <rect x="1385" y="400" width="170" height="220" fill="none" stroke="#0b1413" stroke-width="4"/>
+  <rect x="1395" y="410" width="150" height="200" fill="none" stroke="#1d2e2c" stroke-width="2"/>
+  <circle cx="1378" cy="420" r="7" fill="#c9a24a"/>
+  <rect x="1350" y="150" width="240" height="14" fill="#1d2e2c"/>
+
+  <!-- ═══ Plan 2 : boiseries et plancher ═══ -->
+  <rect y="455" width="1600" height="18" fill="#1d2e2c"/>
+  <path d="M0 455 H1600" stroke="#b08a45" stroke-width="1.5" opacity="0.35"/>
+  <rect y="473" width="1600" height="170" fill="#182826"/>
+  <g fill="none" stroke="#111d1c" stroke-width="3">
+    <rect x="20" y="492" width="180" height="128"/><rect x="1180" y="492" width="160" height="128"/>
+  </g>
+  <rect y="640" width="1600" height="260" fill="url(#floor)"/>
+  <g stroke="#0a1110" stroke-width="2" opacity="0.9">
+    <line x1="0" y1="672" x2="1600" y2="672"/><line x1="0" y1="712" x2="1600" y2="712"/>
+    <line x1="0" y1="762" x2="1600" y2="762"/><line x1="0" y1="824" x2="1600" y2="824"/>
+  </g>
+  <g stroke="#0a1110" stroke-width="1.5" opacity="0.7">
+    <line x1="210" y1="640" x2="200" y2="672"/><line x1="520" y1="672" x2="514" y2="712"/><line x1="760" y1="712" x2="752" y2="762"/>
+    <line x1="1120" y1="640" x2="1126" y2="672"/><line x1="1300" y1="762" x2="1310" y2="824"/><line x1="420" y1="824" x2="410" y2="900"/>
+  </g>
+  <ellipse cx="900" cy="720" rx="420" ry="120" fill="url(#floorPool)"/>
+
+  <!-- ═══ Plan 3 : meubles ═══ -->
+  <!-- Banc -->
+  <rect x="50" y="490" width="290" height="12" fill="#14211f"/>
+  <rect x="50" y="520" width="290" height="10" fill="#14211f"/>
+  <rect x="45" y="585" width="300" height="16" fill="#1a2a28"/>
+  <path d="M45 585 H345" stroke="#8fa9a5" stroke-width="1.2" opacity="0.4"/>
+  <rect x="60" y="600" width="12" height="70" fill="#0e1716"/><rect x="320" y="600" width="12" height="70" fill="#0e1716"/>
+  <rect x="62" y="490" width="10" height="110" fill="#101b1a"/><rect x="322" y="490" width="10" height="110" fill="#101b1a"/>
+  <ellipse cx="200" cy="690" rx="130" ry="10" fill="#000" opacity="0.45"/>
+
+  <!-- ═══ Plan 4 : personnages ═══ -->
+  <!-- Mrs Coyle, assise sur le banc : châle rouge, bonnet, convocation -->
+  <path d="M150 560 L265 560 L282 680 L138 680 Z" fill="#070b0b"/>
+  <ellipse cx="170" cy="684" rx="16" ry="6" fill="#030505"/><ellipse cx="248" cy="684" rx="16" ry="6" fill="#030505"/>
+  <path d="M175 440 C160 450 152 480 154 520 L150 590 L262 590 L258 520 C260 480 252 450 237 440 Z" fill="#070b0b"/>
+  <path d="M168 442 Q206 436 244 442 L262 520 Q206 548 150 520 Z" fill="#6e2420"/>
+  <path d="M206 448 L190 530 L222 530 Z" fill="#561c19"/>
+  <path d="M154 520 Q206 548 262 520" fill="none" stroke="#8a3a32" stroke-width="2"/>
+  <g stroke="#561c19" stroke-width="2">
+    <line x1="158" y1="524" x2="156" y2="534"/><line x1="172" y1="530" x2="171" y2="540"/><line x1="188" y1="534" x2="188" y2="544"/>
+    <line x1="224" y1="534" x2="225" y2="544"/><line x1="240" y1="530" x2="242" y2="540"/><line x1="254" y1="524" x2="257" y2="534"/>
+  </g>
+  <rect x="180" y="528" width="54" height="36" fill="#d8cdaa" transform="rotate(-6 207 546)"/>
+  <g stroke="#7a6c55" stroke-width="1.5" transform="rotate(-6 207 546)">
+    <line x1="186" y1="537" x2="228" y2="537"/><line x1="186" y1="545" x2="228" y2="545"/><line x1="186" y1="553" x2="216" y2="553"/>
+  </g>
+  <circle cx="183" cy="556" r="8" fill="#070b0b"/><circle cx="232" cy="550" r="8" fill="#070b0b"/>
+  <rect x="198" y="420" width="16" height="22" fill="#070b0b"/>
+  <circle cx="206" cy="408" r="24" fill="#070b0b"/>
+  <path d="M172 416 Q168 364 206 360 Q246 364 242 416 Q236 386 206 382 Q178 386 172 416 Z" fill="#0d1514"/>
+  <path d="M196 428 L206 434 L216 428 L214 446 L206 437 L198 446 Z" fill="#0d1514"/>
+  <g fill="none" stroke-linecap="round">
+    <path d="M172 414 Q168 366 204 360" stroke="#9fbcb7" stroke-width="2.2" opacity="0.75"/>
+    <path d="M175 442 C160 452 154 480 156 520" stroke="#9fbcb7" stroke-width="2" opacity="0.6"/>
+    <path d="M152 590 L140 678" stroke="#9fbcb7" stroke-width="1.5" opacity="0.45"/>
+    <path d="M240 400 Q244 410 242 416" stroke="#e0ac4a" stroke-width="1.5" opacity="0.5"/>
+    <path d="M237 442 C252 452 258 480 258 520" stroke="#e0ac4a" stroke-width="1.5" opacity="0.45"/>
+  </g>
+
+  <!-- Le sergent Hale, derrière le comptoir : trois chevrons, matricule H 47 -->
+  <path d="M590 330 C575 340 568 370 568 410 L568 480 L702 480 L702 410 C702 370 695 340 680 330 Z" fill="#070b0b"/>
+  <g fill="#5f5c52">
+    <circle cx="635" cy="355" r="3.5"/><circle cx="635" cy="385" r="3.5"/><circle cx="635" cy="415" r="3.5"/><circle cx="635" cy="445" r="3.5"/>
+  </g>
+  <rect x="650" y="372" width="30" height="22" fill="#0d1514" stroke="#1d2a28" stroke-width="2"/>
+  <circle cx="672" cy="370" r="5" fill="#e3b84e"/>
+  <circle cx="672" cy="370" r="2" fill="#fff6d2"/>
+  <path d="M676 371 L682 364" stroke="#efe3c4" stroke-width="1.5" opacity="0.8"/>
+  <path d="M572 360 L560 440 L590 470 L598 380 Z" fill="#070b0b"/>
+  <g fill="none" stroke="#c8c2ae" stroke-width="3">
+    <path d="M566 392 L578 402 L590 392"/><path d="M565 402 L577 412 L589 402"/><path d="M564 412 L576 422 L588 412"/>
+  </g>
+  <rect x="616" y="318" width="38" height="16" fill="#070b0b"/>
+  <text x="635" y="331" font-family="Georgia, serif" font-size="10" fill="#a8a290" text-anchor="middle">H 47</text>
+  <rect x="626" y="300" width="18" height="20" fill="#070b0b"/>
+  <ellipse cx="609" cy="292" rx="5" ry="8" fill="#070b0b"/><ellipse cx="661" cy="292" rx="5" ry="8" fill="#070b0b"/>
+  <circle cx="635" cy="290" r="26" fill="#070b0b"/>
+  <path d="M609 288 Q608 258 635 256 Q662 258 661 288 Q656 270 635 268 Q614 270 609 288 Z" fill="#0d1514"/>
+  <path d="M616 302 Q635 294 654 302 Q650 312 635 307 Q620 312 616 302 Z" fill="#0d1514"/>
+  <g fill="none" stroke-linecap="round">
+    <path d="M647 266 A26 26 0 0 1 660 296" stroke="#e8b452" stroke-width="2.5" opacity="0.85"/>
+    <path d="M665 286 Q667 294 664 299" stroke="#e8b452" stroke-width="2" opacity="0.8"/>
+    <path d="M680 332 C695 342 702 370 702 410 L702 455" stroke="#e8b452" stroke-width="2.5" opacity="0.75"/>
+    <path d="M620 266 A26 26 0 0 0 610 282" stroke="#9fbcb7" stroke-width="1.5" opacity="0.4"/>
+  </g>
+
+  <!-- Comptoir -->
+  <rect x="420" y="455" width="470" height="22" fill="#1d2e2c"/>
+  <path d="M420 455 H890" stroke="#c99a4e" stroke-width="2.5" opacity="0.7"/>
+  <rect x="430" y="477" width="450" height="185" fill="#111d1c"/>
+  <g fill="none" stroke="#0a1312" stroke-width="3">
+    <rect x="448" y="497" width="128" height="145"/><rect x="592" y="497" width="128" height="145"/><rect x="736" y="497" width="128" height="145"/>
+  </g>
+  <g stroke="#b08a45" stroke-width="1" opacity="0.3">
+    <path d="M592 497 H720"/><path d="M736 497 H864"/>
+  </g>
+  <ellipse cx="655" cy="668" rx="250" ry="10" fill="#000" opacity="0.4"/>
+  <!-- registre de garde, plume, encrier -->
+  <path d="M462 452 L520 446 L522 470 L458 476 Z" fill="#e2d8bc"/>
+  <path d="M520 446 L578 450 L582 474 L522 470 Z" fill="#d6cbad"/>
+  <line x1="521" y1="446" x2="522" y2="470" stroke="#8a7a60" stroke-width="2"/>
+  <g stroke="#6a5c46" stroke-width="1.2">
+    <line x1="466" y1="456" x2="514" y2="451"/><line x1="467" y1="462" x2="515" y2="457"/><line x1="468" y1="468" x2="505" y2="464"/>
+    <line x1="528" y1="453" x2="574" y2="456"/><line x1="529" y1="459" x2="575" y2="462"/><line x1="530" y1="465" x2="560" y2="467"/>
+  </g>
+  <path d="M458 476 L522 470 L582 474" fill="none" stroke="#3a3226" stroke-width="2"/>
+  <path d="M572 446 L612 420" stroke="#e9e3d2" stroke-width="3" stroke-linecap="round"/>
+  <path d="M600 428 L614 418 L606 432 Z" fill="#e9e3d2"/>
+  <rect x="610" y="440" width="18" height="16" rx="3" fill="#070b0b"/>
+  <path d="M624 442 V454" stroke="#e8b452" stroke-width="1.2" opacity="0.7"/>
+  <!-- casque de bobby posé sur le comptoir -->
+  <path d="M792 456 Q790 400 822 394 Q854 400 852 456 Z" fill="#070b0b"/>
+  <rect x="786" y="452" width="72" height="7" rx="3" fill="#050808"/>
+  <path d="M808 428 L822 416 L836 428 L822 440 Z" fill="#8a8574"/>
+  <circle cx="822" cy="428" r="4" fill="#c8c2ae"/>
+  <circle cx="822" cy="392" r="5" fill="#070b0b"/>
+  <path d="M800 420 Q804 402 820 396" fill="none" stroke="#e8b452" stroke-width="2" opacity="0.75"/>
+
+  <!-- Bureau, télégramme, tiroir entrouvert -->
+  <polygon points="915,522 1135,522 1150,548 900,548" fill="#1d2e2c"/>
+  <path d="M915 522 H1135" stroke="#c99a4e" stroke-width="2" opacity="0.7"/>
+  <rect x="905" y="548" width="240" height="22" fill="#14211f"/>
+  <rect x="912" y="570" width="18" height="128" fill="#0e1716"/><rect x="1122" y="570" width="18" height="128" fill="#0e1716"/>
+  <rect x="930" y="570" width="70" height="60" fill="#111d1c"/>
+  <circle cx="965" cy="600" r="3" fill="#b08a45" opacity="0.7"/>
+  <ellipse cx="1025" cy="702" rx="140" ry="8" fill="#000" opacity="0.4"/>
+  <g transform="rotate(4 980 532)">
+    <rect x="938" y="516" width="86" height="30" fill="#e2d4a2"/>
+    <text x="981" y="525" font-family="Georgia, serif" font-size="6" fill="#4a3c22" text-anchor="middle">POST OFFICE TELEGRAPHS</text>
+    <rect x="944" y="529" width="74" height="5" fill="#f2e9cc"/><rect x="944" y="537" width="56" height="5" fill="#f2e9cc"/>
+  </g>
+  <!-- bougeoir éteint sur le bureau -->
+  <ellipse cx="1110" cy="520" rx="12" ry="3" fill="#070b0b"/>
+  <rect x="1106" y="492" width="8" height="28" fill="#cfc4a6"/>
+  <path d="M1110 492 Q1114 484 1110 478" fill="none" stroke="#7d918e" stroke-width="1.5" opacity="0.6"/>
+  <rect x="1010" y="560" width="112" height="40" fill="#182625" stroke="#0a1312" stroke-width="2"/>
+  <rect x="1004" y="590" width="124" height="22" fill="#1d2e2c" stroke="#0a1312" stroke-width="2"/>
+  <path d="M1004 590 H1128" stroke="#c99a4e" stroke-width="1.5" opacity="0.55"/>
+  <rect x="1020" y="572" width="80" height="20" fill="#c9b98e"/>
+  <rect x="1020" y="572" width="80" height="6" fill="#8a2a22"/>
+  <text x="1060" y="589" font-family="Georgia, serif" font-size="7" fill="#5a1a14" text-anchor="middle">CONFIDENTIAL</text>
+  <circle cx="1066" cy="601" r="4" fill="#d6b45e"/>
+  <rect x="1104" y="598" width="12" height="5" fill="#d6b45e"/>
+
+  <!-- Pile de journaux par terre -->
+  <ellipse cx="965" cy="800" rx="84" ry="9" fill="#000" opacity="0.5"/>
+  <rect x="895" y="770" width="140" height="28" fill="#b9b094"/>
+  <rect x="900" y="750" width="132" height="22" fill="#c4bb9f" transform="rotate(-3 966 761)"/>
+  <rect x="893" y="730" width="138" height="22" fill="#b6ad91" transform="rotate(2 962 741)"/>
+  <rect x="902" y="708" width="128" height="24" fill="#cbc2a6" transform="rotate(-4 966 720)"/>
+  <g font-family="Georgia, serif" fill="#2a241c" text-anchor="middle">
+    <text x="966" y="725" font-size="10.5" font-weight="bold" transform="rotate(-4 966 720)">THE DAILY LEDGER</text>
+    <text x="962" y="746" font-size="11" transform="rotate(2 962 741)">LE MATINAL</text>
+    <text x="966" y="766" font-size="10" transform="rotate(-3 966 761)">NEW YORK SENTINEL</text>
+  </g>
+  <path d="M945 708 L948 798 M985 706 L982 798" stroke="#5a4a30" stroke-width="1.5"/>
+  <path d="M895 784 H1035" stroke="#7d746a" stroke-width="1" opacity="0.6"/>
+
+  <!-- Pell, reporter du Comet, devant la porte : melon, crayon, manteau à carreaux, carnet -->
+  <ellipse cx="1462" cy="792" rx="64" ry="9" fill="#000" opacity="0.55"/>
+  <rect x="1432" y="640" width="24" height="148" fill="#090e0e"/><rect x="1466" y="640" width="24" height="148" fill="#080c0c"/>
+  <ellipse cx="1442" cy="790" rx="18" ry="6" fill="#030505"/><ellipse cx="1482" cy="790" rx="18" ry="6" fill="#030505"/>
+  <path d="M1462 330 C1430 336 1418 362 1418 400 L1414 660 L1510 660 L1506 400 C1506 362 1494 336 1462 330 Z" fill="url(#check)"/>
+  <path d="M1448 336 L1462 380 L1476 336 Z" fill="#8f8a78"/>
+  <path d="M1458 344 L1462 380 L1466 344 Z" fill="#4a1c18"/>
+  <path d="M1424 360 L1404 470 L1420 476 L1440 380 Z" fill="#0a100f"/>
+  <rect x="1392" y="440" width="34" height="44" fill="#ddd2b0" transform="rotate(-10 1409 462)"/>
+  <g stroke="#6a5c46" stroke-width="1.2" transform="rotate(-10 1409 462)">
+    <line x1="1397" y1="450" x2="1421" y2="450"/><line x1="1397" y1="457" x2="1421" y2="457"/><line x1="1397" y1="464" x2="1421" y2="464"/><line x1="1397" y1="471" x2="1415" y2="471"/>
+  </g>
+  <circle cx="1418" cy="478" r="8" fill="#070b0b"/>
+  <path d="M1500 360 L1514 470 L1500 474 L1488 380 Z" fill="#0a100f"/>
+  <rect x="1454" y="316" width="16" height="18" fill="#070b0b"/>
+  <ellipse cx="1438" cy="304" rx="4.5" ry="7" fill="#070b0b"/><ellipse cx="1486" cy="304" rx="4.5" ry="7" fill="#070b0b"/>
+  <circle cx="1462" cy="302" r="24" fill="#070b0b"/>
+  <line x1="1484" y1="292" x2="1500" y2="268" stroke="#d9b84a" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="1499" y1="270" x2="1502" y2="265" stroke="#e9d9b0" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="1462" cy="282" rx="36" ry="6" fill="#050808"/>
+  <path d="M1440 282 Q1438 250 1462 248 Q1486 250 1484 282 Z" fill="#050808"/>
+  <path d="M1440 276 H1484" stroke="#1d2927" stroke-width="3"/>
+  <g fill="none" stroke-linecap="round">
+    <path d="M1442 276 Q1440 254 1460 249" stroke="#e8b452" stroke-width="2" opacity="0.7"/>
+    <path d="M1438 296 Q1436 310 1446 320" stroke="#e8b452" stroke-width="1.8" opacity="0.6"/>
+    <path d="M1462 331 C1432 337 1420 362 1420 400 L1416 655" stroke="#e8b452" stroke-width="2" opacity="0.55"/>
+    <path d="M1432 642 V786" stroke="#e8b452" stroke-width="1.5" opacity="0.4"/>
+    <path d="M1486 276 Q1488 260 1478 252" stroke="#b9cbc6" stroke-width="1.5" opacity="0.6"/>
+  </g>
+
+  <!-- Sir Edmund Harrow, l'homme aux médailles : épaulettes, journal froissé, cravache -->
+  <ellipse cx="1228" cy="796" rx="72" ry="10" fill="#000" opacity="0.55"/>
+  <path d="M1196 630 L1194 790 L1222 790 L1224 640 Z" fill="#070b0b"/>
+  <path d="M1234 640 L1236 790 L1264 790 L1262 630 Z" fill="#070b0b"/>
+  <path d="M1190 700 L1192 792 L1226 792 L1224 700 Z" fill="#030505"/>
+  <path d="M1232 700 L1234 792 L1268 792 L1266 700 Z" fill="#030505"/>
+  <path d="M1196 706 L1197 788" stroke="#e8b452" stroke-width="1.5" opacity="0.5"/>
+  <path d="M1228 318 C1192 324 1180 352 1180 395 L1178 660 L1278 660 L1276 395 C1276 352 1264 324 1228 318 Z" fill="#070b0b"/>
+  <path d="M1228 322 L1228 660" stroke="#141f1e" stroke-width="2"/>
+  <g fill="#a88a3a">
+    <circle cx="1228" cy="370" r="3.5"/><circle cx="1228" cy="410" r="3.5"/><circle cx="1228" cy="450" r="3.5"/><circle cx="1228" cy="490" r="3.5"/><circle cx="1228" cy="530" r="3.5"/>
+  </g>
+  <path d="M1182 334 L1276 334" stroke="#a88a3a" stroke-width="3"/>
+  <path d="M1178 600 H1278" stroke="#a88a3a" stroke-width="2.5" opacity="0.8"/>
+  <g>
+    <rect x="1240" y="352" width="9" height="12" fill="#5e2222"/><circle cx="1244.5" cy="370" r="5" fill="#d8b44a"/>
+    <rect x="1252" y="352" width="9" height="12" fill="#22365e"/><circle cx="1256.5" cy="370" r="5" fill="#c8c8c8"/>
+    <rect x="1264" y="352" width="9" height="12" fill="#22482c"/><circle cx="1268.5" cy="370" r="5" fill="#d8b44a"/>
+  </g>
+  <!-- épaulettes à franges -->
+  <path d="M1172 330 Q1188 316 1206 324 L1208 338 L1170 340 Z" fill="#8a7032"/>
+  <path d="M1250 324 Q1268 316 1284 330 L1286 340 L1248 338 Z" fill="#8a7032"/>
+  <g stroke="#8a7032" stroke-width="2">
+    <path d="M1174 340 V350 M1180 340 V352 M1186 340 V352 M1192 340 V352 M1198 340 V351 M1204 340 V349"/>
+    <path d="M1252 340 V349 M1258 340 V351 M1264 340 V352 M1270 340 V352 M1276 340 V352 M1282 340 V350"/>
+  </g>
+  <!-- bras levé et journal froissé -->
+  <path d="M1192 336 L1150 286 L1164 274 L1206 330 Z" fill="#070b0b"/>
+  <path d="M1150 286 L1192 336" stroke="#e8b452" stroke-width="2" opacity="0.6"/>
+  <g transform="rotate(-14 1130 270)">
+    <path d="M1078 228 L1128 220 L1150 236 L1160 274 L1146 312 L1104 318 L1082 300 L1072 262 Z" fill="#d6cbab"/>
+    <path d="M1086 252 L1146 246 M1090 284 L1150 280 M1112 226 L1118 316" stroke="#a39980" stroke-width="1.5"/>
+    <path d="M1128 220 L1150 236 L1132 240 Z" fill="#b5ab90"/>
+    <text x="1114" y="246" font-family="Georgia, serif" font-size="11.5" font-weight="bold" fill="#1d1a14" text-anchor="middle">THE COMET</text>
+    <g stroke="#5a5244" stroke-width="1.5"><line x1="1086" y1="262" x2="1142" y2="260"/><line x1="1086" y1="270" x2="1144" y2="268"/><line x1="1088" y1="296" x2="1140" y2="294"/></g>
+  </g>
+  <circle cx="1158" cy="280" r="10" fill="#bdb6a2"/>
+  <!-- bras baissé, gant et cravache -->
+  <path d="M1270 340 L1290 470 L1274 478 L1258 360 Z" fill="#070b0b"/>
+  <circle cx="1284" cy="482" r="9" fill="#bdb6a2"/>
+  <line x1="1286" y1="478" x2="1310" y2="640" stroke="#050808" stroke-width="4" stroke-linecap="round"/>
+  <line x1="1287" y1="490" x2="1306" y2="620" stroke="#8a7a5a" stroke-width="1" opacity="0.6"/>
+  <!-- tête : cheveux gris, grande moustache grise -->
+  <rect x="1219" y="296" width="18" height="24" fill="#070b0b"/>
+  <ellipse cx="1200" cy="276" rx="5" ry="8" fill="#070b0b"/><ellipse cx="1256" cy="276" rx="5" ry="8" fill="#070b0b"/>
+  <circle cx="1228" cy="272" r="28" fill="#070b0b"/>
+  <path d="M1200 268 Q1200 240 1228 238 Q1256 240 1256 268 Q1250 250 1228 248 Q1206 250 1200 268 Z" fill="#4d4b47"/>
+  <path d="M1198 290 Q1212 278 1228 284 Q1244 278 1258 290 Q1262 298 1250 296 Q1238 290 1228 293 Q1218 290 1206 296 Q1194 298 1198 290 Z" fill="#8d8a84"/>
+  <g fill="none" stroke-linecap="round">
+    <path d="M1206 252 A28 28 0 0 0 1201 284" stroke="#e8b452" stroke-width="2.5" opacity="0.85"/>
+    <path d="M1196 270 Q1194 278 1197 284" stroke="#e8b452" stroke-width="2" opacity="0.7"/>
+    <path d="M1228 319 C1194 325 1182 352 1182 395 L1180 655" stroke="#e8b452" stroke-width="2.2" opacity="0.6"/>
+    <path d="M1250 252 A28 28 0 0 1 1255 284" stroke="#9fbcb7" stroke-width="1.3" opacity="0.35"/>
+  </g>
+
+  <!-- ═══ Plan 5 : premier plan, le plus sombre ═══ -->
+  <rect x="0" y="0" width="1600" height="24" fill="#060b0b"/>
+  <path d="M0 24 H1600" stroke="#1d2e2c" stroke-width="2"/>
+  <g fill="#030606">
+    <rect x="360" y="700" width="10" height="200"/><rect x="438" y="700" width="10" height="200"/>
+    <rect x="356" y="696" width="96" height="12" rx="3"/>
+    <rect x="364" y="736" width="80" height="7"/><rect x="364" y="768" width="80" height="7"/>
+    <rect x="344" y="830" width="120" height="16" rx="2"/>
+  </g>
+  <path d="M356 696 H452" stroke="#e8b452" stroke-width="1.5" opacity="0.35"/>
+
+  <!-- Lumière, poussière et brouillard -->
+  <circle cx="925" cy="140" r="520" fill="url(#gasGlow)"/>
+  <g fill="#f6dc9a" opacity="0.45">
+    <circle cx="880" cy="230" r="1.4"/><circle cx="960" cy="260" r="1.1"/><circle cx="905" cy="320" r="1.6"/><circle cx="1010" cy="210" r="1.2"/>
+    <circle cx="850" cy="380" r="1.1"/><circle cx="990" cy="360" r="1.4"/><circle cx="940" cy="420" r="1"/><circle cx="1040" cy="300" r="1.1"/>
+  </g>
+  <rect y="600" width="1600" height="300" fill="url(#floorFog)"/>
+  <g fill="#9db6b2" opacity="0.06">
+    <ellipse cx="300" cy="820" rx="360" ry="40"/><ellipse cx="1150" cy="850" rx="420" ry="36"/><ellipse cx="760" cy="880" rx="300" ry="30"/>
+  </g>
+  <rect width="1600" height="900" fill="url(#vignette)"/>
+</svg>

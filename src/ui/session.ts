@@ -1,22 +1,28 @@
 import type { LoadedCase } from '../cases/registry';
 import type { CaseProgress } from '../engine/progress';
 
-export type Mode = 'explore' | 'think';
-
-/** État d'une affaire en cours : la progression sauvegardée + l'état de l'interface. */
+/**
+ * État d'une affaire en cours : la progression sauvegardée + l'état de l'interface.
+ * Tout tient sur un seul écran : le carnet à gauche, la gazette (reconstitution)
+ * au-dessus de la scène.
+ */
 export interface Session {
   data: LoadedCase;
   progress: CaseProgress;
-  mode: Mode;
   openZone: string | null;
   showZones: boolean;
-  activePage: string;
   /** Case sélectionnée, en attente d'un mot. */
   selectedSlot: { page: string; index: number } | null;
   /** Mot sélectionné, en attente d'une case. */
   armedWord: string | null;
-  /** Mot tout juste collecté (petite animation dans la banque). */
+  /** Mot tout juste collecté (petite animation dans le carnet). */
   lastCollected: string | null;
+  /** Article tout juste validé (petite animation dans la gazette). */
+  justSolved: string | null;
+  /** Article dont on vient de révéler un indice (on fait défiler jusqu'à lui). */
+  justHinted: string | null;
+  /** Gazette repliée : seul son bandeau reste visible, la scène prend la place. */
+  gazetteFolded: boolean;
   showEpilogue: boolean;
 }
 
@@ -25,8 +31,7 @@ export interface Actions {
   openZone(zoneId: string): void;
   closeZone(): void;
   toggleZones(): void;
-  setMode(mode: Mode): void;
-  setPage(pageId: string): void;
+  toggleGazette(): void;
   selectSlot(pageId: string, index: number): void;
   pickWord(wordId: string): void;
   dropWord(pageId: string, index: number, wordId: string): void;
@@ -37,4 +42,8 @@ export interface Actions {
   closeEpilogue(): void;
   reset(): void;
   exit(): void;
+  /** Aide-mémoire des règles (et, dans l'affaire tutoriel, « Revoir le tutoriel »). */
+  help(): void;
+  /** Passe à l'affaire suivante (absent pour la dernière). */
+  next?: () => void;
 }

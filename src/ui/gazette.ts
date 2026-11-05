@@ -2,30 +2,60 @@ import { h } from '../dom';
 import { parseSentence } from '../engine/markup';
 import { currentOrder, DEFAULT_TOLERANCE, evaluatePage, type Evaluation } from '../engine/validation';
 import type { ChronologyPage, IdentitiesPage, Page, Rect, SentencesPage, Zone } from '../types';
+import { icon } from './art';
 import type { Actions, Session } from './session';
 
-/** Mode Réflexion : les pages à compléter avec les mots notés. */
-export function renderThink(s: Session, a: Actions): HTMLElement {
-  const page = s.data.pages.find((p) => p.id === s.activePage) ?? s.data.pages[0];
+/**
+ * La gazette, au-dessus de la scène : chaque page de l'affaire devient un article
+ * à compléter avec les mots du carnet. Tout est visible d'un coup, sans changer d'écran.
+ */
+export function renderGazette(s: Session, a: Actions): HTMLElement {
+  const pages = s.data.pages;
+  const solvedCount = pages.filter((p) => s.progress.solved.includes(p.id)).length;
+  const allSolved = pages.length > 0 && solvedCount === pages.length;
 
-  const tabs = h(
-    'nav',
-    { class: 'page-tabs', 'aria-label': 'Pages' },
-    s.data.pages.map((p, i) => {
-      const solved = s.progress.solved.includes(p.id);
-      return h(
-        'button',
-        {
-          class: `page-tab${p.id === page.id ? ' active' : ''}${solved ? ' solved' : ''}`,
-          'aria-current': p.id === page.id ? 'page' : null,
-          onClick: () => a.setPage(p.id),
-        },
-        h('span', { class: 'page-num' }, solved ? '✓' : String(i + 1)),
-        p.title,
-      );
-    }),
+  return h(
+    'section',
+    { class: `gazette${s.gazetteFolded ? ' folded' : ''}`, 'aria-label': 'Gazette : reconstitution des faits' },
+    h(
+      'header',
+      { class: 'gz-mast' },
+      h('span', { class: 'gz-edition' }, 'Édition spéciale'),
+      h('h2', { class: 'gz-name' }, icon('lantern-flame'), 'The Whitechapel Lantern', icon('lantern-flame')),
+      h(
+        'span',
+        { class: 'gz-right' },
+        pages.length
+          ? h(
+              'span',
+              { class: `gz-progress${allSolved ? ' done' : ''}` },
+              `${solvedCount} / ${pages.length} article${pages.length > 1 ? 's' : ''} validé${solvedCount > 1 ? 's' : ''}`,
+            )
+          : null,
+        h(
+          'button',
+          {
+            class: 'gz-fold',
+            'aria-expanded': String(!s.gazetteFolded),
+            title: s.gazetteFolded ? 'Déplier la gazette' : 'Replier la gazette pour agrandir la scène',
+            onClick: () => a.toggleGazette(),
+          },
+          icon('newspaper'),
+          s.gazetteFolded ? 'Déplier ▾' : 'Replier ▴',
+        ),
+      ),
+    ),
+    s.gazetteFolded
+      ? null
+      : h(
+          'div',
+          { class: 'gz-cols', 'data-scroll': 'gz-cols' },
+          pages.length ? pages.map((p) => renderArticle(p, s, a)) : h('p', { class: 'gz-empty' }, 'Aucun article pour le moment.'),
+        ),
   );
+}
 
+function renderArticle(page: Page, s: Session, a: Actions): HTMLElement {
   const solved = s.progress.solved.includes(page.id);
   const body =
     page.kind === 'sentences'
@@ -33,18 +63,35 @@ export function renderThink(s: Session, a: Actions): HTMLElement {
       : page.kind === 'identities'
         ? renderIdentities(page, s, a, solved)
         : renderChronology(page, s, a, solved);
+  const hints = page.hints ?? [];
+  const shown = Math.min(s.progress.hints[page.id] ?? 0, hints.length);
 
   return h(
-    'div',
-    { class: 'think' },
-    tabs,
+    'article',
+    {
+      class: ['gz-article', `kind-${page.kind}`, solved && 'solved', s.justSolved === page.id && 'just-solved'].filter(Boolean).join(' '),
+      'data-page': page.id,
+      'data-kind': page.kind,
+    },
+    h('header', { class: 'gz-head' }, h('h3', {}, page.title), solved ? h('span', { class: 'gz-stamp' }, 'Validé') : null),
     h(
-      'article',
-      { class: `page-card${solved ? ' solved' : ''}` },
-      h('h2', {}, page.title),
+      'div',
+      { class: 'gz-body', 'data-scroll': `gz-${page.id}` },
       body,
+      shown ? h('div', { class: 'gz-hints' }, hints.slice(0, shown).map((t, i) => h('p', { class: 'hint' }, h('b', {}, `Indice ${i + 1}. `), t))) : null,
+    ),
+    h(
+      'footer',
+      { class: 'gz-foot' },
       renderVerdict(evaluatePage(s.data, page, s.progress), s.data.tolerance ?? DEFAULT_TOLERANCE, page),
-      renderHints(page, s, a, solved),
+      !solved && shown < hints.length
+        ? h(
+            'button',
+            { class: 'gz-hint-btn', title: 'Révéler un indice', onClick: () => a.revealHint(page.id) },
+            icon('lantern-flame'),
+            `Indice ${shown + 1}/${hints.length}`,
+          )
+        : null,
     ),
   );
 }
@@ -56,9 +103,13 @@ function renderBlank(pageId: string, index: number, s: Session, a: Actions, lock
   const btn = h(
     'button',
     {
-      class: ['blank', word && `filled cat-${word.category}`, selected && 'selected'].filter(Boolean).join(' '),
+      class: ['blank', word && `filled cat-${word.category}`, selected && 'selected', s.armedWord && !locked && 'awaiting']
+        .filter(Boolean)
+        .join(' '),
       disabled: locked,
+      'data-slot': `${pageId}:${index}`,
       'aria-label': word ? `Case ${index + 1} : ${word.label}` : `Case ${index + 1} vide`,
+      title: locked ? undefined : word ? 'Clic droit pour vider la case' : 'Cliquez, puis choisissez un mot dans le carnet',
       onClick: () => a.selectSlot(pageId, index),
       onContextMenu: (e: MouseEvent) => {
         e.preventDefault();
@@ -90,16 +141,14 @@ function renderSentences(page: SentencesPage, s: Session, a: Actions, locked: bo
       h(
         'p',
         { class: 'sentence' },
-        parseSentence(sentence).map((seg) =>
-          seg.type === 'text' ? seg.text : renderBlank(page.id, index++, s, a, locked),
-        ),
+        parseSentence(sentence).map((seg) => (seg.type === 'text' ? seg.text : renderBlank(page.id, index++, s, a, locked))),
       ),
     ),
   );
 }
 
-const PORTRAIT_W = 120;
-const PORTRAIT_H = 160;
+const PORTRAIT_W = 72;
+const PORTRAIT_H = 96;
 
 /**
  * Cadrage du portrait dans la scène : le champ « portrait » de la zone s'il existe,
@@ -113,7 +162,7 @@ function portraitRect(zone: Zone): Rect {
   return { x, y: ph <= zh ? y : y + zh / 2 - ph / 2, w, h: ph };
 }
 
-/** Portrait découpé dans l'image de la scène. */
+/** Portrait découpé dans l'image de la scène, comme une gravure de journal. */
 function portrait(zone: Zone, s: Session): HTMLElement {
   const W = PORTRAIT_W;
   const H = PORTRAIT_H;
@@ -170,7 +219,7 @@ function renderChronology(page: ChronologyPage, s: Session, a: Actions, locked: 
               { class: 'chrono-move' },
               h(
                 'button',
-                { class: 'icon-btn', 'aria-label': 'Monter', disabled: pos === 0, onClick: () => a.moveEvent(page.id, pos, pos - 1) },
+                { class: 'icon-btn', 'aria-label': 'Monter', title: 'Monter', disabled: pos === 0, onClick: () => a.moveEvent(page.id, pos, pos - 1) },
                 '▲',
               ),
               h(
@@ -178,6 +227,7 @@ function renderChronology(page: ChronologyPage, s: Session, a: Actions, locked: 
                 {
                   class: 'icon-btn',
                   'aria-label': 'Descendre',
+                  title: 'Descendre',
                   disabled: pos === order.length - 1,
                   onClick: () => a.moveEvent(page.id, pos, pos + 1),
                 },
@@ -191,25 +241,10 @@ function renderChronology(page: ChronologyPage, s: Session, a: Actions, locked: 
 
 function renderVerdict(ev: Evaluation, tolerance: number, page: Page): HTMLElement {
   const messages: Record<Evaluation['verdict'], string> = {
-    incomplete:
-      page.kind === 'chronology' ? 'Remettez les événements dans l\'ordre.' : 'Complétez toutes les cases.',
+    incomplete: page.kind === 'chronology' ? 'Remettez les événements dans l\'ordre.' : 'Complétez toutes les cases.',
     solved: '✓ Validé',
-    close: `Presque : il reste ${tolerance} erreur${tolerance > 1 ? 's' : ''} ou moins.`,
+    close: `Presque : ${tolerance} erreur${tolerance > 1 ? 's' : ''} ou moins.`,
     wrong: 'Quelque chose ne colle pas…',
   };
   return h('p', { class: `verdict ${ev.verdict}`, role: 'status' }, messages[ev.verdict]);
-}
-
-function renderHints(page: Page, s: Session, a: Actions, solved: boolean): HTMLElement | null {
-  const hints = page.hints ?? [];
-  if (!hints.length) return null;
-  const shown = Math.min(s.progress.hints[page.id] ?? 0, hints.length);
-  return h(
-    'div',
-    { class: 'hints' },
-    hints.slice(0, shown).map((t) => h('p', { class: 'hint' }, t)),
-    !solved && shown < hints.length
-      ? h('button', { class: 'btn small ghost', onClick: () => a.revealHint(page.id) }, `Indice (${shown + 1}/${hints.length})`)
-      : null,
-  );
 }

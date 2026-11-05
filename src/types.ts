@@ -49,6 +49,10 @@ export interface Zone {
   details?: ZoneDetail[];
   /** Cadrage du portrait sur la page « Qui est qui ? » (sinon calculé depuis rect). */
   portrait?: Rect;
+  /** Personnage de l'histoire représenté par ce témoin (id dans story.json). */
+  character?: string;
+  /** Note de l'auteur, invisible en jeu (ce que cette zone prouve…). */
+  notes?: string;
 }
 
 interface PageBase {
@@ -78,10 +82,31 @@ export interface ChronologyPage extends PageBase {
 
 export type Page = SentencesPage | IdentitiesPage | ChronologyPage;
 
+/** Notes d'écriture d'une affaire, invisibles en jeu. */
+export interface CaseNotes {
+  /** L'instant figé que montre la scène. */
+  moment?: string;
+  /** Ce qui s'est réellement passé : qui, comment, pourquoi, dans quel ordre. */
+  truth?: string;
+  /** Ce qui doit faire douter le joueur. */
+  falseLeads?: string;
+  other?: string;
+}
+
 export interface CaseData {
   id: string;
-  /** Position dans la campagne (1, 2, 3…). */
+  /** Position dans son chapitre (1, 2, 3…). */
   order: number;
+  /** Chapitre de l'histoire (id dans story.json). */
+  chapter?: string;
+  /** Affaire en cours d'écriture : visible seulement en développement. */
+  draft?: boolean;
+  /**
+   * Affaire tutoriel : à la première partie, le jeu y guide le joueur pas à pas
+   * (examiner, noter, remplir la gazette, valider). À ajouter directement dans case.json.
+   */
+  tutorial?: boolean;
+  notes?: CaseNotes;
   title: string;
   /** Texte d'ouverture, affiché avant l'exploration. */
   intro: string;
@@ -95,4 +120,50 @@ export interface CaseData {
   words: Record<string, WordDef>;
   zones: Zone[];
   pages: Page[];
+}
+
+/** Personnage récurrent de l'histoire (fiche d'auteur). */
+export interface StoryCharacter {
+  id: string;
+  name: string;
+  role?: string;
+  appearance?: string;
+  /** Ce qu'il veut, ce qu'il cache. */
+  motive?: string;
+  notes?: string;
+}
+
+export interface StoryChapter {
+  id: string;
+  title: string;
+  summary?: string;
+}
+
+/** L'histoire dans son ensemble (fichier src/story/story.json). */
+export interface StoryData {
+  title: string;
+  /** Phrase d'accroche affichée sous le titre, dans le menu. */
+  subtitle?: string;
+  /** Époque et lieu. */
+  setting?: string;
+  tone?: string;
+  /** Le fil rouge qui relie toutes les affaires. */
+  synopsis?: string;
+  notes?: string;
+  /**
+   * Introduction de l'univers, montrée au joueur avant la première affaire :
+   * un écran par élément. À modifier directement dans story.json.
+   */
+  prologue?: PrologueScreen[];
+  characters: StoryCharacter[];
+  /** Dans l'ordre de la campagne. */
+  chapters: StoryChapter[];
+}
+
+export interface PrologueScreen {
+  /** Titre court de l'écran (« Londres, automne 1888 »). */
+  heading: string;
+  text: string;
+  /** Gravure de fond, par son nom de fichier dans src/assets/engravings (sans « .jpg »). Facultatif. */
+  image?: string;
 }

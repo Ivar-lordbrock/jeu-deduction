@@ -14,7 +14,8 @@ describe('affaires', () => {
   for (const [path, data] of Object.entries(files)) {
     const folder = path.split('/').at(-2);
     describe(folder ?? path, () => {
-      it('est cohérente (chaque réponse peut être trouvée dans la scène)', () => {
+      // Un brouillon peut être incomplet : il n'est pas montré aux joueurs.
+      it.skipIf(data.draft)('est cohérente (chaque réponse peut être trouvée dans la scène)', () => {
         expect(checkCase(data).errors).toEqual([]);
       });
 

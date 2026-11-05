@@ -1,0 +1,208 @@
+{
+  "id": "leman-street",
+  "order": 1,
+  "chapter": "chapitre-1",
+  "tutorial": true,
+  "title": "La nuit du double meurtre",
+  "intro": "Londres, dimanche 30 septembre 1888, sept heures du matin.\nCette nuit, l'assassin de Whitechapel a frappé deux fois, à moins d'une heure d'intervalle. Au poste de police de Leman Street, quartier général de la division H, personne n'a fermé l'œil.\n\nVous n'êtes qu'un petit reporter, mais vous rêvez d'être détective privé. Vous vous êtes glissé dans le poste avant vos confrères. Le chef de la police vient d'entrer, un journal froissé à la main ; Pell, du Comet, vous a suivi de près.\n\nObservez, notez, puis écrivez dans votre gazette ce qui s'est vraiment passé. Cette première affaire vous apprend à enquêter : laissez-vous guider.",
+  "epilogue": "Le message de Goulston Street ne fut jamais photographié. Sir Edmund Harrow s'en justifia : il fallait éviter une émeute contre les Juifs du quartier. La presse ne le lui pardonna pas.\n\nLe lendemain, le Morning Courier publiait la lettre signée « Jack the Ripper », et l'agence Mercury recevait une carte postale de la même main, qui parlait d'un « double événement ». En quelques jours, le nom fit le tour du monde ; Scotland Yard fut submergée de centaines de lettres d'imitateurs.\n\nCritiqué de toutes parts, Harrow démissionna le 8 novembre 1888. Le lendemain, Whitechapel connaissait son crime le plus atroce.",
+  "notes": {
+    "moment": "Dimanche 30 septembre 1888, 7 h 05, au poste de Leman Street, quelques heures après le double meurtre de Berner Street et de Mitre Square. Le chef de la police revient de Goulston Street, où il a fait effacer le message à la craie.",
+    "truth": "Faits réels (noms changés). Vers 1 h, Elizabeth Stride (Elsa Lindqvist) est découverte dans la cour du club de Berner Street par le cocher du club, Louis Diemschutz (Louis Hartmann). À 1 h 44, Catherine Eddowes (Kate Ashby) est découverte à Mitre Square, dans la City. À 2 h 55, l'agent Alfred Long (Lane) trouve à Goulston Street un morceau du tablier d'Eddowes sous un message à la craie. Vers 5 h, Sir Charles Warren (Harrow) passe à Leman Street puis à Goulston Street ; à 5 h 30, il fait effacer le message, malgré la police de la City qui voulait le photographier. La lettre « Dear Boss », reçue le 27 septembre par la Central News Agency (agence Mercury), a été transmise à Scotland Yard le 29.",
+    "falseLeads": "Distracteurs : la charrette, la demi-couronne, « Tablier de cuir » (le suspect relâché), relâcher, Hanbury Street (le meurtre précédent), The Comet, le London Pictorial, l'agence Mercury, Whitechapel.",
+    "other": "Affaire tutoriel (« tutorial »: true dans case.json) : le jeu guide le joueur pas à pas. Le sergent Hale, le reporter Pell et la composition de la scène sont inventés ; Mrs Coyle s'inspire de Fanny Mortimer, voisine du club de Berner Street."
+  },
+  "scene": { "image": "scene.svg", "width": 1600, "height": 900 },
+  "tolerance": 2,
+  "words": {
+    "harrow": { "label": "Sir Edmund Harrow", "category": "person" },
+    "hale": { "label": "Hale", "category": "person" },
+    "pell": { "label": "Pell", "category": "person" },
+    "coyle": { "label": "Mrs Coyle", "category": "person" },
+    "jack": { "label": "Jack the Ripper", "category": "person" },
+    "effacer": { "label": "effacer", "category": "action" },
+    "photographier": { "label": "photographier", "category": "action" },
+    "relacher": { "label": "relâcher", "category": "action" },
+    "tablier": { "label": "tablier", "category": "object" },
+    "craie": { "label": "craie", "category": "object" },
+    "lettre": { "label": "lettre", "category": "object" },
+    "charrette": { "label": "charrette", "category": "object" },
+    "couronne": { "label": "demi-couronne", "category": "object" },
+    "berner": { "label": "Berner Street", "category": "place" },
+    "mitre": { "label": "Mitre Square", "category": "place" },
+    "goulston": { "label": "Goulston Street", "category": "place" },
+    "hanbury": { "label": "Hanbury Street", "category": "place" },
+    "whitechapel": { "label": "Whitechapel", "category": "place" },
+    "une-heure": { "label": "une heure", "category": "other" },
+    "comet": { "label": "The Comet", "category": "other" },
+    "pictorial": { "label": "London Pictorial", "category": "other" },
+    "mercury": { "label": "agence Mercury", "category": "other" },
+    "tablier-cuir": { "label": "Tablier de cuir", "category": "other" }
+  },
+  "zones": [
+    {
+      "id": "temoin",
+      "kind": "person",
+      "label": "Femme sur le banc",
+      "character": "coyle",
+      "rect": { "x": 130, "y": 362, "w": 160, "h": 330 },
+      "text": "Une femme en châle rouge attend sur le banc, sa convocation serrée dans les mains. Elle chuchote :\n« J'habite [[berner|Berner Street]], à deux portes du club. Cette nuit, peu avant [[une-heure|une heure]], j'étais sur le pas de ma porte : pas un chat dans la rue. Je venais de rentrer quand j'ai entendu la [[charrette]] du cocher entrer dans la cour, puis quelqu'un crier : “Police !” »",
+      "details": [
+        {
+          "label": "La convocation",
+          "text": "« Police métropolitaine, division H. Mrs Hannah [[coyle|Coyle]], de Berner Street, est priée de se présenter au poste de Leman Street ce dimanche 30 septembre à sept heures du matin, pour sa déposition. »"
+        }
+      ]
+    },
+    {
+      "id": "sergent",
+      "kind": "person",
+      "label": "Homme derrière le comptoir",
+      "character": "hale",
+      "rect": { "x": 552, "y": 250, "w": 156, "h": 208 },
+      "text": "Trois chevrons de sergent sur la manche. Il a passé la nuit au comptoir à noter les messages qui arrivaient de partout, et n'ose pas lever les yeux vers l'homme aux médailles.",
+      "details": [
+        {
+          "label": "Sa poche de poitrine",
+          "text": "Une [[couronne|demi-couronne]] d'argent et une carte de visite : « A. [[pell|Pell]], reporter au [[comet|Comet]]. Une demi-couronne pour chaque nouvelle. »"
+        }
+      ]
+    },
+    {
+      "id": "chef",
+      "kind": "person",
+      "label": "Homme aux médailles",
+      "character": "harrow",
+      "rect": { "x": 1172, "y": 232, "w": 125, "h": 568 },
+      "text": "Un homme de haute taille en uniforme galonné, médailles de campagne sur la poitrine. Il rentre de Goulston Street, où il s'est rendu avant le lever du jour. Sa moustache grise tremble de colère ; il brandit un journal froissé et une cravache d'officier."
+    },
+    {
+      "id": "reporter",
+      "kind": "person",
+      "label": "Homme au manteau à carreaux",
+      "character": "pell",
+      "rect": { "x": 1388, "y": 244, "w": 132, "h": 556 },
+      "text": "Un homme en chapeau melon, un crayon derrière l'oreille. Il s'est faufilé jusqu'à la porte et serre un carnet contre lui.",
+      "details": [
+        {
+          "label": "Son carnet",
+          "text": "« Dimanche, 6 h. DEUX femmes tuées cette nuit ! L'une à Berner Street, l'autre dans la City, à [[mitre|Mitre Square]]. On parle d'un message à la craie sur un mur de Goulston Street… effacé avant mon arrivée. Qui a donné l'ordre ? »\nPlus bas : « Après [[tablier-cuir|Tablier de cuir]], il faudrait un nouveau nom pour l'assassin. »"
+        }
+      ]
+    },
+    {
+      "id": "registre",
+      "kind": "document",
+      "label": "Registre de garde",
+      "rect": { "x": 455, "y": 440, "w": 132, "h": 40 },
+      "text": "Poste de Leman Street, division H. Nuit du samedi 29 au dimanche 30 septembre 1888. Sergent de service : [[hale|T. Hale]].\n1 h 10 : on signale une femme morte dans la cour du club de Berner Street, découverte à une heure par le cocher du club.\n2 h 05 : la police de la City annonce une seconde victime, à Mitre Square.\n3 h 10 : l'agent Lane rapporte un morceau de [[tablier]] taché de sang, trouvé à 2 h 55 sous une porte de [[goulston|Goulston Street]]. Au-dessus, un message écrit à la [[craie]].\n5 h 00 : arrivée du chef de la police, qui repart aussitôt pour Goulston Street."
+    },
+    {
+      "id": "telegramme",
+      "kind": "document",
+      "label": "Télégramme",
+      "rect": { "x": 932, "y": 508, "w": 96, "h": 42 },
+      "text": "POST OFFICE TELEGRAPHS. Police de la City, 4 h 50.\n« AU POSTE DE LEMAN STREET. VICTIME DE [[mitre|MITRE SQUARE]] : IL MANQUE UN MORCEAU DE SON TABLIER. LE DÉTECTIVE HURST DEMANDE QU'ON ATTENDE LE JOUR POUR [[photographier|PHOTOGRAPHIER]] LE MESSAGE DE GOULSTON STREET. »\nAu dos, au crayon : « Refusé. — E. H. »"
+    },
+    {
+      "id": "journal",
+      "kind": "document",
+      "label": "Journal froissé",
+      "rect": { "x": 1060, "y": 205, "w": 110, "h": 125 },
+      "text": "[[comet|The Comet]], édition du samedi soir.\n« QUE FAIT LA POLICE ? Trois semaines après le crime de [[hanbury|Hanbury Street]], Scotland Yard n'a rien. On a arrêté “[[tablier-cuir|Tablier de cuir]]”, un pauvre cordonnier, avant de devoir le [[relacher|relâcher]]. Sir Edmund [[harrow|Harrow]] ferait mieux de mettre ses hommes dans les rues que de les faire parader. »\nPar notre reporter, [[pell|A. Pell]]."
+    },
+    {
+      "id": "tiroir",
+      "kind": "object",
+      "label": "Tiroir entrouvert",
+      "rect": { "x": 1000, "y": 556, "w": 132, "h": 60 },
+      "text": "Le tiroir du bureau, entrouvert. La clé est restée dans la serrure. Le dossier rangé dedans est marqué CONFIDENTIAL.",
+      "details": [
+        {
+          "label": "Le dossier",
+          "text": "Rapport du dimanche 30 septembre, 5 h 30.\n« Sur ordre de Sir Edmund [[harrow|Harrow]], chef de la police, le message à la craie de Goulston Street a été [[effacer|effacé]] avant le lever du jour : au matin, la foule aurait pu le lire comme une accusation contre les Juifs du quartier, et s'en prendre à eux. Texte relevé par l'agent Lane : “The Juwes are the men That Will not be Blamed for nothing”. »\nPièce jointe : copie d'une [[lettre]] reçue le 27 septembre par l'[[mercury|agence Mercury]], transmise à Scotland Yard hier. Elle est signée « [[jack|Jack the Ripper]] ». NE RIEN DIVULGUER À LA PRESSE."
+        }
+      ]
+    },
+    {
+      "id": "gravure",
+      "kind": "document",
+      "label": "Gravure au mur",
+      "rect": { "x": 330, "y": 138, "w": 192, "h": 162 },
+      "text": "Une gravure découpée dans le [[pictorial|London Pictorial]] : deux policiers, lanterne à la main, perdus dans le brouillard de [[whitechapel|Whitechapel]]. Quelqu'un a griffonné dessous : « Et toujours rien ! »"
+    },
+    {
+      "id": "journaux",
+      "kind": "document",
+      "label": "Pile de journaux",
+      "rect": { "x": 888, "y": 700, "w": 155, "h": 105 },
+      "text": "Les journaux de la semaine, ficelés. The Daily Ledger, Le Matinal, le New York Sentinel : de Londres à Paris et à New York, tous titrent sur [[whitechapel|Whitechapel]]. L'affaire a fait le tour du monde."
+    },
+    {
+      "id": "fenetre",
+      "kind": "object",
+      "label": "Fenêtre",
+      "rect": { "x": 52, "y": 84, "w": 216, "h": 276 },
+      "text": "Dans le brouillard du petit matin, une foule s'est massée devant le poste. Des crieurs de journaux s'époumonent déjà : « Deux meurtres en une nuit ! Édition spéciale ! »"
+    },
+    {
+      "id": "pendule",
+      "kind": "object",
+      "label": "Pendule",
+      "rect": { "x": 758, "y": 113, "w": 94, "h": 94 },
+      "text": "La pendule du poste marque sept heures cinq du matin."
+    }
+  ],
+  "pages": [
+    {
+      "id": "qui",
+      "kind": "identities",
+      "title": "Qui est qui ?",
+      "people": [
+        { "zone": "chef", "answer": "harrow" },
+        { "zone": "sergent", "answer": "hale" },
+        { "zone": "reporter", "answer": "pell" },
+        { "zone": "temoin", "answer": "coyle" }
+      ],
+      "hints": [
+        "Chaque nom est écrit quelque part : registre, journal, convocation, carte de visite.",
+        "Le chef de la police est un ancien général. Qui porte des médailles ?",
+        "La carte trouvée dans la poche du sergent est celle d'un reporter. Qui a un carnet et un crayon derrière l'oreille ?"
+      ]
+    },
+    {
+      "id": "quoi",
+      "kind": "sentences",
+      "title": "Que s'est-il passé cette nuit ?",
+      "sentences": [
+        "Vers {une-heure} du matin, une première femme a été retrouvée morte à {berner}.",
+        "Trois quarts d'heure plus tard, la police de la City découvrait une seconde victime à {mitre}.",
+        "À {goulston}, l'agent Lane a trouvé un morceau de {tablier} taché de sang, sous un message écrit à la {craie}.",
+        "À l'aube, {harrow} a fait {effacer} le message, sans laisser la police de la City le {photographier}.",
+        "Trois jours plus tôt, l'agence Mercury avait reçu une {lettre} signée « {jack} »."
+      ],
+      "hints": [
+        "Le registre de garde note tout ce qui s'est passé cette nuit, heure par heure.",
+        "Le télégramme vient de la police de la City : il parle de la seconde victime et d'une photographie.",
+        "Le dossier du tiroir dit qui a donné l'ordre d'effacer le message, et parle d'une lettre."
+      ]
+    },
+    {
+      "id": "quand",
+      "kind": "chronology",
+      "title": "Dans quel ordre ?",
+      "events": [
+        "L'agence Mercury reçoit une lettre signée « Jack the Ripper ».",
+        "Le cocher du club découvre une femme morte à Berner Street.",
+        "La police de la City découvre une seconde victime à Mitre Square.",
+        "L'agent Lane trouve un morceau de tablier sous un message à la craie.",
+        "Le message de Goulston Street est effacé."
+      ],
+      "hints": [
+        "Presque chaque document porte une date ou une heure.",
+        "La lettre est arrivée à l'agence trois jours avant cette nuit.",
+        "Le registre donne l'heure où le tablier a été trouvé ; le dossier du tiroir, celle où le message a été effacé."
+      ]
+    }
+  ]
+}

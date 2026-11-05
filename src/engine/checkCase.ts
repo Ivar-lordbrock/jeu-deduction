@@ -119,6 +119,10 @@ export function checkCase(c: CaseData): CaseReport {
     const slots = expectedSlots(page);
     if (slots.length === 0) err(`${where} : aucune case à remplir`);
     slots.forEach((answers, i) => {
+      if (answers.length === 0) {
+        err(`${where}, case ${i + 1} : aucune réponse choisie`);
+        return;
+      }
       for (const a of answers) {
         if (!words[a]) err(`${where}, case ${i + 1} : la réponse « ${a} » n'existe pas dans « words »`);
       }

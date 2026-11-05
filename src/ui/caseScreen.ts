@@ -1,25 +1,67 @@
 import type { LoadedCase } from '../cases/registry';
 import { h } from '../dom';
-import { clearProgress, emptyProgress, isCaseSolved, loadProgress, saveProgress } from '../engine/progress';
+import { clearProgress, emptyProgress, isCaseSolved, loadFlags, loadProgress, saveProgress, setFlag } from '../engine/progress';
 import { currentOrder, evaluatePage, expectedSlots } from '../engine/validation';
 import type { Page } from '../types';
-import { renderExplore } from './explore';
+import { icon } from './art';
+import { renderScene } from './explore';
+import { renderGazette } from './gazette';
+import { createGuide, type Guide } from './guide';
+import { renderNotebook } from './notebook';
+import { openRules } from './rules';
 import type { Actions, Session } from './session';
-import { renderThink } from './think';
-import { renderWordBank } from './wordBank';
 
-/** Écran d'une affaire : en-tête, scène ou pages de réflexion, banque de mots. */
-export function openCase(root: HTMLElement, data: LoadedCase, onExit: () => void): void {
+export interface CaseScreenOptions {
+  /** Ligne au-dessus du titre : « Affaire 1 · Chapitre 1 — … ». */
+  kicker: string;
+  exit(): void;
+  /** Affaire suivante, proposée à la fin (absente pour la dernière). */
+  next?: () => void;
+}
+
+// Hauteur de la gazette choisie par le joueur (barre de redimensionnement), et repli.
+// Par défaut, la gazette est repliée : la scène prend toute la place.
+const GAZETTE_KEY = 'jeu-deduction:v1:@gazette';
+const MIN_GAZETTE = 120;
+const MIN_SCENE = 200;
+
+function loadGazettePref(): { height: number | null; folded: boolean } {
+  try {
+    const p = JSON.parse(localStorage.getItem(GAZETTE_KEY) ?? '{}');
+    return { height: typeof p.height === 'number' ? p.height : null, folded: p.folded !== false };
+  } catch {
+    return { height: null, folded: true };
+  }
+}
+
+function saveGazettePref(height: number | null, folded: boolean) {
+  try {
+    localStorage.setItem(GAZETTE_KEY, JSON.stringify({ height, folded }));
+  } catch {
+    // Stockage indisponible : la préférence ne sera pas retenue.
+  }
+}
+
+/**
+ * Écran d'une affaire, tout sur un seul écran : en-tête, carnet à gauche,
+ * gazette (reconstitution des faits) au-dessus de la scène.
+ * Renvoie la fonction de nettoyage, appelée quand on quitte l'écran.
+ */
+export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOptions): () => void {
+  const pref = loadGazettePref();
+  let gazetteHeight = pref.height;
+
   const s: Session = {
     data,
     progress: loadProgress(data),
-    mode: 'explore',
     openZone: null,
     showZones: false,
-    activePage: data.pages[0].id,
     selectedSlot: null,
     armedWord: null,
     lastCollected: null,
+    justSolved: null,
+    justHinted: null,
+    gazetteFolded: pref.folded,
     showEpilogue: false,
   };
 
@@ -29,13 +71,40 @@ export function openCase(root: HTMLElement, data: LoadedCase, onExit: () => void
   const pageById = (id: string): Page | undefined => data.pages.find((p) => p.id === id);
   const save = () => saveProgress(data.id, s.progress);
 
+  let guide: Guide | null = null;
+  function startGuide() {
+    guide?.dispose();
+    guide = createGuide(root, s, {
+      showGazette: () => {
+        if (!s.gazetteFolded) return;
+        s.gazetteFolded = false;
+        saveGazettePref(gazetteHeight, false);
+        render();
+      },
+      end: () => {
+        guide = null;
+        setFlag('tutorialDone');
+      },
+    });
+    guide.sync();
+  }
+
   /** À appeler après toute modification d'une page : valide, sauvegarde. */
   function afterPageChange(page: Page) {
     const ev = evaluatePage(data, page, s.progress);
     if (ev.verdict === 'solved' && !s.progress.solved.includes(page.id)) {
       s.progress.solved.push(page.id);
+      s.justSolved = page.id;
       s.selectedSlot = null;
-      if (isCaseSolved(data, s.progress)) s.showEpilogue = true;
+      if (isCaseSolved(data, s.progress)) {
+        s.showEpilogue = true;
+        // L'affaire est résolue avant la fin du tutoriel : inutile de continuer.
+        if (guide) {
+          guide.dispose();
+          guide = null;
+          setFlag('tutorialDone');
+        }
+      }
     }
     save();
   }
@@ -51,7 +120,7 @@ export function openCase(root: HTMLElement, data: LoadedCase, onExit: () => void
     afterPageChange(page);
   }
 
-  /** Après avoir rempli une case, on sélectionne la prochaine case vide de la page. */
+  /** Après avoir rempli une case, on sélectionne la prochaine case vide du même article. */
   function selectNextEmpty(pageId: string, from: number) {
     if (s.progress.solved.includes(pageId)) return (s.selectedSlot = null);
     const slots = s.progress.slots[pageId] ?? [];
@@ -89,15 +158,9 @@ export function openCase(root: HTMLElement, data: LoadedCase, onExit: () => void
       s.showZones = !s.showZones;
       render();
     },
-    setMode(mode) {
-      s.mode = mode;
-      s.selectedSlot = null;
-      s.armedWord = null;
-      render();
-    },
-    setPage(pageId) {
-      s.activePage = pageId;
-      s.selectedSlot = null;
+    toggleGazette() {
+      s.gazetteFolded = !s.gazetteFolded;
+      saveGazettePref(gazetteHeight, s.gazetteFolded);
       render();
     },
     selectSlot(pageId, index) {
@@ -113,6 +176,11 @@ export function openCase(root: HTMLElement, data: LoadedCase, onExit: () => void
       render();
     },
     pickWord(wordId) {
+      // Prendre un mot dans le carnet, c'est vouloir le placer : on déplie la gazette.
+      if (s.gazetteFolded) {
+        s.gazetteFolded = false;
+        saveGazettePref(gazetteHeight, false);
+      }
       const sel = s.selectedSlot;
       if (sel) {
         fill(sel.page, sel.index, wordId);
@@ -146,6 +214,7 @@ export function openCase(root: HTMLElement, data: LoadedCase, onExit: () => void
     },
     revealHint(pageId) {
       s.progress.hints[pageId] = (s.progress.hints[pageId] ?? 0) + 1;
+      s.justHinted = pageId;
       save();
       render();
     },
@@ -162,14 +231,19 @@ export function openCase(root: HTMLElement, data: LoadedCase, onExit: () => void
       if (!confirm('Recommencer cette affaire depuis le début ? Votre progression sera effacée.')) return;
       clearProgress(data.id);
       s.progress = emptyProgress(data);
-      Object.assign(s, { mode: 'explore', openZone: null, selectedSlot: null, armedWord: null, showEpilogue: false });
-      s.activePage = data.pages[0].id;
+      Object.assign(s, { openZone: null, selectedSlot: null, armedWord: null, showEpilogue: false });
       render();
     },
     exit() {
-      document.removeEventListener('keydown', onKey);
-      onExit();
+      opts.exit();
     },
+    help() {
+      openRules({
+        replayTutorial: data.tutorial ? startGuide : undefined,
+        onClose: () => guide?.sync(),
+      });
+    },
+    next: opts.next,
   };
 
   function onKey(e: KeyboardEvent) {
@@ -184,74 +258,128 @@ export function openCase(root: HTMLElement, data: LoadedCase, onExit: () => void
   }
   document.addEventListener('keydown', onKey);
 
-  let lastMode = s.mode;
+  /** Barre entre la gazette et la scène : on la tire pour partager la place. */
+  function splitter(): HTMLElement {
+    const bar = h('div', {
+      class: 'gz-splitter',
+      role: 'separator',
+      'aria-orientation': 'horizontal',
+      'aria-label': 'Partager la place entre la gazette et la scène',
+      title: s.gazetteFolded ? 'Double-clic : déplier la gazette' : 'Glissez pour agrandir la gazette ou la scène · double-clic : replier',
+      onDblClick: () => a.toggleGazette(),
+      onPointerDown: (e: PointerEvent) => {
+        if (s.gazetteFolded || e.button !== 0) return;
+        const main = bar.parentElement as HTMLElement;
+        const top = main.getBoundingClientRect().top;
+        const max = main.clientHeight - MIN_SCENE;
+        bar.setPointerCapture(e.pointerId);
+        bar.classList.add('dragging');
+        const move = (ev: PointerEvent) => {
+          gazetteHeight = Math.round(Math.min(Math.max(ev.clientY - top - 6, MIN_GAZETTE), max));
+          main.style.setProperty('--gz-h', `${gazetteHeight}px`);
+          guide?.reposition();
+        };
+        const up = () => {
+          bar.removeEventListener('pointermove', move);
+          bar.removeEventListener('pointerup', up);
+          bar.removeEventListener('pointercancel', up);
+          bar.classList.remove('dragging');
+          saveGazettePref(gazetteHeight, s.gazetteFolded);
+        };
+        bar.addEventListener('pointermove', move);
+        bar.addEventListener('pointerup', up);
+        bar.addEventListener('pointercancel', up);
+        e.preventDefault();
+      },
+    });
+    return bar;
+  }
+
   function render() {
-    const prevMain = root.querySelector<HTMLElement>('.case-main');
-    const scroll = lastMode === s.mode ? (prevMain?.scrollTop ?? 0) : 0;
-    lastMode = s.mode;
+    // On garde la position de défilement de chaque zone qui défile (carnet, articles, fiche).
+    const scrolls = new Map<string, [number, number]>();
+    root.querySelectorAll<HTMLElement>('[data-scroll]').forEach((el) => scrolls.set(el.dataset.scroll ?? '', [el.scrollTop, el.scrollLeft]));
 
     const overlay = renderOverlay(s, a);
     root.replaceChildren(
-      renderHeader(s, a),
+      renderHeader(s, a, opts.kicker),
       h(
-        'main',
-        { class: `case-main mode-${s.mode}` },
-        s.mode === 'explore' ? renderExplore(s, a, sceneImg) : renderThink(s, a),
+        'div',
+        { class: 'case-body' },
+        renderNotebook(s, a),
+        h(
+          'main',
+          {
+            class: `case-main${s.gazetteFolded ? ' folded' : ''}`,
+            style: gazetteHeight ? { '--gz-h': `${gazetteHeight}px` } : {},
+          },
+          renderGazette(s, a),
+          splitter(),
+          renderScene(s, a, sceneImg),
+        ),
       ),
-      renderWordBank(s, a),
       ...(overlay ? [overlay] : []),
     );
 
-    const main = root.querySelector<HTMLElement>('.case-main');
-    if (main) main.scrollTop = scroll;
+    root.querySelectorAll<HTMLElement>('[data-scroll]').forEach((el) => {
+      const pos = scrolls.get(el.dataset.scroll ?? '');
+      if (!pos) return;
+      el.scrollTop = pos[0];
+      el.scrollLeft = pos[1];
+    });
+    if (s.justHinted) {
+      const body = root.querySelector<HTMLElement>(`.gz-article[data-page="${CSS.escape(s.justHinted)}"] .gz-body`);
+      if (body) body.scrollTop = body.scrollHeight;
+    }
     s.lastCollected = null;
+    s.justSolved = null;
+    s.justHinted = null;
+    guide?.sync();
   }
 
   render();
+  // Première partie : le tutoriel se joue dans l'affaire marquée « tutorial ».
+  if (data.tutorial && !loadFlags().tutorialDone) startGuide();
+
+  return () => {
+    document.removeEventListener('keydown', onKey);
+    guide?.dispose();
+    guide = null;
+  };
 }
 
-function renderHeader(s: Session, a: Actions): HTMLElement {
-  const solvedCount = s.data.pages.filter((p) => s.progress.solved.includes(p.id)).length;
+function renderHeader(s: Session, a: Actions, kicker: string): HTMLElement {
   return h(
     'header',
     { class: 'case-header' },
-    h('button', { class: 'btn ghost', onClick: () => a.exit() }, '← Affaires'),
-    h('h1', { class: 'case-title' }, s.data.title),
-    h(
-      'div',
-      { class: 'mode-tabs', role: 'tablist' },
-      h(
-        'button',
-        {
-          class: `mode-tab${s.mode === 'explore' ? ' active' : ''}`,
-          role: 'tab',
-          'aria-selected': String(s.mode === 'explore'),
-          onClick: () => a.setMode('explore'),
-        },
-        'Explorer',
-      ),
-      h(
-        'button',
-        {
-          class: `mode-tab${s.mode === 'think' ? ' active' : ''}`,
-          role: 'tab',
-          'aria-selected': String(s.mode === 'think'),
-          onClick: () => a.setMode('think'),
-        },
-        `Réfléchir ${solvedCount}/${s.data.pages.length}`,
-      ),
-    ),
+    h('button', { class: 'btn ghost back', onClick: () => a.exit() }, '← Affaires'),
+    h('div', { class: 'case-titles' }, h('span', { class: 'kicker' }, kicker), h('h1', { class: 'case-title' }, s.data.title)),
     h(
       'div',
       { class: 'header-tools' },
-      s.mode === 'explore'
-        ? h(
-            'button',
-            { class: `btn ghost small${s.showZones ? ' active' : ''}`, 'aria-pressed': String(s.showZones), onClick: () => a.toggleZones() },
-            'Zones',
-          )
-        : null,
-      h('button', { class: 'btn ghost small', onClick: () => a.reset() }, 'Recommencer'),
+      h(
+        'button',
+        {
+          class: `btn ghost small${s.showZones ? ' active' : ''}`,
+          'data-tool': 'zones',
+          'aria-pressed': String(s.showZones),
+          title: 'Entourer tout ce qui peut être examiné',
+          onClick: () => a.toggleZones(),
+        },
+        icon('magnifying-glass'),
+        s.showZones ? 'Masquer les zones' : 'Montrer les zones',
+      ),
+      h(
+        'button',
+        { class: 'btn ghost small', 'data-tool': 'reset', title: 'Effacer la progression de cette affaire', onClick: () => a.reset() },
+        icon('cycle'),
+        'Recommencer',
+      ),
+      h(
+        'button',
+        { class: 'btn ghost small help-btn', 'data-tool': 'help', title: 'Comment jouer', 'aria-label': 'Comment jouer', onClick: () => a.help() },
+        '?',
+      ),
     ),
   );
 }
@@ -264,9 +392,15 @@ function renderOverlay(s: Session, a: Actions): HTMLElement | null {
       h(
         'div',
         { class: 'modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': s.data.title },
+        h('span', { class: 'modal-kicker' }, s.data.tutorial ? 'Première affaire · tutoriel' : 'Nouvelle affaire'),
         h('h2', {}, s.data.title),
         h('p', { class: 'story' }, s.data.intro),
-        h('button', { class: 'btn primary', onClick: () => a.dismissIntro() }, 'Commencer l\'enquête'),
+        h(
+          'div',
+          { class: 'modal-actions' },
+          h('button', { class: 'btn ghost', onClick: () => a.exit() }, '← Affaires'),
+          h('button', { class: 'btn primary', onClick: () => a.dismissIntro() }, 'Examiner la scène'),
+        ),
       ),
     );
   }
@@ -277,14 +411,17 @@ function renderOverlay(s: Session, a: Actions): HTMLElement | null {
       h(
         'div',
         { class: 'modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Affaire résolue' },
-        h('span', { class: 'modal-kicker' }, 'Affaire résolue'),
+        h('span', { class: 'modal-kicker solved' }, 'Affaire résolue'),
         h('h2', {}, s.data.title),
         h('p', { class: 'story' }, s.data.epilogue),
         h(
           'div',
           { class: 'modal-actions' },
           h('button', { class: 'btn ghost', onClick: () => a.closeEpilogue() }, 'Revoir la scène'),
-          h('button', { class: 'btn primary', onClick: () => a.exit() }, 'Retour aux affaires'),
+          a.next ? h('button', { class: 'btn ghost', onClick: () => a.exit() }, 'Retour aux affaires') : null,
+          a.next
+            ? h('button', { class: 'btn primary', onClick: () => a.next?.() }, 'Affaire suivante →')
+            : h('button', { class: 'btn primary', onClick: () => a.exit() }, 'Retour aux affaires'),
         ),
       ),
     );

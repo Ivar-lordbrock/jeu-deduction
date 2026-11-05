@@ -80,5 +80,32 @@ export function clearProgress(caseId: string): void {
 }
 
 export function isCaseSolved(c: CaseData, progress: CaseProgress): boolean {
-  return c.pages.every((p) => progress.solved.includes(p.id));
+  return c.pages.length > 0 && c.pages.every((p) => progress.solved.includes(p.id));
+}
+
+/** Ce que le joueur a déjà vu en dehors de la progression des affaires. */
+export interface GameFlags {
+  prologueSeen: boolean;
+  /** Tutoriel guidé de la première affaire terminé (ou passé). */
+  tutorialDone: boolean;
+}
+
+const FLAGS_KEY = 'jeu-deduction:v1:@jeu';
+
+export function loadFlags(): GameFlags {
+  try {
+    const p: unknown = JSON.parse(localStorage.getItem(FLAGS_KEY) ?? '{}');
+    if (isObject(p)) return { prologueSeen: p.prologueSeen === true, tutorialDone: p.tutorialDone === true };
+  } catch {
+    // Sauvegarde illisible ou stockage indisponible : on repart de zéro.
+  }
+  return { prologueSeen: false, tutorialDone: false };
+}
+
+export function setFlag(flag: keyof GameFlags): void {
+  try {
+    localStorage.setItem(FLAGS_KEY, JSON.stringify({ ...loadFlags(), [flag]: true }));
+  } catch {
+    // idem
+  }
 }

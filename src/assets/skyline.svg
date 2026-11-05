@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 320" width="1600" height="320">
+  <!-- Toits de Whitechapel en trois plans (écran titre, prologue). Le clocher rappelle Christ Church, à Spitalfields. -->
+  <defs>
+    <radialGradient id="lamp">
+      <stop offset="0" stop-color="#ffd27a" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#ffd27a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <path d="M0 320 V150 H60 V130 H72 V150 H140 L170 120 L200 150 H260 V110 H275 V95 H290 V110 H330 V160 H420 V140 H430 V128 H440 V140 H500 V150 H560 L580 135 L600 150 H660 V120 H668 V60 L676 20 L684 60 V120 H692 V140 H760 V155 H840 V130 H852 V118 H864 V130 H930 V145 H1010 L1040 118 L1070 145 H1140 V125 H1150 V112 H1160 V125 H1230 V150 H1300 V132 H1380 V150 H1440 V120 H1452 V108 H1464 V120 H1530 V145 H1600 V320 Z" fill="#1c302e"/>
+  <rect y="170" width="1600" height="60" fill="#7d9a96" opacity="0.12"/>
+  <path d="M0 320 V200 H40 V185 H48 V200 H110 V190 H180 L205 172 L230 190 H300 V205 H360 V180 H372 V168 H384 V180 H450 V198 H540 V186 H610 L630 170 L650 186 H720 V200 H800 V178 H812 V166 H824 V178 H900 V194 H980 V182 H1060 L1085 166 L1110 182 H1180 V196 H1260 V176 H1272 V164 H1284 V176 H1350 V192 H1430 V184 H1500 V172 H1512 V160 H1524 V172 H1600 V320 Z" fill="#111e1d"/>
+  <g fill="#e8b452" opacity="0.85">
+    <rect x="70" y="215" width="7" height="10"/><rect x="130" y="212" width="7" height="10"/><rect x="250" y="210" width="7" height="10"/>
+    <rect x="400" y="205" width="7" height="10"/><rect x="470" y="215" width="7" height="10"/><rect x="560" y="204" width="7" height="10"/>
+    <rect x="700" y="212" width="7" height="10"/><rect x="860" y="206" width="7" height="10"/><rect x="940" y="212" width="7" height="10"/>
+    <rect x="1010" y="200" width="7" height="10"/><rect x="1150" y="206" width="7" height="10"/><rect x="1300" y="200" width="7" height="10"/>
+    <rect x="1400" y="210" width="7" height="10"/><rect x="1550" y="196" width="7" height="10"/>
+  </g>
+  <rect y="236" width="1600" height="40" fill="#8fa9a5" opacity="0.07"/>
+  <circle cx="1240" cy="202" r="46" fill="url(#lamp)"/>
+  <path d="M0 320 V262 H90 V250 H96 V238 H106 V250 H118 V262 H260 L290 244 L320 262 H470 V252 H560 V262 H700 V246 H708 V236 H718 V246 H726 V262 H900 L930 246 L960 262 H1140 V254 H1330 V262 H1460 V244 H1468 V234 H1478 V244 H1486 V262 H1600 V320 Z" fill="#070c0c"/>
+  <rect x="1238" y="206" width="5" height="58" fill="#070c0c"/>
+  <path d="M1232 194 H1248 L1245 208 H1235 Z" fill="#f6d78a"/>
+  <path d="M1230 194 L1240 186 L1250 194 Z" fill="#070c0c"/>
+  <rect y="288" width="1600" height="32" fill="#8fa9a5" opacity="0.05"/>
+</svg>
