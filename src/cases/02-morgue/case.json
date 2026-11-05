@@ -1,0 +1,269 @@
+{
+  "id": "morgue",
+  "order": 2,
+  "chapter": "chapitre-1",
+  "draft": true,
+  "title": "À la morgue",
+  "intro": "À la morgue de Whitechapel, le 30 septembre 1888, au matin.\nLes deux corps découverts cette nuit ont été transportés ici, chacun allongé sur une table d'examen en acier. L'atmosphère est glaciale et lourde d'odeurs d'acide phénique. Le docteur Albert Jefferson s'affaire déjà au scalpel pour consigner les horribles blessures dans son journal. Près de la porte, l'agent Edouard Davis monte la garde, veillant à ce qu'aucun journaliste ou curieux ne perturbe l'autopsie. Vous vous êtes faufilé à l'intérieur pour examiner les corps de près : les gorges tranchées net et les mutilations abdominales portent la signature macabre d'un seul et même tueur. Observez chaque détail, lisez les étiquettes et formulez vos premières théories.",
+  "epilogue": "L'examen minutieux des corps ne laisse plus aucun doute. La précision chirurgicale des incisions au niveau du cou et de l'abdomen confirme qu'il ne s'agit pas de crimes passionnels ou de simple proxénétisme, mais de l'œuvre préméditée d'un maniaque anatomiste.",
+  "notes": {
+    "moment": "À écrire. Idée : le 30 septembre 1888, dans la matinée, après la scène du poste. Le docteur Albert Jefferson examine les deux corps ; l'agent Edouard Davis garde la porte ; le joueur s'est glissé entre les tables avec sa loupe.",
+    "truth": "À écrire : ce que les blessures révèlent sur chaque meurtre, et ce que le joueur doit en conclure.",
+    "falseLeads": "À écrire.",
+    "other": "Scène générée par tools/scene-morgue.mjs (npm run scene:morgue). Les corps sont couverts : les blessures se décrivent dans les fiches, jamais dans l'image. Corps n° 1 (table de gauche) : l'inconnue de King's Row, entièrement couverte, pieds visibles. Corps n° 2 (table de droite) : Margaret Jenkins, drap rabattu aux épaules, visage de profil."
+  },
+  "scene": {
+    "image": "scene.svg",
+    "width": 1600,
+    "height": 900
+  },
+  "words": {
+    "jefferson": {
+      "label": "Albert Jefferson",
+      "category": "person"
+    },
+    "davis": {
+      "label": "Edouard Davis",
+      "category": "person"
+    },
+    "inconnue": {
+      "label": "l'inconnue",
+      "category": "person"
+    },
+    "jenkins": {
+      "label": "Margaret Jenkins",
+      "category": "person"
+    },
+    "kings-row": {
+      "label": "King's Row",
+      "category": "place"
+    },
+    "wallace": {
+      "label": "Wallace Street",
+      "category": "place"
+    },
+    "couturiere": {
+      "label": "couturière",
+      "category": "other"
+    },
+    "prostituee": {
+      "label": "prostituée",
+      "category": "other"
+    },
+    "journaliste": {
+      "label": "journaliste",
+      "category": "other"
+    },
+    "victimes": {
+      "label": "victime",
+      "category": "person"
+    },
+    "cinquieme": {
+      "label": "cinquième",
+      "category": "other"
+    },
+    "elisabeth-coyle": {
+      "label": "Elisabeth Coyle",
+      "category": "person"
+    },
+    "hemorragie": {
+      "label": "hémorragie",
+      "category": "other"
+    },
+    "gorge-tranchee": {
+      "label": "gorge tranchée",
+      "category": "other"
+    },
+    "mutilations-abdominales": {
+      "label": "mutilations abdominales",
+      "category": "other"
+    },
+    "post-mortem": {
+      "label": "post mortem",
+      "category": "other"
+    },
+    "sang": {
+      "label": "sang",
+      "category": "object"
+    },
+    "lutte": {
+      "label": "lutte",
+      "category": "other"
+    }
+  },
+  "zones": [
+    {
+      "id": "corps-1",
+      "kind": "person",
+      "label": "Le corps de la première table",
+      "character": "inconnue-kings-row",
+      "rect": {
+        "x": 173,
+        "y": 403,
+        "w": 567,
+        "h": 98
+      },
+      "portrait": {
+        "x": 684,
+        "y": 400,
+        "w": 96,
+        "h": 128
+      },
+      "text": "Un drap couvre entièrement le corps. Seuls les pieds nus dépassent, une étiquette nouée à l'orteil.",
+      "details": [
+        {
+          "label": "Les blessures",
+          "text": "La [[gorge-tranchee|gorge a été tranchée]] d'un geste sec et horizontal, d'une oreille à l'autre. C'est ce coup fatal qui a terrassé la victime.\n\nEn observant le torse et le ventre, on découvre des incisions ouvertes [[post-mortem]]. La lame s'est enfoncée profondément et des [[mutilations-abdominales]] d'une régularité chirurgicale sont constatées. Les mains de la victime sont usées et, sous les ongles, nous pouvons voir des traces de sang séché, sûrement dues à une [[lutte]] ; impossible de savoir à qui appartient le [[sang]]."
+        }
+      ],
+      "notes": "Corps n° 1. Les blessures se décrivent ici, avec retenue."
+    },
+    {
+      "id": "corps-2",
+      "kind": "person",
+      "label": "Le corps de la seconde table",
+      "character": "jenkins",
+      "rect": {
+        "x": 862,
+        "y": 392,
+        "w": 482,
+        "h": 83
+      },
+      "portrait": {
+        "x": 884,
+        "y": 380,
+        "w": 96,
+        "h": 128
+      },
+      "text": "Le drap est rabattu jusqu'aux épaules. Une femme, les cheveux défaits, le visage calme.",
+      "details": [
+        {
+          "label": "Les blessures",
+          "text": "La victime a la [[gorge-tranchee]] et des [[mutilations-abdominales]] multiples, administrées après la mort."
+        }
+      ],
+      "notes": "Corps n° 2. Le docteur est penché sur le cou."
+    },
+    {
+      "id": "docteur",
+      "kind": "person",
+      "label": "L'homme au tablier",
+      "character": "jefferson",
+      "rect": {
+        "x": 935,
+        "y": 283,
+        "w": 215,
+        "h": 109
+      },
+      "portrait": {
+        "x": 998,
+        "y": 283,
+        "w": 90,
+        "h": 120
+      },
+      "text": "Le médecin légiste, pince-nez sur le nez, se penche sur la seconde table, une sonde à la main.\n« Docteur [[jefferson|Albert Jefferson]]. Ne touchez à rien, jeune homme. Vous êtes le [[journaliste]] qui cherche à démêler tout ça ? Bon courage... C'est déjà la [[cinquieme]] [[victimes]] que je reçois avec ces blessures. »"
+    },
+    {
+      "id": "agent",
+      "kind": "person",
+      "label": "L'agent à la porte",
+      "character": "davis",
+      "rect": {
+        "x": 1378,
+        "y": 189,
+        "w": 119,
+        "h": 546
+      },
+      "portrait": {
+        "x": 1375,
+        "y": 183,
+        "w": 122,
+        "h": 163
+      },
+      "text": "Un agent en uniforme garde la porte, les mains dans le dos.\nAgent [[davis|Edouard Davis]], division H.\n« Quelle sale nuit... Heureusement, pour se changer les idées après un service pareil, je connais un bon moyen : ce soir, je vais aller voir ma [[prostituee]] préférée de l'autre côté du quartier. De toute façon, dans ce foutu coin, elles ne servent qu'à ça. »"
+    },
+    {
+      "id": "journal",
+      "kind": "document",
+      "label": "Le journal du médecin",
+      "rect": {
+        "x": 781,
+        "y": 471,
+        "w": 70,
+        "h": 58
+      },
+      "text": "Un registre ouvert sur le pupitre, d'une écriture serrée.\nRédigé par [[jefferson]]. Extrait :\n« 30 septembre 1888. Examen des deux dépouilles. Sur la table de gauche, la première victime (femme non identifiée, découverte près de King's Row) présente l'usure caractéristique des semelles de bottines et les bas bon marché abîmés par la marche nocturne dans les boues de l'East End. L'état de ses vêtements et de ses mains trahit une vie de misère passée à racoler les clients dans les ruelles sombres pour quelques pièces. La gorge est tranchée net, de part en part.\nCause de la mort pour les deux victimes : [[hemorragie]]. »",
+      "details": [
+        {
+          "label": "Corps n° 1",
+          "text": "« Femme, environ quarante ans, nom inconnu. Trouvée à [[kings-row|King's Row]] vers une heure du matin. »"
+        },
+        {
+          "label": "Corps n° 2",
+          "text": "« Femme, trente ans environ. Trouvée à [[wallace|Wallace Street]] vers deux heures et demie. Identité reconnue par la témoin [[elisabeth-coyle]] : Margaret Jenkins. Profession : couturière. »"
+        }
+      ]
+    },
+    {
+      "id": "etiquette-1",
+      "kind": "document",
+      "label": "L'étiquette du corps n° 1",
+      "rect": {
+        "x": 724,
+        "y": 445,
+        "w": 50,
+        "h": 39
+      },
+      "text": "« N° 1. [[inconnue|Inconnue]]. King's Row. 30 sept. 1888. »"
+    },
+    {
+      "id": "etiquette-2",
+      "kind": "document",
+      "label": "L'étiquette du corps n° 2",
+      "rect": {
+        "x": 1331,
+        "y": 428,
+        "w": 43,
+        "h": 33
+      },
+      "text": "« N° 2. [[jenkins|Margaret Jenkins]], profession : [[couturiere]]. Wallace Street. 30 sept. 1888. »"
+    }
+  ],
+  "pages": [
+    {
+      "id": "qui",
+      "kind": "identities",
+      "title": "Qui est qui ?",
+      "people": [
+        {
+          "zone": "docteur",
+          "answer": "jefferson"
+        },
+        {
+          "zone": "agent",
+          "answer": "davis"
+        },
+        {
+          "zone": "corps-1",
+          "answer": "inconnue"
+        },
+        {
+          "zone": "corps-2",
+          "answer": "jenkins"
+        }
+      ]
+    },
+    {
+      "id": "theories",
+      "kind": "sentences",
+      "title": "Premières théories",
+      "sentences": [
+        "Le docteur {jefferson} s'affaire sur les tables d'autopsie et s'adresse au {journaliste}, tandis que l'agent {davis} monte la garde près de la porte.",
+        "Sur la table de gauche, le corps de {inconnue}, découverte près de {kings-row}, présente les stigmates d'une vie de {prostituee}.",
+        "Sur la table de droite repose {jenkins}, reconnue comme {couturiere}, dont le corps a été signalé à {wallace}.",
+        "L'examen des dépouilles révèle que la cause immédiate du décès est une {gorge-tranchee} ayant provoqué une {hemorragie} fatale et rapide.",
+        "Enfin, les incisions pratiquées sur le torse confirment qu'il s'agit de {mutilations-abdominales} d'ordre {post-mortem}, maculées de {sang} séché, marquant la signature implacable du tueur."
+      ]
+    }
+  ]
+}

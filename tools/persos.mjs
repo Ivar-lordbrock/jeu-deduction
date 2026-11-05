@@ -381,6 +381,13 @@ const OBJETS = {
     D.forme('M -4 94 L 4 94 L 6 108 L -6 108 Z', f);
     D.rond(f(0, -14), 5);
   },
+  sonde(D, sq, c, o) {
+    // instrument du médecin : une fine sonde d'acier
+    const b = o.bras === 'F' ? sq.bF : sq.bN;
+    const f = repereMembre(prise(b, c), b.dir + (o.rot ?? 0));
+    D.membre(f(0, -6), f(0, 44), 2.8, 1.3);
+    D.trait('M 0 8 L 0 42', f, ARGENT, 1.2, ' opacity="0.9"');
+  },
   convocation(D, sq, c, o) {
     const b = o.bras === 'F' ? sq.bF : sq.bN;
     const f = repere(prise(b, c), o.rot ?? -14, o.taille ?? 1);
@@ -815,7 +822,111 @@ const temoin = {
   },
 };
 
-const PERSOS = [commissaire, agent, journaliste, joueur, temoin];
+const TABLIER = '#6b6756';
+const CHEMISE = '#d9d3bd';
+
+const docteur = {
+  id: 'docteur',
+  nom: 'Le médecin',
+  portrait: 'médecin légiste : favoris, front dégarni, pince-nez, gilet, manches de chemise retroussées, long tablier de toile',
+  c: { ...HOMME, cuisse: 136, tibia: 130, bras: 102, avant: 86, epaule: [-4, -164], cou: [6, -194], rCuisse: 23, rGenou: 15.5, rBras: 13.5, rCoude: 11.5, rPoignet: 8.5, tete: 1.08 },
+  dessiner(D, sq, pose, c) {
+    const T = sq.T;
+    jambes(D, sq, c);
+    D.forme(
+      'M -10 -190 C -22 -186 -32 -176 -34 -160 C -38 -134 -36 -106 -32 -84 C -30 -68 -32 -50 -33 -30 C -35 -10 -30 8 -18 14 L 16 16 C 28 8 32 -12 32 -36 C 32 -58 32 -80 34 -100 C 38 -126 36 -158 26 -176 C 22 -184 18 -188 14 -190 Z',
+      T,
+    );
+    // tablier de toile : la bavette sur la poitrine, la jupe tombe devant les jambes jusqu'aux mollets
+    const bas = 1.5;
+    const devant = (j, t, plus) => {
+      const o = surJambe(j, t);
+      return v(o.x + (t <= 1 ? c.rCuisse : c.rGenou) + plus, o.y);
+    };
+    const avant = [sq.jN, sq.jF].reduce((a, j) => (surJambe(j, bas).x > surJambe(a, bas).x ? j : a));
+    const yb = Math.max(...[sq.jN, sq.jF].map((j) => surJambe(j, bas).y));
+    const xArr = Math.min(...[sq.jN, sq.jF].map((j) => surJambe(j, bas).x)) - 6;
+    const jupe = [T(-14, -66), T(36, -66), devant(avant, 0.4, 10), devant(avant, 1, 10), v(devant(avant, bas, 8).x, yb), v(xArr, yb)];
+    const dJupe = arrondi(jupe, 0.18);
+    D.formePts(dJupe, jupe);
+    D.accent(dJupe, null, TABLIER);
+    const BAVETTE = 'M 12 -154 L 31 -156 C 34 -130 36 -96 36 -66 L -4 -66 C 2 -96 6 -128 12 -154 Z';
+    D.accent(BAVETTE, T, TABLIER);
+    D.trait('M 13 -154 L 0 -188 M 29 -156 L 18 -190', T, TABLIER, 2.4);
+    D.trait('M -14 -72 L 34 -72', T, '#55523f', 1.6);
+    D.pli(`M${pt(lerp(jupe[0], jupe[5], 0.5))} L${pt(v(xArr + 10, yb - 8))}`, null, 1.6);
+    brasEtMains(D, sq, c);
+    // le bras proche passe devant le tablier : on le redessine en noir par-dessus
+    {
+      const b = sq.bN;
+      D.accents.push(`<path d="${gelule(b.epaule, b.coude, c.rBras, c.rCoude)}" fill="${NOIR}"/><path d="${gelule(b.coude, b.poignet, c.rCoude, c.rPoignet)}" fill="${NOIR}"/>`);
+      if (b.main !== 'cachee' && b.main !== 'poche') D.accent(MAINS[b.main], repereMembre(b.poignet, b.dir, c.main), NOIR);
+      if (b.main === 'doigt') {
+        const m = repereMembre(b.poignet, b.dir, c.main);
+        D.accents.push(`<path d="${gelule(m(4, 18), m(4, 46), 4.6 * c.main, 3.6 * c.main)}" fill="${NOIR}"/>`);
+      }
+    }
+    // manches de chemise retroussées au coude
+    for (const b of [sq.bF, sq.bN]) {
+      const u = unit(sub(b.poignet, b.coude));
+      const n = v(-u.y, u.x);
+      const m = add(b.coude, mul(u, 8));
+      D.trait(`M${pt(add(m, mul(n, c.rCoude)))} L${pt(sub(m, mul(n, c.rCoude)))}`, null, CHEMISE, 5, ' opacity="0.85"');
+    }
+    // col de chemise
+    D.trait('M -6 -190 C 2 -194 12 -194 20 -188', T, CHEMISE, 3);
+    const f = tete(D, sq, pose, c, [
+      VISAGE(3),
+      // favoris jusque sous la mâchoire
+      'M 2 -32 C 6 -20 8 -6 10 4 C 12 14 18 20 26 18 C 31 14 31 8 28 3 C 22 -2 18 -14 16 -28 Z',
+      // couronne de cheveux autour d'un front dégarni
+      'M -31 -48 C -37 -38 -35 -22 -27 -12 C -22 -18 -21 -30 -23 -42 C -18 -46 -10 -46 -4 -42 C -10 -50 -22 -54 -31 -48 Z',
+    ]);
+    D.pli('M -23 -42 C -16 -47 -8 -47 -2 -41', f, 1.4);
+    // pince-nez
+    const verre = f(36, -36);
+    D.accents.push(`<ellipse cx="${num(verre.x)}" cy="${num(verre.y)}" rx="5" ry="4.2" fill="#bfe0d8" fill-opacity="0.25" stroke="${OR}" stroke-width="1.4"/>`);
+    D.trait('M 31 -34 C 26 -24 22 -12 20 0', f, OR, 0.9, ' opacity="0.7"');
+    objets(D, sq, c, pose);
+  },
+  poses: {
+    debout: {
+      nom: 'debout, les mains dans le dos',
+      lean: 4, tete: 4,
+      jN: { h: 5, k: 0 }, jF: { h: -4, k: 0 },
+      bN: { a: -22, e: 96, main: 'cachee', ra: 0.4 }, bF: { a: -18, e: 90, main: 'cachee', ra: 0.4 },
+    },
+    examine: {
+      nom: 'penché sur la table, une sonde à la main',
+      lean: 26, tete: 20,
+      jN: { h: 8, k: 0 }, jF: { h: -6, k: 0 },
+      bN: { a: 56, e: 34, main: 'poing' }, bF: { a: 38, e: 34, main: 'ouverte' },
+      objets: [{ type: 'sonde', bras: 'N', rot: 30 }],
+    },
+    montre: {
+      nom: 'désigne une blessure du doigt',
+      lean: 14, tete: 14,
+      jN: { h: 8, k: 0 }, jF: { h: -5, k: 0 },
+      bN: { a: 64, e: 14, main: 'doigt' }, bF: { a: -20, e: 96, main: 'cachee', ra: 0.45 },
+    },
+    note: {
+      nom: 'écrit dans son journal',
+      lean: 3, tete: 14,
+      jN: { h: 5, k: 0 }, jF: { h: -5, k: 0 },
+      bN: { a: 26, e: 98, main: 'poing' }, bF: { a: 18, e: 108, main: 'poing' },
+      objets: [{ type: 'carnet', bras: 'N', rot: -10 }, { type: 'crayon', bras: 'F', rot: 40 }],
+    },
+    lampe: {
+      nom: 'lève une lampe au-dessus de la table',
+      lean: 10, tete: 22,
+      jN: { h: 8, k: 0 }, jF: { h: -5, k: 0 },
+      bN: { a: 150, e: -12, main: 'poing' }, bF: { a: 40, e: 40, main: 'ouverte' },
+      objets: [{ type: 'lanterne', bras: 'N' }],
+    },
+  },
+};
+
+const PERSOS = [commissaire, agent, journaliste, joueur, temoin, docteur];
 
 // ——— sortie ———
 

@@ -56,11 +56,16 @@ Personnages et décor de rue en silhouettes, venus d'[Openclipart](https://openc
 | `reverbere.svg` | « Vintage Street Lamp Silhouette 2 » | GDJ | [255363](https://openclipart.org/detail/255363) |
 | `fiacre.svg` | « Old Carriage By Andrea Stockel Silhouette » | GDJ | [331921](https://openclipart.org/detail/331921) |
 | `omnibus.svg` | « horse drawn doubledecker 2 » | johnny_automatic | [5411](https://openclipart.org/detail/5411) |
+| `pupitre.svg` | « Vintage Reading Desks » (seul le pupitre de droite est gardé) | GDJ | [317926](https://openclipart.org/detail/317926) |
+| `chaise.svg` | « Old furniture 2 » | Firkin | [224389](https://openclipart.org/detail/224389) |
+| `porte-manteau.svg` | « coat stand » | mazeo | [63061](https://openclipart.org/detail/63061) |
 
 Dans la scène du commissariat, seules la foule, le fiacre et le réverbère vus par la fenêtre viennent d'Openclipart : `gentleman`, `monsieur-3`, `monsieur-7`, `fiacre` et `reverbere`. Les personnages (Winkoff, Stone, Tim Bradford, Elisabeth Coyle et l'agent flou derrière la vitre) sont les silhouettes dessinées pour le jeu, plus bas.
 
+Dans la scène de la morgue viennent d'Openclipart le pupitre (et son livre ouvert, qui sert de journal du docteur), la chaise et le porte-manteau, ainsi que la planche anatomique punaisée au mur : « Anatomical Man Line Art » de GDJ ([326032](https://openclipart.org/detail/326032), CC0), une gravure ancienne d'écorché, gardée en PNG de 400 px (`tools/scene-morgue/ecorche.png`).
+
 ## Dessins originaux du projet
 
-Le décor du commissariat (`src/cases/01-leman-street/scene.svg`, généré par `tools/scene-commissariat.mjs` : la pièce en perspective, murs, meubles, papiers, lumière) et les toits de l'écran titre (`src/assets/skyline.svg`) sont dessinés pour le jeu, en SVG.
+Le décor du commissariat (`src/cases/01-leman-street/scene.svg`, généré par `tools/scene-commissariat.mjs` : la pièce en perspective, murs, meubles, papiers, lumière) celui de la morgue (`src/cases/02-morgue/scene.svg`, généré par `tools/scene-morgue.mjs`) et les toits de l'écran titre (`src/assets/skyline.svg`) sont dessinés pour le jeu, en SVG.
 
-Les silhouettes des personnages récurrents (`src/assets/silhouettes/persos/` : commissaire, agent, journaliste, joueur, témoin, quatre ou cinq poses chacun) sont aussi dessinées pour le jeu, par `tools/persos.mjs`, en s'inspirant des profils découpés de l'époque cités plus haut. Elles n'en reprennent aucun tracé. La scène contient aussi, en petit et teintées, deux gravures de Doré citées plus haut : « Bluegate Fields » vue par la fenêtre et « The Bull's-Eye » punaisée au mur.
+Les silhouettes des personnages récurrents (`src/assets/silhouettes/persos/` : commissaire, agent, journaliste, joueur, témoin, docteur, quatre ou cinq poses chacun) sont aussi dessinées pour le jeu, par `tools/persos.mjs`, en s'inspirant des profils découpés de l'époque cités plus haut. Elles n'en reprennent aucun tracé. La scène contient aussi, en petit et teintées, deux gravures de Doré citées plus haut : « Bluegate Fields » vue par la fenêtre et « The Bull's-Eye » punaisée au mur.

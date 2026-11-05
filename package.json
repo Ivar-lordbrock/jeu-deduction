@@ -10,7 +10,8 @@
     "test": "vitest run",
     "check": "tsc --noEmit && vitest run",
     "persos": "node tools/persos.mjs",
-    "scene": "node tools/scene-commissariat.mjs"
+    "scene": "node tools/scene-commissariat.mjs",
+    "scene:morgue": "node tools/scene-morgue.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",

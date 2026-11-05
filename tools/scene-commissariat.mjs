@@ -8,84 +8,12 @@
 //   et affiche les rectangles des personnages pour les zones de case.json.
 
 import { readFileSync, writeFileSync } from 'node:fs';
+import { AMBRE, F, TEAL, creerPersos, echelle, gx, gy, num, pts, quadMur, reperes, symbole, ym } from './scene-outils.mjs';
 
 const ICI = new URL('./scene-commissariat/', import.meta.url);
-const PERSOS = new URL('../src/assets/silhouettes/persos/', import.meta.url);
-const SILHOUETTES = new URL('../src/assets/silhouettes/', import.meta.url);
 const SORTIE = new URL('../src/cases/01-leman-street/scene.svg', import.meta.url);
 
-const num = (n) => String(Math.round(n * 10) / 10);
-const pts = (...ps) => ps.map(([x, y]) => `${num(x)},${num(y)}`).join(' ');
-
-// ——— perspective ———
-// Mur du fond : x 260–1340, du plafond (h = 50) au sol (h = 640). Point de fuite F (800, 330).
-// Un point d'un mur latéral à l'abscisse x, à la hauteur h « du mur du fond », est en (x, ym(x, h)).
-// Un objet parallèle au mur gauche, à la distance d du mur et à la profondeur k (1 = mur du fond), est en (gx, gy).
-const F = { x: 800, y: 330 };
-const kx = (x) => Math.abs(x - F.x) / 540;
-const ym = (x, h) => F.y + (h - F.y) * kx(x);
-const gx = (d, k) => F.x - (540 - d) * k;
-const gy = (h, k) => F.y + (h - F.y) * k;
-/** quadrilatère sur un mur latéral : de x1 à x2, de la hauteur h1 à h2 */
-const quadMur = (x1, x2, h1, h2) => pts([x1, ym(x1, h1)], [x2, ym(x2, h1)], [x2, ym(x2, h2)], [x1, ym(x1, h2)]);
-/** échelle d'un personnage debout dont les pieds touchent le sol en y */
-const echelle = (y) => (y - F.y) / 470;
-
-// ——— silhouettes de la rue (Openclipart, CC0), en <symbol> sans couleur ———
-function symbole(nom, decimales = 2) {
-  const src = readFileSync(new URL(`${nom}.svg`, SILHOUETTES), 'utf8');
-  const racine = src.match(/<svg\b[^>]*>/)[0];
-  const vb = racine.match(/viewBox="([^"]+)"/)[1];
-  const arrondi = (s) =>
-    s.replace(/-?\d*\.\d+(e-?\d+)?/g, (n) => ' ' + String(+(+n).toFixed(decimales))).replace(/ {2,}/g, ' ').replace(/=" /g, '="').replace(/\( /g, '(');
-  let corps = src.slice(src.indexOf(racine) + racine.length, src.lastIndexOf('</svg>'));
-  corps = corps
-    .replace(/<title[\s\S]*?<\/title\s*>/g, '')
-    .replace(/<desc[\s\S]*?<\/desc\s*>/g, '')
-    .replace(/<defs\s*\/>/g, '')
-    .replace(/\s(id|class|data-[a-z-]+)="[^"]*"/g, '')
-    .replace(/\sfill="(?!none)[^"]*"/g, '')
-    .replace(/\sstyle="([^"]*)"/g, (_, st) => {
-      const garde = st.split(';').map((d) => d.trim()).filter((d) => d && !/^(fill|fill-opacity|opacity|stroke|stroke-width|stroke-opacity)\s*:/.test(d));
-      return garde.length ? ` style="${garde.join(';')}"` : '';
-    })
-    .replace(/\s+/g, ' ')
-    .replace(/> </g, '><')
-    .trim();
-  return `<symbol id="s-${nom}" viewBox="${arrondi(vb)}">${arrondi(corps)}</symbol>`;
-}
-
-// ——— personnages : silhouettes de src/assets/silhouettes/persos ———
-const reperes = JSON.parse(readFileSync(new URL('reperes.json', PERSOS), 'utf8'));
-const defsPersos = [];
-const cadres = {};
-
-/**
- * Place une silhouette : la hanche en x, le sol en y, à l'échelle s ; miroir = tournée vers la gauche.
- * reflets : [dx, dy, couleur, opacité] (copies décalées derrière le noir) ; ombre : une couleur seule.
- */
-function perso(id, { x, y, s, miroir = false, reflets = [], ombre = null, nom = id }) {
-  const svg = readFileSync(new URL(`${id}.svg`, PERSOS), 'utf8');
-  const nid = `sc-${nom}`;
-  const renomme = (t) => t.replaceAll(`"${id}`, `"${nid}`).replaceAll(`#${id}`, `#${nid}`);
-  defsPersos.push(renomme(svg.slice(svg.indexOf('<defs>') + 6, svg.indexOf('</defs>'))));
-  let corps = renomme(svg.slice(svg.indexOf('</defs>') + 7, svg.lastIndexOf('</svg>')).trim());
-  // un titre de journal se lit toujours à l'endroit
-  if (miroir) corps = corps.replace(/<text transform="translate\(([^)]*)\) rotate\(([-\d.]+)\)"/g, (_, t, r) => `<text text-anchor="end" transform="translate(${t}) scale(-1 1) rotate(${num(-r)})"`);
-  const T = (dx = 0, dy = 0) => `translate(${num(x + dx)} ${num(y + dy)}) scale(${num(miroir ? -s : s)} ${num(s)})`;
-  // rectangle de la silhouette et de la tête dans la scène (pour les zones et les portraits)
-  const r = reperes[id];
-  const versScene = ([bx, by, bw, bh]) => {
-    const xs = [x + (miroir ? -1 : 1) * s * bx, x + (miroir ? -1 : 1) * s * (bx + bw)];
-    return { x: Math.round(Math.min(...xs)), y: Math.round(y + s * by), w: Math.round(s * bw), h: Math.round(s * bh) };
-  };
-  cadres[nom] = { corps: versScene(r.viewBox), tete: versScene(r.tete) };
-  if (ombre) return `<use href="#${nid}" transform="${T()}" fill="${ombre}"/>`;
-  const copies = reflets.map(([dx, dy, c, o]) => `<use href="#${nid}" transform="${T(dx, dy)}" fill="${c}" opacity="${o}"/>`).join('');
-  return `${copies}<g transform="${T()}">${corps}</g>`;
-}
-const TEAL = '#9fbcb7';
-const AMBRE = '#e8b452';
+const { perso, defs: defsPersos, cadres } = creerPersos();
 
 // ——— placements ———
 const coyle = { x: 165, y: 760, s: echelle(760) }; // assise sur le banc, contre le mur gauche

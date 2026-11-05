@@ -45,7 +45,7 @@ describe('assets', () => {
   it('chaque personnage dessiné a ses poses, et chaque pose est une image sûre et autonome', () => {
     const dir = new URL('src/assets/silhouettes/persos/', root);
     const files = readdirSync(dir).filter((f) => f.endsWith('.svg'));
-    for (const perso of ['commissaire', 'agent', 'journaliste', 'joueur', 'temoin']) {
+    for (const perso of ['commissaire', 'agent', 'journaliste', 'joueur', 'temoin', 'docteur']) {
       expect(files.filter((f) => f.startsWith(`${perso}-`)).length, perso).toBeGreaterThanOrEqual(4);
     }
     for (const f of files) {
@@ -58,9 +58,11 @@ describe('assets', () => {
     }
   });
 
-  it('la scène du commissariat ne dépend d’aucun fichier extérieur', () => {
+  it('les scènes dessinées ne dépendent d’aucun fichier extérieur', () => {
     // la scène s'affiche en <img> : un lien vers un autre fichier y serait ignoré
-    const scene = readFileSync(new URL('src/cases/01-leman-street/scene.svg', root), 'utf8');
-    for (const m of scene.matchAll(/href="([^"]+)"/g)) expect(m[1], m[1].slice(0, 40)).toMatch(/^(#|data:image\/)/);
+    for (const dossier of ['01-leman-street', '02-morgue']) {
+      const scene = readFileSync(new URL(`src/cases/${dossier}/scene.svg`, root), 'utf8');
+      for (const m of scene.matchAll(/href="([^"]+)"/g)) expect(m[1], `${dossier} ${m[1].slice(0, 40)}`).toMatch(/^(#|data:image\/)/);
+    }
   });
 });

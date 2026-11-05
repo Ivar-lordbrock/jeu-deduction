@@ -131,6 +131,20 @@
       "notes": "Couturière du quartier, découverte par Elisabeth Coyle à 2 h 30."
     },
     {
+      "id": "jefferson",
+      "name": "Albert Jefferson",
+      "role": "Médecin légiste, à la morgue",
+      "appearance": "Chauve, favoris gris, pince-nez doré, tablier de lin sur chemise aux manches retroussées.",
+      "notes": "Inventé. Examine les deux victimes de la nuit du 30 septembre."
+    },
+    {
+      "id": "davis",
+      "name": "Edouard Davis",
+      "role": "Agent de la division H, de garde à la morgue",
+      "appearance": "Casque à étoile, tunique boutonnée, mains dans le dos.",
+      "notes": "Inventé."
+    },
+    {
       "id": "doyle",
       "name": "Jenny Doyle",
       "role": "Victime, 9 novembre 1888, Miller's Court",

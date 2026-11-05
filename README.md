@@ -100,6 +100,11 @@ meurtre de King's Row et de Wallace Street : qui a renseigné The Comet ? Sa sc�
 les silhouettes des personnages récurrents, et deux gravures de Doré dans la fenêtre et au mur.
 Le script affiche les rectangles des personnages, à reporter dans les zones de `case.json`.
 
+L'affaire `src/cases/02-morgue` (« À la morgue ») est un brouillon, visible seulement avec `npm run dev` :
+les deux victimes de la nuit, le docteur Albert Jefferson et l'agent Edouard Davis. Sa scène est générée par
+`tools/scene-morgue.mjs` (`npm run scene:morgue`). Les corps restent couverts : les blessures se décrivent
+dans les fiches, jamais dans l'image.
+
 ## Structure
 
 ```
@@ -107,7 +112,9 @@ editeur.html         page de l'éditeur (développement uniquement)
 tools/
   editorApi.ts       lecture et écriture des fichiers pour l'éditeur
   persos.mjs         dessine les silhouettes des personnages (npm run persos)
+  scene-outils.mjs   perspective et placement des personnages, communs aux scènes
   scene-commissariat.mjs   dessine la scène de l'affaire 1 (npm run scene)
+  scene-morgue.mjs   dessine la scène de la morgue (npm run scene:morgue)
 src/
   main.ts            démarrage, menu ↔ affaire
   config.ts          titre du jeu, réglages généraux
