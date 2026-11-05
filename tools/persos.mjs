@@ -1,0 +1,922 @@
+// Silhouettes des personnages, dessinées pour le jeu.
+// Un personnage = des proportions, une tête dessinée (visage, chapeau, barbe) et un vêtement.
+// Une pose = les angles des membres. Tout regarde vers la droite (on retourne l'image pour la gauche).
+// Le sol est en y = 0, à l'échelle de la scène du commissariat : un homme debout fait environ 560 px.
+//
+// Usage : node tools/persos.mjs
+//   → src/assets/silhouettes/persos/<perso>-<pose>.svg  (une silhouette par fichier)
+//   → docs/planche-persos.svg                           (toutes les poses, avec l'éclairage de la scène)
+
+import { mkdirSync, writeFileSync } from 'node:fs';
+
+const DOSSIER = new URL('../src/assets/silhouettes/persos/', import.meta.url);
+const PLANCHE = new URL('../docs/planche-persos.svg', import.meta.url);
+
+const NOIR = '#070b0b';
+const PLI = '#253534'; // lignes de détail, à peine visibles dans le noir
+const PAPIER = '#d8cdaa';
+const OR = '#c9a04a';
+const ARGENT = '#a3b4b1';
+
+// ——— géométrie ———
+
+const RAD = Math.PI / 180;
+const v = (x, y) => ({ x, y });
+const add = (a, b) => v(a.x + b.x, a.y + b.y);
+const sub = (a, b) => v(a.x - b.x, a.y - b.y);
+const mul = (a, k) => v(a.x * k, a.y * k);
+const lerp = (a, b, t) => v(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t);
+const len = (a) => Math.hypot(a.x, a.y);
+const unit = (a) => mul(a, 1 / (len(a) || 1));
+/** direction d'un membre : 0° = vers le bas, 90° = vers l'avant, 180° = vers le haut */
+const dir = (deg) => v(Math.sin(deg * RAD), Math.cos(deg * RAD));
+const num = (n) => String(Math.round(n * 10) / 10);
+const pt = (p) => `${num(p.x)} ${num(p.y)}`;
+
+/** repère local → monde : origine o, rotation r (degrés ; positif = sens horaire = vers l'avant), échelle s */
+const repere = (o, r = 0, s = 1) => {
+  const c = Math.cos(r * RAD);
+  const sn = Math.sin(r * RAD);
+  return (x, y) => v(o.x + s * (x * c - y * sn), o.y + s * (x * sn + y * c));
+};
+/** repère d'une main ou d'un objet tenu : y local suit la direction `deg`, x local va vers le pouce */
+const repereMembre = (o, deg, s = 1) => repere(o, -deg, s);
+
+/** applique un repère à un tracé écrit en commandes absolues M L C Q Z (nombres par paires) */
+function trace(d, f, pts) {
+  return d
+    .replace(/(-?\d*\.?\d+)[ ,]+(-?\d*\.?\d+)/g, (_, x, y) => {
+      const p = f(+x, +y);
+      pts?.push(p);
+      return pt(p);
+    })
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/** membre en forme de gélule effilée, du point a (rayon r1) au point b (rayon r2) */
+function gelule(a, b, r1, r2) {
+  const d = sub(b, a);
+  const L = len(d) || 0.01;
+  const u = mul(d, 1 / L);
+  const p = v(-u.y, u.x);
+  const s = Math.max(-0.95, Math.min(0.95, (r1 - r2) / L));
+  const c = Math.sqrt(1 - s * s);
+  const m1 = add(mul(u, s), mul(p, c));
+  const m2 = sub(mul(u, s), mul(p, c));
+  const A1 = add(a, mul(m1, r1));
+  const B1 = add(b, mul(m1, r2));
+  const B2 = add(b, mul(m2, r2));
+  const A2 = add(a, mul(m2, r1));
+  return `M${pt(A1)} L${pt(B1)} A${num(r2)} ${num(r2)} 0 ${s < 0 ? 1 : 0} 0 ${pt(B2)} L${pt(A2)} A${num(r1)} ${num(r1)} 0 ${s > 0 ? 1 : 0} 0 ${pt(A1)} Z`;
+}
+
+/** polygone aux coins arrondis (t = part de chaque côté mangée par l'arrondi, 0.5 = tout en courbe) */
+function arrondi(points, t = 0.3) {
+  const n = points.length;
+  let d = '';
+  for (let i = 0; i < n; i++) {
+    const p0 = points[(i - 1 + n) % n];
+    const p1 = points[i];
+    const p2 = points[(i + 1) % n];
+    const a = lerp(p1, p0, t);
+    const b = lerp(p1, p2, t);
+    d += `${i === 0 ? 'M' : ' L'}${pt(a)} Q${pt(p1)} ${pt(b)}`;
+  }
+  return `${d} Z`;
+}
+
+/** enveloppe convexe (chaîne monotone) */
+function enveloppe(ps) {
+  const p = [...ps].sort((a, b) => a.x - b.x || a.y - b.y);
+  const cross = (o, a, b) => (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
+  const lo = [];
+  const hi = [];
+  for (const q of p) {
+    while (lo.length >= 2 && cross(lo.at(-2), lo.at(-1), q) <= 0) lo.pop();
+    lo.push(q);
+  }
+  for (const q of p.reverse()) {
+    while (hi.length >= 2 && cross(hi.at(-2), hi.at(-1), q) <= 0) hi.pop();
+    hi.push(q);
+  }
+  return lo.slice(0, -1).concat(hi.slice(0, -1));
+}
+
+/** ruban ondulé (écharpe au vent, rubans) : base b, direction deg, longueur L, largeur w */
+function ruban(b, deg, L, w, onde = 6, fin = 0.7) {
+  const u = dir(deg);
+  const n = v(-u.y, u.x);
+  const gauche = [];
+  const droite = [];
+  const N = 14;
+  for (let i = 0; i <= N; i++) {
+    const s = i / N;
+    const c = add(add(b, mul(u, s * L)), mul(n, Math.sin(s * Math.PI * 2.2) * onde * s));
+    const demi = (w / 2) * (1 - (1 - fin) * s);
+    gauche.push(add(c, mul(n, demi)));
+    droite.push(sub(c, mul(n, demi)));
+  }
+  const tour = gauche.concat(droite.reverse());
+  return { d: `M${tour.map(pt).join(' L')} Z`, pts: tour, bout: lerp(gauche.at(-1), droite[0], 0.5), u, n };
+}
+
+// ——— le dessin d'une silhouette ———
+
+class Dessin {
+  corps = [];
+  plis = [];
+  accents = [];
+  defs = []; // motifs et découpes propres à la silhouette ; {id} est remplacé par son identifiant
+  pts = [];
+  /** forme pleine du corps, tracé local d dans le repère f */
+  forme(d, f, attrs = '') {
+    this.corps.push(`<path${attrs} d="${f ? trace(d, f, this.pts) : d}"/>`);
+  }
+  formePts(d, pts, attrs = '') {
+    this.pts.push(...pts);
+    this.corps.push(`<path${attrs} d="${d}"/>`);
+  }
+  membre(a, b, r1, r2) {
+    this.corps.push(`<path d="${gelule(a, b, r1, r2)}"/>`);
+    this.pts.push(sub(a, v(r1, r1)), add(a, v(r1, r1)), sub(b, v(r2, r2)), add(b, v(r2, r2)));
+  }
+  rond(c, r) {
+    this.corps.push(`<circle cx="${num(c.x)}" cy="${num(c.y)}" r="${num(r)}"/>`);
+    this.pts.push(sub(c, v(r, r)), add(c, v(r, r)));
+  }
+  /** ligne de détail, visible seulement à l'intérieur de la silhouette */
+  pli(d, f, w = 2) {
+    this.plis.push(`<path d="${f ? trace(d, f) : d}" stroke-width="${w}"/>`);
+  }
+  /** couleur posée par-dessus le noir (châle, papier, galons…) */
+  accent(d, f, fill, attrs = '') {
+    this.accents.push(`<path d="${f ? trace(d, f, this.pts) : d}" fill="${fill}"${attrs}/>`);
+  }
+  trait(d, f, stroke, w, attrs = '') {
+    this.accents.push(`<path d="${f ? trace(d, f) : d}" fill="none" stroke="${stroke}" stroke-width="${w}" stroke-linecap="round"${attrs}/>`);
+  }
+}
+
+// ——— squelette ———
+
+function squelette(c, pose, hanche) {
+  const lean = pose.lean ?? 0;
+  const T = repere(hanche, lean);
+  const epaule = T(...c.epaule);
+  const cou = T(...c.cou);
+  const bras = (s) => {
+    // ra / rb < 1 : avant-bras ou bras vu en raccourci (il passe derrière le corps)
+    const coude = add(epaule, mul(dir(s.a), c.bras * (s.rb ?? 1)));
+    const poignet = add(coude, mul(dir(s.a + s.e), c.avant * (s.ra ?? 1)));
+    return { epaule, coude, poignet, dir: s.a + s.e + (s.w ?? 0), main: s.main ?? 'ouverte', s };
+  };
+  const jambe = (s) => {
+    const h = T(...c.hanche);
+    const genou = add(h, mul(dir(s.h), c.cuisse));
+    const cheville = add(genou, mul(dir(s.h - s.k), c.tibia));
+    return { hanche: h, genou, cheville, pied: s.f ?? 0, h: s.h, k: s.k };
+  };
+  return { T, lean, hanche, epaule, cou, bN: bras(pose.bN), bF: bras(pose.bF), jN: jambe(pose.jN), jF: jambe(pose.jF) };
+}
+
+/** point le plus bas des pieds (et du genou posé à terre) : il sera posé sur le sol */
+function plusBas(c, sq) {
+  let y = -Infinity;
+  for (const j of [sq.jN, sq.jF]) {
+    const f = repere(j.cheville, j.pied, c.pied);
+    for (const x of [-14, 20, c.pointe]) y = Math.max(y, f(x, c.semelle).y);
+    y = Math.max(y, j.genou.y + c.rGenou);
+  }
+  return y;
+}
+
+/** point sur la jambe : t = 1 au genou, 2 à la cheville */
+const surJambe = (j, t) => (t <= 1 ? lerp(j.hanche, j.genou, t) : lerp(j.genou, j.cheville, Math.min(1, t - 1)));
+const prise = (b, c) => repereMembre(b.poignet, b.dir, c.main)(1, 14); // centre du poing
+
+// ——— pièces communes ———
+
+const SOULIER = 'M -12 -10 C -17 0 -18 10 -16 20 L 38 20 C 47 20 52 16 51 11 C 50 6 40 3 28 1 C 18 -1 12 -7 10 -10 Z';
+const BOTTINE = 'M -11 -14 C -15 0 -16 10 -14 18 L 34 18 C 42 18 45 14 44 10 C 42 6 32 3 22 1 C 14 -1 10 -8 9 -14 Z';
+const MAINS = {
+  ouverte: 'M -9 0 C -12 14 -11 30 -6 40 C -2 47 5 47 8 41 C 11 33 12 22 11 13 C 15 15 18 13 17 9 C 15 5 11 2 9 0 Z',
+  poing: 'M -10 0 C -13 12 -10 26 0 27 C 10 28 14 18 13 7 C 13 3 11 0 9 0 Z',
+  doigt: 'M -10 0 C -13 12 -10 26 0 27 C 10 28 14 18 13 7 C 13 3 11 0 9 0 Z',
+};
+
+function main(D, b, c) {
+  if (b.main === 'cachee' || b.main === 'poche') return;
+  const f = repereMembre(b.poignet, b.dir, c.main);
+  D.forme(MAINS[b.main], f);
+  if (b.main === 'doigt') D.membre(f(4, 18), f(4, 46), 4.6 * c.main, 3.6 * c.main);
+  if (b.main === 'ouverte') D.membre(f(9, 6), f(17, 22), 4 * c.main, 3 * c.main); // pouce
+}
+
+function jambes(D, sq, c, chaussure = SOULIER) {
+  for (const j of [sq.jF, sq.jN]) {
+    D.membre(j.hanche, j.genou, c.rCuisse, c.rGenou);
+    D.membre(j.genou, j.cheville, c.rGenou, c.rCheville);
+    D.forme(chaussure, repere(j.cheville, j.pied, c.pied));
+  }
+}
+
+function brasEtMains(D, sq, c) {
+  for (const b of [sq.bF, sq.bN]) {
+    D.membre(b.epaule, b.coude, c.rBras, c.rCoude);
+    D.membre(b.coude, b.poignet, c.rCoude, c.rPoignet);
+    main(D, b, c);
+  }
+  const b = sq.bN;
+  // revers de manche
+  const f = repereMembre(b.poignet, b.dir - (b.s.w ?? 0));
+  D.pli(`M ${-c.rPoignet - 1} -6 L ${c.rPoignet + 1} -6`, f, 1.6);
+}
+
+/** manteau : un contour qui suit le dos, descend derrière la jambe arrière, se creuse un peu entre
+ *  les jambes quand elles s'écartent, puis remonte devant la jambe avant jusqu'au ventre.
+ *  m.dos et m.ventre : points du buste (repère du buste), du haut vers le bas et du bas vers le haut. */
+function manteau(D, sq, c, m) {
+  const bord = (j, t, plus) => {
+    const o = surJambe(j, t);
+    const u = unit(sub(surJambe(j, t + 0.04), surJambe(j, Math.max(0, t - 0.04))));
+    const n = v(-u.y, u.x);
+    const r = (t <= 1 ? c.rCuisse + (c.rGenou - c.rCuisse) * t : c.rGenou) + plus;
+    return [add(o, mul(n, r)), sub(o, mul(n, r))];
+  };
+  const dos = m.dos.map(([x, y]) => sq.T(x, y));
+  const ventre = m.ventre.map(([x, y]) => sq.T(x, y));
+  if ((sq.jN.h + sq.jF.h) / 2 > 60) {
+    // assis : le manteau couvre les cuisses et retombe derrière sur le siège
+    const pts = [...dos, ...ventre];
+    for (const j of [sq.jN, sq.jF]) pts.push(...bord(j, Math.min(m.long, 0.95), m.ample * 0.6));
+    if (m.basque) pts.push(sq.T(...m.basque));
+    const tour = enveloppe(pts);
+    const d = arrondi(tour, 0.3);
+    D.formePts(d, tour);
+    return d;
+  }
+  const [ar, av] = [sq.jN, sq.jF].sort((a, b) => surJambe(a, m.long).x - surJambe(b, m.long).x);
+  const cote = (j, t, plus, devant) => {
+    const [p, q] = bord(j, t, plus);
+    return (p.x > q.x) === devant ? p : q;
+  };
+  // l'ourlet tombe droit, à la hauteur moyenne des deux jambes ; une fente s'ouvre au milieu quand elles s'écartent
+  const t0 = Math.min(0.3, m.long);
+  const bas = [ar, av].flatMap((j) => bord(j, m.long, m.ample));
+  const yh = (surJambe(ar, m.long).y + surJambe(av, m.long).y) / 2;
+  const xb = Math.min(...bas.map((p) => p.x));
+  const xf = Math.max(...bas.map((p) => p.x));
+  const xm = (surJambe(ar, m.long).x + surJambe(av, m.long).x) / 2;
+  const ecart = surJambe(av, m.long).x - surJambe(ar, m.long).x;
+  const fh = (m.fente ?? 0.1) * c.cuisse * Math.max(0, Math.min(1, (ecart - 40) / 60));
+  const fente = fh > 6 ? [v(xm - 7, yh), v(xm, yh - fh), v(xm + 7, yh)] : [];
+  const tour = [...dos, cote(ar, t0, m.ample * 0.4, false), v(xb, yh), ...fente, v(xf, yh), cote(av, t0, m.ample * 0.4, true), ...ventre];
+  const d = arrondi(tour, 0.2);
+  D.formePts(d, tour);
+  if (fente.length) D.pli(`M${pt(v(xm, yh - fh))} L${pt(v(xm, yh - fh - 30))}`, null, 1.6);
+  return d;
+}
+
+function tete(D, sq, pose, c, traces) {
+  const f = repere(sq.cou, sq.lean + (pose.tete ?? 0), c.tete);
+  const debut = D.pts.length;
+  for (const d of traces) D.forme(d, f);
+  D.tete = boite(D.pts.slice(debut));
+  return f;
+}
+
+function boite(pts) {
+  const xs = pts.map((p) => p.x);
+  const ys = pts.map((p) => p.y);
+  const x = Math.min(...xs);
+  const y = Math.min(...ys);
+  return [num(x), num(y), num(Math.max(...xs) - x), num(Math.max(...ys) - y)].map(Number);
+}
+
+// ——— objets tenus ———
+
+const OBJETS = {
+  canne(D, sq, c, o) {
+    const b = o.bras === 'F' ? sq.bF : sq.bN;
+    const g = prise(b, c);
+    const bas = v(g.x + (o.dx ?? 0), 0);
+    const u = unit(sub(bas, g));
+    D.membre(sub(g, mul(u, 16)), bas, 3.6, 3);
+    D.rond(sub(g, mul(u, 18)), 6.5);
+  },
+  lanterne(D, sq, c, o) {
+    const b = o.bras === 'F' ? sq.bF : sq.bN;
+    const f = repere(prise(b, c), 0); // la lanterne pend droit
+    D.forme('M -4 -10 C -4 -16 4 -16 4 -10 L 3 4 L -3 4 Z', f);
+    D.forme('M -6 4 L 6 4 L 6 -2 L -6 -2 Z M -12 12 C -12 4 12 4 12 12 Z', f);
+    D.forme('M -13 12 L 13 12 L 13 46 C 13 51 -13 51 -13 46 Z', f);
+    D.forme('M 12 18 C 22 18 23 40 12 40 Z', f);
+    D.pli('M -13 22 L 13 22 M -13 38 L 13 38', f, 1.6);
+    if (o.allumee !== false) {
+      D.accent('M 13 20 C 21 20 21 38 13 38 C 15 32 15 26 13 20 Z', f, '#f2c35b');
+      D.accents.push(`<ellipse cx="${num(f(26, 29).x)}" cy="${num(f(26, 29).y)}" rx="20" ry="16" fill="#f2c35b" opacity="0.18"/>`);
+    }
+  },
+  matraque(D, sq, c, o) {
+    const b = o.bras === 'F' ? sq.bF : sq.bN;
+    const f = repereMembre(b.poignet, b.dir + (o.rot ?? 0), c.main);
+    D.membre(f(1, 4), f(1, 66), 4.5, 5.5);
+  },
+  carnet(D, sq, c, o) {
+    const b = o.bras === 'F' ? sq.bF : sq.bN;
+    const f = repere(prise(b, c), o.rot ?? 0);
+    if (o.ferme) {
+      D.forme('M -4 -30 L 22 -30 L 22 6 L -4 6 Z', f);
+      D.trait('M 20 -27 L 20 3', f, PAPIER, 1.6, ' opacity="0.8"');
+      return;
+    }
+    D.forme('M -6 -40 L 32 -40 L 32 8 L -6 8 Z', f);
+    D.accent('M -3 -37 L 29 -37 L 29 5 L -3 5 Z', f, PAPIER);
+    D.trait('M 2 -28 L 24 -28 M 2 -20 L 22 -20 M 2 -12 L 25 -12 M 2 -4 L 16 -4', f, '#8d8468', 1.2);
+  },
+  crayon(D, sq, c, o) {
+    const b = o.bras === 'F' ? sq.bF : sq.bN;
+    const f = repereMembre(prise(b, c), b.dir + (o.rot ?? 0));
+    D.trait('M 0 -8 L 0 22', f, '#d6ad3a', 4.2);
+    D.trait('M 0 22 L 0 28', f, '#3a2f1c', 2.2);
+  },
+  journal(D, sq, c, o) {
+    const b = o.bras === 'F' ? sq.bF : sq.bN;
+    const k = o.taille ?? 1;
+    const f = repere(prise(b, c), o.rot ?? -8, k);
+    D.forme('M -10 4 L -18 -74 L 40 -86 L 52 -8 Z', f);
+    D.accent('M -7 0 L -14 -70 L 37 -81 L 48 -10 Z', f, '#cfc6a8');
+    if (o.titre) {
+      const p0 = f(-8, -61);
+      D.accents.push(`<text transform="translate(${pt(p0)}) rotate(${num((o.rot ?? -8) - 12.8)})" font-family="Georgia, serif" font-weight="bold" font-size="${num(7.6 * k)}" fill="#2a241c">${o.titre}</text>`);
+    } else D.trait('M -10 -60 L 34 -70', f, '#2a241c', 4);
+    D.trait('M -9 -50 L 12 -54 M -8 -42 L 12 -46 M -7 -34 L 13 -38 M -6 -26 L 14 -30 M 18 -55 L 38 -59 M 19 -47 L 40 -51 M 20 -39 L 41 -43 M 21 -31 L 42 -35', f, '#6d6550', 1.4);
+  },
+  loupe(D, sq, c, o) {
+    const b = o.bras === 'F' ? sq.bF : sq.bN;
+    const f = repereMembre(prise(b, c), b.dir + (o.rot ?? 0));
+    D.membre(f(0, -6), f(0, 26), 4.2, 3.6);
+    const centre = f(0, 46);
+    D.formePts(
+      `M${pt(add(centre, v(-20, 0)))} A20 20 0 1 0 ${pt(add(centre, v(20, 0)))} A20 20 0 1 0 ${pt(add(centre, v(-20, 0)))} Z M${pt(add(centre, v(-14.5, 0)))} A14.5 14.5 0 1 1 ${pt(add(centre, v(14.5, 0)))} A14.5 14.5 0 1 1 ${pt(add(centre, v(-14.5, 0)))} Z`,
+      [sub(centre, v(20, 20)), add(centre, v(20, 20))],
+      ' fill-rule="evenodd"',
+    );
+    D.accents.push(`<circle cx="${num(centre.x)}" cy="${num(centre.y)}" r="14.5" fill="#bfe0d8" opacity="0.32"/>`);
+    D.accents.push(`<path d="M${pt(add(centre, v(-8, -7)))} Q${pt(add(centre, v(-4, -11)))} ${pt(add(centre, v(2, -11)))}" fill="none" stroke="#e9f4f1" stroke-width="2" stroke-linecap="round" opacity="0.7"/>`);
+  },
+  panier(D, sq, c, o) {
+    const b = o.bras === 'F' ? sq.bF : sq.bN;
+    const f = repere(lerp(b.coude, b.poignet, 0.62), 0);
+    D.forme('M -26 40 C -30 -8 30 -8 26 40 L 21 40 C 24 2 -24 2 -21 40 Z', f);
+    D.forme('M -38 34 L 38 34 L 37 41 L -37 41 Z', f);
+    D.forme('M -35 40 L 35 40 C 33 62 22 74 0 74 C -22 74 -33 62 -35 40 Z', f);
+    D.pli('M -33 50 L 33 50 M -29 60 L 29 60 M -12 42 L -10 72 M 12 42 L 10 72', f, 1.5);
+  },
+  cravache(D, sq, c, o) {
+    const b = o.bras === 'F' ? sq.bF : sq.bN;
+    const f = repereMembre(prise(b, c), b.dir + (o.rot ?? 0));
+    D.membre(f(0, -12), f(0, 96), 3.6, 1.5);
+    D.forme('M -4 94 L 4 94 L 6 108 L -6 108 Z', f);
+    D.rond(f(0, -14), 5);
+  },
+  convocation(D, sq, c, o) {
+    const b = o.bras === 'F' ? sq.bF : sq.bN;
+    const f = repere(prise(b, c), o.rot ?? -14);
+    D.accent('M -6 -10 L 40 -10 L 40 20 L -6 20 Z', f, PAPIER);
+    D.trait('M 0 -2 L 30 -2 M 0 5 L 34 5 M 0 12 L 22 12', f, '#8d8468', 1.2);
+  },
+};
+
+function objets(D, sq, c, pose) {
+  for (const o of pose.objets ?? []) OBJETS[o.type](D, sq, c, o);
+}
+
+// ——— visages et coiffes (repère de la tête : origine en haut du cou, x vers l'avant) ———
+
+const VISAGE = (nez = 0) =>
+  `M -14 24 C -14 14 -16 6 -19 0 C -29 -6 -33 -22 -32 -40 C -31 -60 -15 -73 4 -74 C 22 -74 33 -64 35 -50 C 36 -44 38 -40 39 -37 C 36 -35 35 -33 36 -31 C 38 -27 ${42 + nez * 0.5} -22 ${47 + nez} -17 C ${48 + nez} -15 ${45 + nez * 0.5} -13 42 -13 C 40 -13 39 -12 40 -10 C 41 -8 40 -7 38 -6 C 39 -5 40 -3 39 -2 C 37 0 36 2 37 4 C 38 7 36 10 32 11 C 26 12 20 11 16 10 C 12 12 11 17 11 24 Z`;
+const VISAGE_F =
+  'M -12 24 C -12 14 -14 6 -16 0 C -26 -6 -29 -20 -28 -36 C -27 -54 -13 -66 4 -67 C 20 -67 29 -58 31 -46 C 32 -41 33 -38 34 -35 C 32 -33 31 -31 32 -29 C 34 -26 37 -22 40 -18 C 41 -16 39 -14 36 -14 C 35 -13 35 -12 36 -11 C 36 -9 35 -8 34 -7 C 35 -6 35 -4 34 -3 C 32 -1 32 1 32 3 C 32 6 29 8 26 8 C 21 9 17 8 14 8 C 11 10 10 16 10 24 Z';
+
+const HOMME = {
+  cuisse: 138, tibia: 134, bras: 104, avant: 88,
+  hanche: [0, 0], epaule: [-2, -168], cou: [8, -198],
+  rCuisse: 24, rGenou: 16, rCheville: 11, rBras: 14, rCoude: 12, rPoignet: 9,
+  semelle: 20, pointe: 50, pied: 1, main: 1, tete: 1.1,
+};
+
+// ——— les personnages ———
+
+const commissaire = {
+  id: 'commissaire',
+  nom: 'Le commissaire',
+  portrait: 'gros, grosse barbe, casquette d’officier à galon d’or, redingote, canne',
+  c: { ...HOMME, cuisse: 132, tibia: 128, rCuisse: 30, rGenou: 19, rCheville: 13, rBras: 18, rCoude: 15, rPoignet: 11, cou: [12, -196], main: 1.08, pied: 1.05, tete: 1.16 },
+  dessiner(D, sq, pose, c) {
+    jambes(D, sq, c);
+    D.forme(
+      'M -12 -192 C -26 -188 -38 -178 -40 -160 C -44 -134 -42 -104 -38 -80 C -36 -60 -40 -36 -42 -16 C -44 4 -36 18 -20 22 L 30 24 C 60 20 84 0 88 -30 C 92 -62 80 -96 60 -118 C 50 -130 44 -150 38 -166 C 32 -180 24 -188 16 -192 Z',
+      sq.T,
+    );
+    manteau(D, sq, c, { dos: [[-40, -70], [-42, 10]], ventre: [[60, -6], [74, -40]], long: 0.92, ample: 10, fente: 0.45, basque: [-46, 20] });
+    brasEtMains(D, sq, c);
+    const f = tete(D, sq, pose, c, [
+      VISAGE(5),
+      // barbe touffue qui tombe sur la poitrine, moustache sous le nez
+      'M -6 -40 C -12 -30 -12 -16 -8 -4 C -8 8 -2 20 4 32 C 7 40 12 46 18 52 C 22 48 25 54 31 52 C 35 48 39 50 41 44 C 45 40 48 36 47 28 C 50 22 48 16 48 10 C 50 4 46 0 46 -4 C 51 -5 52 -9 47 -11 C 44 -12 42 -11 39 -12 L 30 -28 Z',
+      // casquette à visière
+      'M -31 -40 L -33 -58 C -38 -62 -38 -69 -31 -71 L 31 -75 C 38 -75 39 -68 34 -63 L 33 -50 C 42 -49 50 -45 54 -40 C 47 -38 40 -40 32 -42 Z',
+    ]);
+    D.pli('M 6 10 C 10 22 14 32 18 42 M 22 2 C 26 16 30 26 30 40 M 38 -2 C 40 10 42 20 40 32', f, 1.6);
+    D.trait('M -32 -49 L 33 -53', f, OR, 3);
+    D.accents.push(`<circle cx="${num(f(25, -62).x)}" cy="${num(f(25, -62).y)}" r="3.5" fill="${OR}"/>`);
+    // boutons et chaîne de montre sur la panse
+    const T = sq.T;
+    for (const [x, y] of [[48, -128], [70, -98], [82, -66], [84, -34]]) {
+      const p = T(x, y);
+      D.accents.push(`<circle cx="${num(p.x)}" cy="${num(p.y)}" r="3.2" fill="${OR}" opacity="0.9"/>`);
+    }
+    D.trait('M 50 -58 C 58 -46 70 -44 80 -48', T, OR, 1.8, ' opacity="0.85"');
+    // médailles de campagne : rubans et disques
+    [['#8c2a24', 28], ['#2f5687', 36], ['#c9a04a', 44], ['#8c2a24', 52]].forEach(([ruban, x]) => {
+      D.accent(`M ${x} -126 L ${x + 6} -126 L ${x + 6} -115 L ${x} -115 Z`, T, ruban);
+      const p = T(x + 3, -110);
+      D.accents.push(`<circle cx="${num(p.x)}" cy="${num(p.y)}" r="3.4" fill="${OR}"/>`);
+    });
+    D.pli('M 56 -122 C 76 -96 86 -64 86 -30 C 84 -6 72 12 56 20', T, 1.8);
+    objets(D, sq, c, pose);
+  },
+  poses: {
+    debout: {
+      nom: 'debout, appuyé sur sa canne',
+      lean: -3, tete: -3,
+      jN: { h: 6, k: 0 }, jF: { h: -5, k: 0 },
+      bN: { a: 24, e: 14, main: 'poing' }, bF: { a: -26, e: 100, main: 'cachee', ra: 0.45 },
+      objets: [{ type: 'canne', bras: 'N', dx: 14 }],
+    },
+    marche: {
+      nom: 'marche, la canne en avant',
+      lean: 3,
+      jN: { h: 20, k: 4, f: -14 }, jF: { h: -16, k: 22, f: 26 },
+      bN: { a: 28, e: 18, main: 'poing' }, bF: { a: -20, e: 16, main: 'ouverte' },
+      objets: [{ type: 'canne', bras: 'N', dx: 30 }],
+    },
+    accuse: {
+      nom: 'pointe du doigt, poing sur la hanche',
+      lean: 4, tete: -6,
+      jN: { h: 12, k: 2 }, jF: { h: -8, k: 0 },
+      bN: { a: 96, e: 2, main: 'doigt' }, bF: { a: -38, e: 112, main: 'cachee', ra: 0.55 },
+    },
+    brandit: {
+      nom: 'brandit un journal froissé, la cravache à la main',
+      lean: -4, tete: -8,
+      jN: { h: 12, k: 2 }, jF: { h: -9, k: 0 },
+      bN: { a: 146, e: 12, main: 'poing' }, bF: { a: 14, e: 34, main: 'poing' },
+      objets: [{ type: 'journal', bras: 'N', titre: 'THE COMET', taille: 1.6, rot: -6 }, { type: 'cravache', bras: 'F', rot: 12 }],
+    },
+    assis: {
+      nom: 'assis, les mains sur la canne',
+      lean: -8, siege: true,
+      jN: { h: 82, k: 84 }, jF: { h: 88, k: 80 },
+      bN: { a: 44, e: 34, main: 'poing' }, bF: { a: 40, e: 40, main: 'poing' },
+      objets: [{ type: 'canne', bras: 'N', dx: 8 }],
+    },
+  },
+};
+
+const agent = {
+  id: 'agent',
+  nom: 'L’agent',
+  portrait: 'grand, casque de la police métropolitaine, moustache, tunique ceinturée, lanterne sourde, matraque',
+  c: { ...HOMME, cuisse: 146, tibia: 142, bras: 108, avant: 92, epaule: [-2, -176], cou: [8, -206], rCuisse: 23, rGenou: 15, rBras: 13, rCoude: 11.5 },
+  dessiner(D, sq, pose, c) {
+    jambes(D, sq, c, BOTTINE);
+    D.forme(
+      'M -10 -202 C -22 -198 -32 -188 -34 -172 C -38 -146 -36 -116 -32 -92 C -30 -76 -32 -54 -34 -34 C -36 -12 -31 8 -18 16 L 16 18 C 28 10 30 -12 30 -36 C 30 -60 30 -80 34 -104 C 40 -130 40 -164 28 -184 C 24 -192 20 -196 16 -200 Z',
+      sq.T,
+    );
+    manteau(D, sq, c, { dos: [[-34, -64]], ventre: [[31, -64]], long: 0.42, ample: 6, fente: 0.2 });
+    // ceinturon et boucle
+    D.pli('M -36 -64 L 32 -64 M -36 -54 L 32 -54', sq.T, 1.8);
+    const boucle = sq.T(30, -59);
+    D.accents.push(`<rect x="${num(boucle.x - 4)}" y="${num(boucle.y - 5)}" width="6" height="10" fill="${ARGENT}" opacity="0.85"/>`);
+    for (const y of [-160, -134, -108, -84]) {
+      const p = sq.T(31 + (y < -120 ? 4 : 0), y);
+      D.accents.push(`<circle cx="${num(p.x)}" cy="${num(p.y)}" r="2.6" fill="${ARGENT}" opacity="0.8"/>`);
+    }
+    brasEtMains(D, sq, c);
+    const f = tete(D, sq, pose, c, [
+      VISAGE(1),
+      // moustache
+      'M 37 -12 C 45 -13 50 -9 49 -3 C 44 -5 39 -5 35 -7 Z',
+      // casque
+      'M -40 -24 C -36 -27 -34 -32 -33 -40 C -32 -66 -22 -86 -4 -94 L -3 -99 L -1 -105 L 2 -105 L 4 -99 L 5 -95 C 22 -90 32 -76 34 -60 C 35 -52 38 -48 44 -44 C 46 -42 44 -40 40 -40 C 30 -42 10 -44 -10 -40 C -22 -36 -32 -28 -40 -24 Z',
+    ]);
+    if (pose.galons) {
+      const b = sq.bN;
+      const u = unit(sub(b.coude, b.epaule));
+      const g = repereMembre(lerp(b.epaule, b.coude, 0.5), Math.atan2(u.x, u.y) / RAD);
+      for (let k = 0; k < pose.galons; k++) D.trait(`M -8 ${k * 7 - 6} L 0 ${k * 7} L 8 ${k * 7 - 6}`, g, '#c7c0a4', 2.4);
+    }
+    if (pose.poche) {
+      // poche de poitrine : une pièce d'argent et le coin d'une carte de visite
+      D.pli('M 6 -150 L 26 -150 L 26 -132 L 6 -132 Z', sq.T, 1.6);
+      D.accent('M 12 -150 L 22 -152 L 23 -157 L 13 -155 Z', sq.T, PAPIER);
+      const piece = sq.T(10, -152);
+      D.accents.push(`<circle cx="${num(piece.x)}" cy="${num(piece.y)}" r="3.2" fill="#c9cfc8"/>`);
+    }
+    D.pli('M -33 -40 C -10 -46 16 -46 36 -44', f, 1.6);
+    D.accent('M 20 -74 L 22 -68 L 28 -68 L 23 -64 L 25 -58 L 20 -62 L 15 -58 L 17 -64 L 12 -68 L 18 -68 Z', f, ARGENT, ' opacity="0.9"');
+    objets(D, sq, c, pose);
+  },
+  poses: {
+    debout: {
+      nom: 'au repos, les mains dans le dos',
+      lean: -2, tete: -2,
+      jN: { h: 4, k: 0 }, jF: { h: -4, k: 0 },
+      bN: { a: -22, e: 96, main: 'cachee', ra: 0.4 }, bF: { a: -18, e: 90, main: 'cachee', ra: 0.4 },
+    },
+    ronde: {
+      nom: 'fait sa ronde, lanterne à la main',
+      lean: 3,
+      jN: { h: 20, k: 4, f: -14 }, jF: { h: -16, k: 22, f: 26 },
+      bN: { a: 16, e: 30, main: 'poing' }, bF: { a: -20, e: 14, main: 'ouverte' },
+      objets: [{ type: 'lanterne', bras: 'N' }],
+    },
+    halte: {
+      nom: 'lève la main : halte !',
+      tete: -4,
+      jN: { h: 14, k: 2 }, jF: { h: -10, k: 0 },
+      bN: { a: 84, e: 84, main: 'ouverte' }, bF: { a: 6, e: 20, main: 'poing' },
+      objets: [{ type: 'matraque', bras: 'F' }],
+    },
+    sergent: {
+      nom: 'sergent de service, tête basse, les mains sur le comptoir',
+      lean: 6, tete: 26, galons: 3, poche: true,
+      jN: { h: 4, k: 0 }, jF: { h: -4, k: 0 },
+      bN: { a: 22, e: 58, main: 'poing' }, bF: { a: 30, e: 52, main: 'poing' },
+    },
+    examine: {
+      nom: 'un genou à terre, éclaire le sol',
+      lean: 28, tete: 18,
+      jN: { h: 92, k: 96 }, jF: { h: 4, k: 92, f: 70 },
+      bN: { a: 40, e: -6, main: 'poing' }, bF: { a: 24, e: 20, main: 'ouverte' },
+      objets: [{ type: 'lanterne', bras: 'N' }],
+    },
+  },
+};
+
+const journaliste = {
+  id: 'journaliste',
+  nom: 'Le journaliste',
+  portrait: 'chapeau melon, crayon derrière l’oreille, long pardessus, carnet',
+  c: { ...HOMME },
+  dessiner(D, sq, pose, c) {
+    jambes(D, sq, c);
+    const BUSTE = 'M -10 -194 C -22 -190 -32 -180 -34 -164 C -38 -138 -37 -110 -33 -86 C -31 -70 -33 -50 -35 -30 C -37 -10 -32 8 -18 16 L 16 18 C 28 10 32 -12 32 -38 C 32 -62 30 -82 32 -104 C 36 -130 36 -160 26 -178 C 23 -184 20 -188 16 -192 Z';
+    D.forme(BUSTE, sq.T);
+    const dManteau = manteau(D, sq, c, { dos: [[-36, -96], [-38, -20]], ventre: [[34, -20], [33, -96]], long: 1.1, ample: 14, fente: 0.55 });
+    // col relevé et rabat de poche
+    D.forme('M -14 -200 C -24 -196 -30 -186 -32 -174 L -10 -178 Z', sq.T);
+    D.pli('M 30 -170 C 22 -140 26 -100 30 -60', sq.T, 1.8);
+    brasEtMains(D, sq, c);
+    const f = tete(D, sq, pose, c, [
+      VISAGE(2),
+      'M -27 -46 C -30 -62 -24 -84 2 -85 C 26 -85 32 -64 29 -46 Z',
+      'M -40 -44 C -37 -49 -20 -49 0 -49 C 18 -49 38 -52 45 -47 C 46 -43 42 -42 38 -43 C 18 -44 -14 -45 -34 -40 C -39 -39 -42 -41 -40 -44 Z',
+    ]);
+    D.pli('M -27 -52 C -6 -54 14 -54 29 -52', f, 2.2);
+    // manteau à carreaux : le motif ne couvre que le buste, le manteau et les manches
+    const manches = [sq.bN, sq.bF].flatMap((b) => [gelule(b.epaule, b.coude, c.rBras, c.rCoude), gelule(b.coude, b.poignet, c.rCoude, c.rPoignet)]);
+    D.defs.push(`<clipPath id="{id}-manteau"><path d="${trace(BUSTE, sq.T)}"/><path d="${dManteau}"/>${manches.map((d) => `<path d="${d}"/>`).join('')}</clipPath>`);
+    D.defs.push(`<pattern id="{id}-carreaux" patternUnits="userSpaceOnUse" width="18" height="18" patternTransform="rotate(${num(sq.lean)})"><path d="M0 9 H18 M9 0 V18" stroke="#6a5a3c" stroke-width="2.2" opacity="0.55"/><path d="M0 3 H18 M3 0 V18" stroke="#33423f" stroke-width="1.2" opacity="0.7"/></pattern>`);
+    D.accents.push(`<rect x="-400" y="-800" width="800" height="800" fill="url(#{id}-carreaux)" clip-path="url(#{id}-manteau)"/>`);
+    // le crayon reste derrière l'oreille tant qu'il n'est pas dans la main
+    if (!(pose.objets ?? []).some((o) => o.type === 'crayon')) D.trait('M -12 -22 L 4 -36', f, '#d6ad3a', 3.4);
+    objets(D, sq, c, pose);
+  },
+  poses: {
+    note: {
+      nom: 'prend des notes',
+      lean: 2, tete: 12,
+      jN: { h: 5, k: 0 }, jF: { h: -5, k: 0 },
+      bN: { a: 26, e: 98, main: 'poing' }, bF: { a: 18, e: 108, main: 'poing' },
+      objets: [{ type: 'carnet', bras: 'N', rot: -10 }, { type: 'crayon', bras: 'F', rot: 40 }],
+    },
+    carnet: {
+      nom: 'serre son carnet contre lui, le crayon derrière l’oreille',
+      lean: 3, tete: 6,
+      jN: { h: 6, k: 0 }, jF: { h: -4, k: 0 },
+      bN: { a: 12, e: 116, main: 'poing' }, bF: { a: 4, e: 24, main: 'poche' },
+      objets: [{ type: 'carnet', bras: 'N', rot: 8, ferme: true }],
+    },
+    presse: {
+      nom: 'marche vite, carnet en main',
+      lean: 8,
+      jN: { h: 24, k: 6, f: -16 }, jF: { h: -20, k: 30, f: 32 },
+      bN: { a: -24, e: 30, main: 'poing' }, bF: { a: 24, e: 30, main: 'poing' },
+      objets: [{ type: 'carnet', bras: 'N', rot: 20, ferme: true }],
+    },
+    interroge: {
+      nom: 'penché, tend l’oreille et le carnet',
+      lean: 14, tete: 4,
+      jN: { h: 16, k: 8 }, jF: { h: -10, k: 2 },
+      bN: { a: 70, e: 18, main: 'poing' }, bF: { a: 34, e: 84, main: 'poing' },
+      objets: [{ type: 'carnet', bras: 'N', rot: -6 }, { type: 'crayon', bras: 'F', rot: 40 }],
+    },
+    brandit: {
+      nom: 'brandit le journal',
+      lean: -2, tete: -10,
+      jN: { h: 12, k: 2 }, jF: { h: -8, k: 0 },
+      bN: { a: 150, e: 14, main: 'poing' }, bF: { a: -34, e: 110, main: 'cachee', ra: 0.55 },
+      objets: [{ type: 'journal', bras: 'N' }],
+    },
+  },
+};
+
+const ECHARPE = '#b3873a';
+
+const joueur = {
+  id: 'joueur',
+  nom: 'Le joueur',
+  portrait: 'petit reporter de l’East End : jeune, mince, casquette plate, écharpe, veste courte, loupe de détective',
+  c: { ...HOMME, cuisse: 132, tibia: 128, bras: 98, avant: 84, epaule: [-2, -160], cou: [6, -188], rCuisse: 20, rGenou: 14, rCheville: 10, rBras: 12, rCoude: 10, rPoignet: 8, main: 0.92, pied: 0.94, tete: 1.06 },
+  dessiner(D, sq, pose, c) {
+    jambes(D, sq, c, BOTTINE);
+    D.forme(
+      'M -9 -184 C -20 -180 -29 -170 -31 -156 C -34 -132 -33 -106 -30 -84 C -28 -68 -30 -50 -31 -30 C -33 -10 -29 6 -16 14 L 14 16 C 25 8 28 -12 28 -36 C 28 -60 27 -80 29 -100 C 32 -124 31 -152 23 -168 C 20 -176 18 -180 14 -182 Z',
+      sq.T,
+    );
+    manteau(D, sq, c, { dos: [[-31, -60]], ventre: [[29, -60]], long: 0.14, ample: 5 });
+    // mains dans les poches : l'avant-bras plonge dans la veste
+    brasEtMains(D, sq, c);
+    const f = tete(D, sq, pose, c, [
+      VISAGE(-2),
+      // mèche dans la nuque
+      'M -30 -40 C -36 -32 -34 -22 -28 -14 C -27 -20 -24 -24 -24 -30 C -22 -26 -20 -24 -18 -24 Z',
+      // casquette plate
+      'M -33 -40 C -37 -52 -30 -70 -6 -76 C 16 -80 34 -72 40 -60 C 44 -56 52 -54 56 -50 C 56 -46 50 -45 44 -45 C 30 -45 8 -45 -10 -42 C -20 -40 -28 -38 -33 -40 Z',
+    ]);
+    D.pli('M -30 -46 C -8 -50 18 -50 40 -50', f, 1.6);
+    // écharpe : un tour au cou, un pan qui pend ou vole au vent
+    const T = sq.T;
+    const tour = 'M -16 -194 C -6 -200 14 -198 22 -190 L 20 -176 C 10 -182 -6 -182 -16 -178 Z';
+    D.forme(tour, T);
+    D.accent(tour, T, ECHARPE);
+    const vent = pose.echarpe ?? 0;
+    const base = vent > 20 ? T(-12, -186) : T(16, -184);
+    const r = ruban(base, vent > 20 ? -vent : 6 + (pose.lean ?? 0) * 0.2, vent > 20 ? 92 : 78, 15, vent > 20 ? 7 : 2, 0.85);
+    D.formePts(r.d, r.pts);
+    D.accent(r.d, null, ECHARPE);
+    D.trait(`M${pt(add(r.bout, mul(r.n, 6)))} L${pt(add(add(r.bout, mul(r.n, 6)), mul(r.u, 9)))} M${pt(r.bout)} L${pt(add(r.bout, mul(r.u, 10)))} M${pt(sub(r.bout, mul(r.n, 6)))} L${pt(add(sub(r.bout, mul(r.n, 6)), mul(r.u, 9)))}`, null, ECHARPE, 2);
+    D.trait('M -14 -186 C -2 -191 12 -189 21 -183', T, '#8a6526', 1.6);
+    objets(D, sq, c, pose);
+  },
+  poses: {
+    debout: {
+      nom: 'les mains dans les poches',
+      lean: 2, tete: 6,
+      jN: { h: 7, k: 0 }, jF: { h: -5, k: 0 },
+      bN: { a: 10, e: 30, main: 'poche' }, bF: { a: 6, e: 30, main: 'poche' },
+    },
+    marche: {
+      nom: 'presse le pas, l’écharpe au vent',
+      lean: 8, echarpe: 70,
+      jN: { h: 26, k: 8, f: -14 }, jF: { h: -22, k: 34, f: 34 },
+      bN: { a: -30, e: 40, main: 'poing' }, bF: { a: 30, e: 50, main: 'poing' },
+    },
+    loupe: {
+      nom: 'penché, la loupe à l’œil',
+      lean: 24, tete: 6,
+      jN: { h: 24, k: 26 }, jF: { h: -4, k: 12 },
+      bN: { a: 62, e: 72, main: 'poing' }, bF: { a: 16, e: 34, main: 'ouverte' },
+      objets: [{ type: 'loupe', bras: 'N' }],
+    },
+    assis: {
+      nom: 'assis, écrit sur son genou',
+      lean: 12, tete: 16, siege: true,
+      jN: { h: 80, k: 84 }, jF: { h: 86, k: 92 },
+      bN: { a: 40, e: 50, main: 'poing' }, bF: { a: 34, e: 70, main: 'poing' },
+      objets: [{ type: 'carnet', bras: 'F', rot: 70 }, { type: 'crayon', bras: 'N', rot: 20 }],
+    },
+  },
+};
+
+const CHALE = '#6e2420';
+
+const temoin = {
+  id: 'temoin',
+  nom: 'La témoin',
+  portrait: 'femme du quartier : bonnet, châle rouge, jupe longue à tournure',
+  c: { ...HOMME, cuisse: 128, tibia: 124, bras: 94, avant: 80, epaule: [-2, -150], cou: [6, -178], rCuisse: 20, rGenou: 14, rCheville: 9, rBras: 11, rCoude: 9.5, rPoignet: 7.5, main: 0.85, pied: 0.88, semelle: 18, pointe: 44 },
+  dessiner(D, sq, pose, c) {
+    const T = sq.T;
+    const H = sq.hanche;
+    for (const j of [sq.jF, sq.jN]) D.forme(BOTTINE, repere(j.cheville, j.pied, c.pied));
+    const assise = (sq.jN.h + sq.jF.h) / 2 > 60;
+    const genou = [sq.jN, sq.jF].reduce((a, j) => (j.genou.x > a.genou.x ? j : a));
+    const chevAv = Math.max(sq.jN.cheville.x, sq.jF.cheville.x);
+    const chevAr = Math.min(sq.jN.cheville.x, sq.jF.cheville.x);
+    let jupe;
+    if (assise) {
+      const K = genou.genou;
+      jupe = [
+        T(-22, -56), T(-36, -22), T(-40, 16), v(H.x + 6, H.y + 30), v(K.x - 40, K.y + 34), v(chevAr - 34, -2), v(chevAr - 28, 0),
+        v(K.x + 40, 0), v(K.x + 38, -10), v(K.x + 24, K.y + 4), v(K.x + 8, K.y - 24), T(36, -24), T(20, -56),
+      ];
+    } else {
+      const avant = Math.max(H.x + 60, chevAv + 30);
+      const arriere = Math.min(H.x - 74, chevAr - 34);
+      const bombe = Math.max(sq.jN.genou.x, sq.jF.genou.x) + 22;
+      jupe = [
+        T(-22, -56), T(-50, -36), T(-62, -4), v(H.x - 66, H.y + 70), v(arriere, -10), v(arriere + 4, 0),
+        v(avant, 0), v(avant + 2, -10), v(bombe, (H.y + sq.jN.genou.y) / 2 + 30), T(32, 10), T(20, -56),
+      ];
+    }
+    D.formePts(arrondi(jupe, 0.32), jupe);
+    D.forme(
+      'M -8 -176 C -18 -172 -26 -164 -28 -150 C -30 -126 -26 -100 -22 -78 C -20 -66 -22 -56 -24 -48 L 22 -48 C 20 -60 18 -72 20 -84 C 30 -96 36 -112 32 -134 C 30 -150 24 -164 14 -174 Z',
+      T,
+    );
+    if (!assise) {
+      // plis de la jupe
+      const bas = (x) => v(x, -2);
+      D.pli(`M${pt(T(4, -40))} Q${pt(v(H.x + 2, H.y + 120))} ${pt(bas(H.x - 4))}`, null, 2.2);
+      D.pli(`M${pt(T(-30, -10))} Q${pt(v(H.x - 40, H.y + 120))} ${pt(bas(H.x - 46))}`, null, 2.2);
+    } else {
+      const K = genou.genou;
+      D.pli(`M${pt(v(K.x + 18, K.y + 12))} Q${pt(v(K.x + 30, K.y + 70))} ${pt(v(K.x + 28, -2))}`, null, 2.2);
+      D.pli(`M${pt(v(K.x - 6, K.y + 20))} Q${pt(v(K.x - 2, K.y + 80))} ${pt(v(K.x - 10, -2))}`, null, 2.2);
+    }
+    brasEtMains(D, sq, c);
+    // châle : sur les épaules, pointe dans le dos ; il retombe sur le haut du bras proche
+    const CHALE_D = 'M -10 -184 C -24 -182 -34 -170 -36 -152 C -40 -126 -42 -100 -40 -78 L -34 -50 C -24 -66 -10 -84 4 -96 C 16 -106 30 -112 37 -116 C 39 -132 35 -150 27 -164 C 21 -174 13 -182 4 -186 Z';
+    D.forme(CHALE_D, T);
+    D.accent(CHALE_D, T, CHALE);
+    const b = sq.bN;
+    const u = unit(sub(b.coude, b.epaule));
+    const n = v(-u.y, u.x);
+    const coude = lerp(b.epaule, b.coude, 0.9);
+    const drape = enveloppe([b.epaule, add(coude, mul(n, c.rCoude + 5)), sub(coude, mul(n, c.rCoude + 5)), T(6, -104), T(-26, -104), T(-20, -170), T(18, -166)]);
+    const dDrape = arrondi(drape, 0.3);
+    D.formePts(dDrape, drape);
+    D.accent(dDrape, null, CHALE);
+    D.trait('M -36 -132 Q -30 -110 -37 -88 M -8 -170 Q 4 -142 22 -124', T, '#561c19', 2.2);
+    // franges
+    D.trait('M -38 -74 L -42 -64 M -36 -62 L -39 -52 M -28 -60 L -30 -50 M -20 -70 L -21 -60 M -10 -80 L -10 -70 M 0 -90 L 1 -80 M 12 -100 L 13 -90 M 24 -107 L 26 -97', T, '#4a1714', 2);
+    const f = tete(D, sq, pose, c, [
+      VISAGE_F,
+      // chignon sous le bonnet
+      'M -26 -28 C -38 -28 -40 -12 -30 -8 C -24 -8 -20 -16 -22 -24 Z',
+      // bonnet : posé sur l'arrière de la tête, la passe dégage le visage
+      'M -22 2 C -34 -4 -38 -26 -34 -46 C -30 -66 -12 -78 8 -77 C 24 -76 34 -68 37 -58 C 38 -52 35 -48 31 -50 C 23 -54 13 -54 8 -48 C 4 -40 2 -26 -2 -16 C -6 -8 -12 -2 -16 2 Z',
+      // nœud sous le menton
+      'M 14 8 C 8 4 4 10 8 14 C 12 16 14 14 16 12 C 18 16 22 20 26 16 C 28 10 22 8 18 10 Z',
+    ]);
+    D.pli('M 31 -50 C 23 -54 13 -54 8 -48 M -2 -16 C 4 -4 10 4 14 9', f, 1.6);
+    objets(D, sq, c, pose);
+  },
+  poses: {
+    debout: {
+      nom: 'debout, le panier au bras',
+      lean: -1, tete: 2,
+      jN: { h: 3, k: 0 }, jF: { h: -3, k: 0 },
+      bN: { a: 6, e: 84, main: 'poing' }, bF: { a: 10, e: 70, main: 'cachee' },
+      objets: [{ type: 'panier', bras: 'N' }],
+    },
+    marche: {
+      nom: 'marche, serre son châle',
+      lean: 4,
+      jN: { h: 18, k: 4, f: -10 }, jF: { h: -14, k: 20, f: 24 },
+      bN: { a: 20, e: 110, main: 'poing' }, bF: { a: -14, e: 20, main: 'cachee' },
+    },
+    montre: {
+      nom: 'montre du doigt, la main sur le cœur',
+      lean: -4, tete: -4,
+      jN: { h: 8, k: 0 }, jF: { h: -6, k: 0 },
+      bN: { a: 100, e: 0, main: 'doigt' }, bF: { a: 20, e: 120, main: 'ouverte' },
+    },
+    assise: {
+      nom: 'assise, la convocation à la main',
+      lean: 4, tete: 6, siege: true,
+      jN: { h: 84, k: 88 }, jF: { h: 88, k: 86 },
+      bN: { a: 34, e: 60, main: 'poing' }, bF: { a: 30, e: 50, main: 'cachee' },
+      objets: [{ type: 'convocation', bras: 'N' }],
+    },
+  },
+};
+
+const PERSOS = [commissaire, agent, journaliste, joueur, temoin];
+
+// ——— sortie ———
+
+function dessiner(perso, poseId) {
+  const pose = perso.poses[poseId];
+  const c = perso.c;
+  const bas = plusBas(c, squelette(c, pose, v(0, 0)));
+  const sq = squelette(c, pose, v(0, -bas));
+  const D = new Dessin();
+  perso.dessiner(D, sq, pose, c);
+  D.sq = sq;
+  return D;
+}
+
+function cadre(pts, marge = 6) {
+  const xs = pts.map((p) => p.x);
+  const ys = pts.map((p) => p.y);
+  const x = Math.floor(Math.min(...xs) - marge);
+  const y = Math.floor(Math.min(...ys) - marge);
+  return { x, y, w: Math.ceil(Math.max(...xs) + marge) - x, h: Math.max(2, Math.ceil(Math.max(...ys, 0) + 2)) - y };
+}
+
+/** le contenu d'une silhouette : <defs> (corps sans couleur, masque) + calques */
+function calques(id, D, b, lumiere = false) {
+  const propre = (t) => t.replaceAll('{id}', id);
+  const defs = `<g id="${id}">${D.corps.join('')}</g><mask id="${id}-dedans" maskUnits="userSpaceOnUse" x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}"><use href="#${id}" fill="#fff"/></mask>${propre(D.defs.join(''))}`;
+  const reflets = lumiere
+    ? `<use href="#${id}" x="-2.5" y="-2" fill="#9fbcb7" opacity="0.55"/><use href="#${id}" x="3" y="-1.5" fill="#e0ac4a" opacity="0.6"/>`
+    : '';
+  const corps = `${reflets}<use href="#${id}" fill="${NOIR}"/><g mask="url(#${id}-dedans)" fill="none" stroke="${PLI}" stroke-linecap="round">${D.plis.join('')}</g><g>${propre(D.accents.join(''))}</g>`;
+  return { defs, corps };
+}
+
+mkdirSync(DOSSIER, { recursive: true });
+const planche = [];
+const reperes = {};
+let fichiers = 0;
+for (const perso of PERSOS) {
+  const ligne = [];
+  for (const poseId of Object.keys(perso.poses)) {
+    const D = dessiner(perso, poseId);
+    const b = cadre(D.pts);
+    const id = `${perso.id}-${poseId}`;
+    const { defs, corps } = calques(id, D, b);
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${b.x} ${b.y} ${b.w} ${b.h}" width="${b.w}" height="${b.h}">
+<!-- ${perso.nom} (${perso.portrait}) : ${perso.poses[poseId].nom}.
+     Silhouette dessinée pour le jeu (tools/persos.mjs), d'après les profils découpés de l'époque. Tournée vers la droite ; le sol est en y = 0.
+     Calques : #${id} = forme seule (couleur héritée du <use>, pour les reflets de la scène), puis plis et couleurs. -->
+<defs>${defs}</defs>
+${corps}
+</svg>
+`;
+    writeFileSync(new URL(`${id}.svg`, DOSSIER), svg);
+    fichiers++;
+    // repères pour placer la silhouette dans une scène : hanche, assise, mains, tête (coordonnées du fichier)
+    const sq = D.sq;
+    const xy = (p) => [Number(num(p.x)), Number(num(p.y))];
+    reperes[id] = {
+      viewBox: [b.x, b.y, b.w, b.h],
+      hanche: xy(sq.hanche),
+      assise: Number(num(sq.hanche.y + perso.c.rCuisse)),
+      mains: { proche: xy(prise(sq.bN, perso.c)), loin: xy(prise(sq.bF, perso.c)) },
+      tete: D.tete,
+    };
+    ligne.push({ id, D, b, nom: perso.poses[poseId].nom });
+  }
+  planche.push({ perso, ligne });
+}
+
+writeFileSync(new URL('reperes.json', DOSSIER), `${JSON.stringify(reperes, null, 1)}\n`);
+
+// planche : une ligne par personnage, sur le mur du commissariat, avec les reflets de la scène
+const PAS_X = 330;
+const PAS_Y = 760;
+const L = Math.max(...planche.map((r) => r.ligne.length)) * PAS_X + 80;
+const H = PAS_Y * planche.length + 60;
+let defs = '';
+let corps = '';
+planche.forEach(({ perso, ligne }, i) => {
+  const y0 = 60 + i * PAS_Y + 640;
+  corps += `<text x="40" y="${y0 - 640}" class="nom">${perso.nom}</text><text x="40" y="${y0 - 612}" class="info">${perso.portrait}</text>`;
+  corps += `<rect x="0" y="${y0}" width="${L}" height="${PAS_Y - 640}" fill="#1a2423"/>`;
+  ligne.forEach(({ id, D, b, nom }, k) => {
+    const x0 = 40 + k * PAS_X + PAS_X / 2 - (b.x + b.w / 2);
+    const cq = calques(`p-${id}`, D, b, true);
+    defs += cq.defs;
+    let banc = '';
+    const pose = perso.poses[id.slice(perso.id.length + 1)];
+    if (pose.siege) {
+      const sq = D.sq;
+      const haut = sq.hanche.y + perso.c.rCuisse - 2;
+      const x1 = sq.hanche.x - 56;
+      const x2 = Math.max(sq.jN.genou.x, sq.jF.genou.x) - 34;
+      banc = `<g fill="#1d2928"><rect x="${num(x1)}" y="${num(haut)}" width="${num(x2 - x1)}" height="14"/><rect x="${num(x1 + 6)}" y="${num(haut)}" width="9" height="${num(-haut)}"/><rect x="${num(x2 - 15)}" y="${num(haut)}" width="9" height="${num(-haut)}"/></g><rect x="${num(x1)}" y="${num(haut)}" width="${num(x2 - x1)}" height="2" fill="#4d6461"/>`;
+    }
+    corps += `<g transform="translate(${num(x0)} ${y0})">${banc}${cq.corps}</g>`;
+    corps += `<text x="${40 + k * PAS_X + PAS_X / 2}" y="${y0 + 44}" class="pose" text-anchor="middle">${id}</text><text x="${40 + k * PAS_X + PAS_X / 2}" y="${y0 + 66}" class="info" text-anchor="middle">${nom}</text>`;
+  });
+});
+writeFileSync(
+  PLANCHE,
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${L} ${H}" width="${L}" height="${H}">
+<!-- Planche des silhouettes de personnages, générée par tools/persos.mjs. -->
+<style>text{font-family:Georgia,serif;fill:#e6dcc0}.nom{font-size:30px}.info{font-size:15px;fill:#a9b8b4;font-style:italic}.pose{font-size:17px}</style>
+<defs><linearGradient id="mur" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b5250"/><stop offset="1" stop-color="#2a3b3a"/></linearGradient>${defs}</defs>
+<rect width="${L}" height="${H}" fill="url(#mur)"/>
+${corps}
+</svg>
+`,
+);
+console.log(`${fichiers} silhouettes, planche ${L}×${H}`);

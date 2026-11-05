@@ -45,7 +45,8 @@
       "kind": "person",
       "label": "Femme sur le banc",
       "character": "coyle",
-      "rect": { "x": 130, "y": 362, "w": 160, "h": 330 },
+      "rect": { "x": 121, "y": 373, "w": 230, "h": 389 },
+      "portrait": { "x": 134, "y": 368, "w": 105, "h": 140 },
       "text": "Une femme en châle rouge attend sur le banc, sa convocation serrée dans les mains. Elle chuchote :\n« J'habite [[berner|Berner Street]], à deux portes du club. Cette nuit, peu avant [[une-heure|une heure]], j'étais sur le pas de ma porte : pas un chat dans la rue. Je venais de rentrer quand j'ai entendu la [[charrette]] du cocher entrer dans la cour, puis quelqu'un crier : “Police !” »",
       "details": [
         {
@@ -59,7 +60,8 @@
       "kind": "person",
       "label": "Homme derrière le comptoir",
       "character": "hale",
-      "rect": { "x": 552, "y": 250, "w": 156, "h": 208 },
+      "rect": { "x": 560, "y": 234, "w": 168, "h": 182 },
+      "portrait": { "x": 583, "y": 229, "w": 90, "h": 120 },
       "text": "Trois chevrons de sergent sur la manche. Il a passé la nuit au comptoir à noter les messages qui arrivaient de partout, et n'ose pas lever les yeux vers l'homme aux médailles.",
       "details": [
         {
@@ -73,15 +75,17 @@
       "kind": "person",
       "label": "Homme aux médailles",
       "character": "harrow",
-      "rect": { "x": 1172, "y": 232, "w": 125, "h": 568 },
-      "text": "Un homme de haute taille en uniforme galonné, médailles de campagne sur la poitrine. Il rentre de Goulston Street, où il s'est rendu avant le lever du jour. Sa moustache grise tremble de colère ; il brandit un journal froissé et une cravache d'officier."
+      "rect": { "x": 1135, "y": 215, "w": 178, "h": 588 },
+      "portrait": { "x": 1168, "y": 222, "w": 154, "h": 205 },
+      "text": "Un homme corpulent en uniforme galonné, médailles de campagne sur la poitrine. Il rentre de Goulston Street, où il s'est rendu avant le lever du jour. Sa grosse barbe grise tremble de colère ; il brandit un journal froissé et une cravache d'officier."
     },
     {
       "id": "reporter",
       "kind": "person",
       "label": "Homme au manteau à carreaux",
       "character": "pell",
-      "rect": { "x": 1388, "y": 244, "w": 132, "h": 556 },
+      "rect": { "x": 1339, "y": 211, "w": 185, "h": 583 },
+      "portrait": { "x": 1390, "y": 208, "w": 121, "h": 161 },
       "text": "Un homme en chapeau melon, un crayon derrière l'oreille. Il s'est faufilé jusqu'à la porte et serre un carnet contre lui.",
       "details": [
         {
@@ -94,7 +98,7 @@
       "id": "registre",
       "kind": "document",
       "label": "Registre de garde",
-      "rect": { "x": 455, "y": 440, "w": 132, "h": 40 },
+      "rect": { "x": 450, "y": 388, "w": 148, "h": 28 },
       "text": "Poste de Leman Street, division H. Nuit du samedi 29 au dimanche 30 septembre 1888. Sergent de service : [[hale|T. Hale]].\n1 h 10 : on signale une femme morte dans la cour du club de Berner Street, découverte à une heure par le cocher du club.\n2 h 05 : la police de la City annonce une seconde victime, à Mitre Square.\n3 h 10 : l'agent Lane rapporte un morceau de [[tablier]] taché de sang, trouvé à 2 h 55 sous une porte de [[goulston|Goulston Street]]. Au-dessus, un message écrit à la [[craie]].\n5 h 00 : arrivée du chef de la police, qui repart aussitôt pour Goulston Street."
     },
     {
@@ -108,7 +112,7 @@
       "id": "journal",
       "kind": "document",
       "label": "Journal froissé",
-      "rect": { "x": 1060, "y": 205, "w": 110, "h": 125 },
+      "rect": { "x": 1084, "y": 33, "w": 117, "h": 144 },
       "text": "[[comet|The Comet]], édition du samedi soir.\n« QUE FAIT LA POLICE ? Trois semaines après le crime de [[hanbury|Hanbury Street]], Scotland Yard n'a rien. On a arrêté “[[tablier-cuir|Tablier de cuir]]”, un pauvre cordonnier, avant de devoir le [[relacher|relâcher]]. Sir Edmund [[harrow|Harrow]] ferait mieux de mettre ses hommes dans les rues que de les faire parader. »\nPar notre reporter, [[pell|A. Pell]]."
     },
     {
@@ -142,7 +146,7 @@
       "id": "fenetre",
       "kind": "object",
       "label": "Fenêtre",
-      "rect": { "x": 52, "y": 84, "w": 216, "h": 276 },
+      "rect": { "x": 62, "y": 24, "w": 176, "h": 340 },
       "text": "Dans le brouillard du petit matin, une foule s'est massée devant le poste. Des crieurs de journaux s'époumonent déjà : « Deux meurtres en une nuit ! Édition spéciale ! »"
     },
     {

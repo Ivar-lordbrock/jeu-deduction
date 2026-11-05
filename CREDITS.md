@@ -36,6 +36,31 @@ Fichiers SVG d'origine, non modifiés (`src/assets/icons/`), colorés par le CSS
 - `textures/paper.jpg` : **Paper006** d'[ambientCG](https://ambientcg.com/view?id=Paper006), [CC0](https://docs.ambientcg.com/license/). Carte de couleur seule, recompressée en 768 px.
 - `textures/fog-1.png` à `fog-3.png` : `smoke_01`, `smoke_04` et `smoke_07` du **Particle Pack** de [Kenney](https://kenney.nl) ([OpenGameArt](https://opengameart.org/content/particle-pack-80-sprites)), [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Réduits en 256 px.
 
+## Silhouettes — CC0 (domaine public)
+
+Personnages et décor de rue en silhouettes, venus d'[Openclipart](https://openclipart.org), où tout est versé dans le domaine public ([CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)). Tous ont été publiés entre 2007 et 2021, avant les générateurs d'images par IA. Dans `src/assets/silhouettes/`, les fichiers sont débarrassés de leurs métadonnées d'éditeur ; chacun garde en tête une ligne avec son numéro, son titre et son auteur.
+
+| Fichier | Titre d'origine | Auteur | Openclipart |
+|---|---|---|---|
+| `monsieur-1.svg` à `monsieur-4.svg` | « Gentleman silhouette 1 » à « 4 » | Firkin | [226293](https://openclipart.org/detail/226293), [226294](https://openclipart.org/detail/226294), [226295](https://openclipart.org/detail/226295), [226296](https://openclipart.org/detail/226296) |
+| `monsieur-5.svg` à `monsieur-7.svg` | « Gentleman silhouette », « 2 » et « 3 » | Firkin | [233752](https://openclipart.org/detail/233752), [233753](https://openclipart.org/detail/233753), [234056](https://openclipart.org/detail/234056) |
+| `gentleman.svg` | « Vintage gentleman silhouette » | liftarn | [320826](https://openclipart.org/detail/320826) |
+| `gentleman-canne.svg` | « Gentleman with cane » | liftarn | [320823](https://openclipart.org/detail/320823) |
+| `bobby.svg` | « Stern policeman » | Firkin | [284188](https://openclipart.org/detail/284188) |
+| `dames.svg` | « Victorian Woman Silhouette » | liftarn | [332979](https://openclipart.org/detail/332979) |
+| `dame-1.svg`, `dame-2.svg` | « Old Fashioned Victorian Woman Silhouette » et sa variante 2 | GDJ | [255365](https://openclipart.org/detail/255365), [255366](https://openclipart.org/detail/255366) |
+| `dame-ombrelle.svg` | « Vintage Victorian Lady Silhouette » | GDJ | [246918](https://openclipart.org/detail/246918) |
+| `dame-1874.svg` | « 1874 Fashion Silhouette » | GDJ | [256527](https://openclipart.org/detail/256527) |
+| `lanterne-murale.svg` | « Old-Fashioned Street Lamp Silhouette Remix » | SunKing2 | [290838](https://openclipart.org/detail/290838) |
+| `reverbere-double.svg` | « Vintage Street Lamp Silhouette » | GDJ | [246924](https://openclipart.org/detail/246924) |
+| `reverbere.svg` | « Vintage Street Lamp Silhouette 2 » | GDJ | [255363](https://openclipart.org/detail/255363) |
+| `fiacre.svg` | « Old Carriage By Andrea Stockel Silhouette » | GDJ | [331921](https://openclipart.org/detail/331921) |
+| `omnibus.svg` | « horse drawn doubledecker 2 » | johnny_automatic | [5411](https://openclipart.org/detail/5411) |
+
+Dans la scène du commissariat, seules la foule, le fiacre et le réverbère vus par la fenêtre viennent d'Openclipart : `gentleman`, `monsieur-3`, `monsieur-7`, `fiacre` et `reverbere`. Les personnages (Hale, Harrow, Pell, Mrs Coyle et l'agent flou derrière la vitre) sont les silhouettes dessinées pour le jeu, plus bas.
+
 ## Dessins originaux du projet
 
-La scène du commissariat (`src/cases/01-leman-street/scene.svg`) et les toits de l'écran titre (`src/assets/skyline.svg`) sont dessinés pour le jeu, en SVG.
+Le décor du commissariat (`src/cases/01-leman-street/scene.svg`, généré par `tools/scene-commissariat.mjs` : la pièce en perspective, murs, meubles, papiers, lumière) et les toits de l'écran titre (`src/assets/skyline.svg`) sont dessinés pour le jeu, en SVG.
+
+Les silhouettes des personnages récurrents (`src/assets/silhouettes/persos/` : commissaire, agent, journaliste, joueur, témoin, quatre ou cinq poses chacun) sont aussi dessinées pour le jeu, par `tools/persos.mjs`, en s'inspirant des profils découpés de l'époque cités plus haut. Elles n'en reprennent aucun tracé. La scène contient aussi, en petit et teintées, deux gravures de Doré citées plus haut : « Bluegate Fields » vue par la fenêtre et « The Bull's-Eye » punaisée au mur.

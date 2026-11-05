@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import story from '../src/story/story.json';
 import type { StoryData } from '../src/types';
@@ -25,5 +25,42 @@ describe('assets', () => {
     for (const name of ['over-london-by-rail', 'bluegate-fields', 'dudley-street', 'bulls-eye', 'wentworth-street', 'whitechapel', 'Lorc', 'Delapouite', 'IM Fell English', 'UnifrakturMaguntia', 'Paper006', 'Kenney']) {
       expect(credits, name).toContain(name);
     }
+  });
+
+  it('chaque silhouette est créditée et reste une image sûre', () => {
+    const credits = readFileSync(new URL('CREDITS.md', root), 'utf8');
+    const dir = new URL('src/assets/silhouettes/', root);
+    const files = readdirSync(dir).filter((f) => f.endsWith('.svg'));
+    expect(files.length).toBeGreaterThan(0);
+    for (const f of files) {
+      const svg = readFileSync(new URL(f, dir), 'utf8');
+      // la ligne de crédit en tête du fichier donne le numéro Openclipart, que CREDITS.md doit citer
+      const id = svg.match(/Openclipart (\d+)/)?.[1];
+      expect(id, f).toBeDefined();
+      expect(credits, f).toContain(`openclipart.org/detail/${id}`);
+      expect(svg, f).not.toMatch(/<script|<foreignObject|\son[a-z]+=|href="(?:https?|javascript):/i);
+    }
+  });
+
+  it('chaque personnage dessiné a ses poses, et chaque pose est une image sûre et autonome', () => {
+    const dir = new URL('src/assets/silhouettes/persos/', root);
+    const files = readdirSync(dir).filter((f) => f.endsWith('.svg'));
+    for (const perso of ['commissaire', 'agent', 'journaliste', 'joueur', 'temoin']) {
+      expect(files.filter((f) => f.startsWith(`${perso}-`)).length, perso).toBeGreaterThanOrEqual(4);
+    }
+    for (const f of files) {
+      const svg = readFileSync(new URL(f, dir), 'utf8');
+      expect(svg, f).toContain('Silhouette dessinée pour le jeu');
+      // la forme seule porte le nom du fichier : la scène la réutilise pour les reflets
+      expect(svg, f).toContain(`<g id="${f.replace('.svg', '')}">`);
+      expect(svg, f).not.toMatch(/<script|<foreignObject|\son[a-z]+=/i);
+      for (const m of svg.matchAll(/href="([^"]+)"/g)) expect(m[1], f).toMatch(/^#/);
+    }
+  });
+
+  it('la scène du commissariat ne dépend d’aucun fichier extérieur', () => {
+    // la scène s'affiche en <img> : un lien vers un autre fichier y serait ignoré
+    const scene = readFileSync(new URL('src/cases/01-leman-street/scene.svg', root), 'utf8');
+    for (const m of scene.matchAll(/href="([^"]+)"/g)) expect(m[1], m[1].slice(0, 40)).toMatch(/^(#|data:image\/)/);
   });
 });

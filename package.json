@@ -8,7 +8,9 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "check": "tsc --noEmit && vitest run"
+    "check": "tsc --noEmit && vitest run",
+    "persos": "node tools/persos.mjs",
+    "scene": "node tools/scene-commissariat.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
