@@ -89,8 +89,8 @@ export function clearProgress(caseId: string): void {
   }
 }
 
-/** Réglages du joueur, gardés quand il recommence le jeu (le son, la taille de la gazette). */
-const SETTINGS = ['@son', '@gazette'].map((k) => KEY_PREFIX + k);
+/** Réglages du joueur, gardés quand il recommence le jeu (le son, la taille de la gazette, l'intro déjà vue). */
+const SETTINGS = ['@son', '@gazette', '@intro'].map((k) => KEY_PREFIX + k);
 
 /** Clés de la partie (les affaires, le prologue vu, le tutoriel fait), sans les réglages. */
 function gameKeys(): string[] {

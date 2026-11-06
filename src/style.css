@@ -1023,3 +1023,77 @@ kbd {
 @media (prefers-reduced-motion: reduce) {
   .fog span, .scene-fog span, .engraving, .chip.new, .prologue-screen, .guide-ring, .gz-article.just-solved .gz-stamp { animation: none; }
 }
+
+/* ---------- Le film d'ouverture ---------- */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 35;
+  background: #050808;
+  overflow: hidden;
+  transition: opacity 1.6s ease;
+}
+.intro.closing { opacity: 0; pointer-events: none; }
+.intro.closing.fast { transition-duration: 0.5s; }
+.intro-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.intro-caption {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(48px, 11vh, 110px);
+  width: min(90vw, 820px);
+  margin: 0;
+  transform: translate(-50%, 8px);
+  text-align: center;
+  font-family: var(--serif);
+  font-size: clamp(20px, 2.8vw, 30px);
+  line-height: 1.45;
+  color: #efe9d8;
+  text-shadow: 0 2px 4px rgb(0 0 0 / 0.9), 0 0 28px rgb(0 0 0 / 0.85);
+  opacity: 0;
+  transition: opacity 1s ease, transform 1.6s ease;
+  pointer-events: none;
+}
+.intro-caption.center { bottom: auto; top: 50%; transform: translate(-50%, -50%); font-style: italic; color: var(--muted); }
+.intro-caption.on { opacity: 1; transform: translate(-50%, 0); }
+.intro-caption.center.on { transform: translate(-50%, -50%); }
+.intro-title {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 18px;
+  padding: 16px;
+  text-align: center;
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 2.4s ease, transform 6s ease-out;
+  pointer-events: none;
+}
+.intro-title.on { opacity: 1; transform: scale(1); }
+.intro-title h1 { font-size: clamp(42px, 8vw, 78px); color: var(--accent); line-height: 1.1; text-shadow: 0 0 40px rgb(212 169 79 / 0.3), 0 2px 6px rgb(0 0 0 / 0.8); }
+.intro-title p { margin: 0; font-family: var(--serif); font-style: italic; font-size: clamp(18px, 2.2vw, 23px); color: #e8e4d6; text-shadow: 0 2px 6px rgb(0 0 0 / 0.9); }
+.intro-title small { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; }
+.intro-skip { position: absolute; right: 18px; bottom: 18px; z-index: 2; background: rgb(12 20 19 / 0.55); opacity: 0.75; }
+.intro-skip:hover, .intro-skip:focus-visible { opacity: 1; }
+.intro-start {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 16px;
+  padding: 16px;
+  text-align: center;
+  background: radial-gradient(ellipse at 50% 0%, #2d4644 0%, #142221 55%, #090f0f 100%);
+}
+.intro-start h1 { font-size: clamp(38px, 7vw, 66px); color: var(--accent); line-height: 1.1; text-shadow: 0 0 40px rgb(212 169 79 / 0.25); }
+.intro-start-hint { margin: 0 0 14px; max-width: 30em; font-family: var(--serif); font-style: italic; font-size: 18px; color: var(--muted); }
+.intro-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) {
+  .intro-caption, .intro-title { transition: opacity 0.6s ease; transform: none; }
+  .intro-caption.on, .intro-title.on { transform: none; }
+  .intro-caption.center, .intro-caption.center.on { transform: translateY(-50%); left: 5vw; right: 5vw; width: auto; }
+  .intro-caption:not(.center), .intro-caption:not(.center).on { left: 5vw; right: 5vw; width: auto; }
+}

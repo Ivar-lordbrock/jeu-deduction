@@ -6,6 +6,7 @@ import { campaignStatus, nextCase } from './engine/campaign';
 import { checkCase } from './engine/checkCase';
 import { clearAllProgress, loadFlags, loadProgress, setFlag } from './engine/progress';
 import { openCase } from './ui/caseScreen';
+import { introSeen, openIntro } from './ui/intro';
 import { renderCases } from './ui/menu';
 import { renderPrologue } from './ui/prologue';
 import { openRules } from './ui/rules';
@@ -106,6 +107,7 @@ function show(r: Route, history_: 'push' | 'replace' | 'none' = 'push') {
         resume: (c) => playCase(c as LoadedCase),
         cases: () => show({ name: 'cases' }),
         prologue: () => show({ name: 'prologue' }),
+        intro: () => openIntro({ autoplay: true, onClose: focusTitle }),
         rules: () => openRules(),
         restart: () => {
           if (!confirm('Tout recommencer depuis le début ? Les affaires résolues, les mots notés et ce qui est écrit dans la gazette seront effacés.')) return;
@@ -162,5 +164,13 @@ function playCase(c: LoadedCase) {
   show({ name: 'case', c });
 }
 
+/** Après l'intro, la main revient au bouton principal de l'écran titre. */
+function focusTitle() {
+  document.querySelector<HTMLElement>('.title-actions .btn.primary')?.focus({ preventScroll: true });
+}
+
 window.addEventListener('popstate', () => show(routeFromHash(), 'none'));
-show(routeFromHash(), 'none');
+const first = routeFromHash();
+show(first, 'none');
+// Première ouverture du jeu : le petit film, par-dessus l'écran titre.
+if (first.name === 'title' && !introSeen()) openIntro({ autoplay: false, onClose: focusTitle });

@@ -219,11 +219,15 @@ const SFX_SAMPLES = [...new Set(Object.values(EFFECTS).flatMap((e) => (e.lazy ? 
 const extra = new Set<SampleName>();
 const preload = () => [...SFX_SAMPLES, ...extra].forEach((s) => void load(s));
 
-/** L'affaire ouverte prépare ses bruits : ceux de ses zones, et la presse de la une de fin. */
-export function prepareSounds(caseId: string): void {
-  const sounds: Sound[] = ['press', ...Object.values(ZONE_SOUNDS[caseId] ?? {})];
+/** Un écran annonce les bruitages « à la demande » dont il aura besoin (chargés dès que le son est autorisé). */
+export function prepareEffects(sounds: Sound[]): void {
   sounds.forEach((s) => EFFECTS[s].samples.forEach((n) => extra.add(n)));
   if (ctx && !muted) preload();
+}
+
+/** L'affaire ouverte prépare ses bruits : ceux de ses zones, et la presse de la une de fin. */
+export function prepareSounds(caseId: string): void {
+  prepareEffects(['press', ...Object.values(ZONE_SOUNDS[caseId] ?? {})]);
 }
 
 // ———————————————————————————————— moteur ————————————————————————————————
@@ -605,6 +609,21 @@ function startMusic() {
   music.play().catch(() => {
     // lecture refusée (pas encore de geste du joueur) : on réessaiera au prochain
   });
+}
+
+/** L'intro repart du début de la musique, qui monte doucement avec les premières images. */
+export function restartMusic(): void {
+  if (!ctx || muted) return;
+  if (music) {
+    window.clearTimeout(musicTimer);
+    musicTimer = 0;
+    const t = ctx.currentTime;
+    musicBus.gain.cancelScheduledValues(t);
+    musicBus.gain.setValueAtTime(0, t);
+    musicBus.gain.linearRampToValueAtTime(MUSIC_LEVEL, t + 4);
+    music.currentTime = 0;
+  }
+  startMusic();
 }
 
 function pauseMusic() {

@@ -23,9 +23,9 @@ const STATE_LABELS: Record<CaseStatus['state'], string> = {
  * Où se passe chaque affaire sur la carte de Booth, en pixels de l'image (1600 × 1150).
  * Gardé ici plutôt que dans case.json, que l'éditeur réécrit.
  */
-const MAP_W = 1600;
-const MAP_H = 1150;
-const MAP_PINS: Record<string, { x: number; y: number; place: string }> = {
+export const MAP_W = 1600;
+export const MAP_H = 1150;
+export const MAP_PINS: Record<string, { x: number; y: number; place: string }> = {
   'leman-street': { x: 280, y: 1060, place: 'Poste de police de Leman Street' },
   morgue: { x: 500, y: 690, place: 'Morgue de Whitechapel, Old Montague Street' },
   fruiterie: { x: 602, y: 1037, place: "King's Row, la boutique du marchand de fruits" },

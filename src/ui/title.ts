@@ -10,6 +10,8 @@ interface TitleActions {
   resume(c: CaseData): void;
   cases(): void;
   prologue(): void;
+  /** Le petit film d'ouverture. */
+  intro(): void;
   /** Aide-mémoire des règles. */
   rules(): void;
   /** Tout effacer pour rejouer depuis le début. */
@@ -59,6 +61,7 @@ export function renderTitle(root: HTMLElement, statuses: CaseStatus[], a: TitleA
             { class: 'title-secondary' },
             h('button', { class: 'btn ghost', onClick: () => a.cases() }, 'Les affaires'),
             story.prologue?.length ? h('button', { class: 'btn ghost', onClick: () => a.prologue() }, 'Prologue') : null,
+            h('button', { class: 'btn ghost', onClick: () => a.intro() }, "Revoir l'intro"),
             h('button', { class: 'btn ghost', onClick: () => a.rules() }, 'Comment jouer'),
             h('button', { class: 'btn ghost', title: 'Continuer la partie sur un autre ordinateur', onClick: () => a.save() }, 'Sauvegarde'),
             begun
