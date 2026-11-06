@@ -334,10 +334,10 @@ export function openIntro(opts: IntroOptions): void {
       const stride = walk.foulee * k; // ce qu'il avance pendant un cycle
       const cycle = Math.max(0.95, Math.min(1.35, (stride * 7.6) / (W + vw * k * 1.1)));
       const t = local - 0.4;
-      const n = still ? 0 : Math.floor((t / cycle) * walk.images);
+      // l'image du pas la plus proche de l'instant : avec 60 images par pas, le pied posé ne bouge pas
+      const n = still ? 0 : Math.round((t / cycle) * walk.images);
       const frame = steps[((n % walk.images) + walk.images) % walk.images];
-      // le corps avance d'image en image, comme au cinéma : le pied posé ne bouge pas d'un pixel
-      const hip = still ? W * 0.72 : -vw * k * 0.55 + (stride * n) / walk.images;
+      const hip = still ? W * 0.72 : -vw * k * 0.55 + (stride / cycle) * t;
       c.drawImage(frame, hip + vx * k, H * 0.99 + vy * k, vw * k, vh * k);
     }),
     // Bluegate Fields, la nuit

@@ -61,8 +61,8 @@ const AMBIENCE_LEVEL = 0.35;
 const MUSIC_LEVEL = 0.45;
 /** Silence entre deux passages de la musique, en secondes : elle revient sans tourner en boucle. */
 const MUSIC_GAP = 25;
-/** Pendant l'intro, c'est un petit film : la pluie (+8 dB) et les bruitages (+6 dB) passent devant. */
-const INTRO_AMBIENCE = 0.88;
+/** Pendant l'intro, c'est un petit film : la pluie reste en fond (−4 dB sous le jeu), les bruitages passent devant (+6 dB). */
+const INTRO_AMBIENCE = 0.22;
 const INTRO_SFX = 2;
 let introMix = false;
 

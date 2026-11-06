@@ -8,7 +8,7 @@
 //   → docs/planche-persos.svg                           (toutes les poses, avec l'éclairage de la scène)
 //   → src/assets/silhouettes/persos/pas/                (le cycle de marche du joueur, pour l'intro)
 
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 
 const DOSSIER = new URL('../src/assets/silhouettes/persos/', import.meta.url);
 const PLANCHE = new URL('../docs/planche-persos.svg', import.meta.url);
@@ -1179,17 +1179,23 @@ ${corps}
 `,
 );
 // ——— le cycle de marche du joueur (l'intro du jeu) ———
-// La jambe d'appui est calculée à l'envers : sa cheville recule en ligne droite sous la hanche,
-// à vitesse constante, si bien que le pied ne patine pas quand le corps avance d'autant.
-// La jambe libre repasse devant en pliant le genou ; les bras balancent à l'opposé des jambes.
+// La hanche suit une hauteur donnée (elle descend un peu quand les deux pieds touchent le sol, remonte
+// quand le corps passe au-dessus de la jambe d'appui) et les jambes sont calculées à l'envers depuis
+// les pieds : le pied posé recule sous la hanche exactement à la vitesse où le corps avance, il ne patine
+// pas. Talon qui touche, pied à plat, talon qui se lève en roulant sur la pointe ; puis la jambe repasse
+// devant en pliant le genou. Les bras balancent à l'opposé, un peu en retard, le coude suit.
 
 const PAS = {
-  images: 24,
+  images: 60,
   /** part du cycle où le pied est posé */
   appui: 0.6,
-  /** la cheville, devant la hanche quand le talon touche, derrière quand les orteils quittent le sol */
+  /** dans l'appui, quand le talon commence à se lever */
+  talon: 0.72,
+  /** la cheville, devant la hanche quand le talon touche, derrière quand le pied se met à plat… */
   avant: 72,
   arriere: 90,
+  /** de combien la hanche monte et descend */
+  rebond: 7,
 };
 const DOSSIER_PAS = new URL('pas/', DOSSIER);
 
@@ -1219,34 +1225,61 @@ function courbe(cles, s) {
   return (2 * t ** 3 - 3 * t ** 2 + 1) * v0 + (t ** 3 - 2 * t ** 2 + t) * m0 + (3 * t ** 2 - 2 * t ** 3) * v1 + (t ** 3 - t ** 2) * m1;
 }
 
+/** le sol, sous la hanche : au plus bas quand les deux pieds touchent (q = 0,05 et 0,55) */
+const sol = (c, q) => c.cuisse + c.tibia - 0.5 + c.semelle * c.pied - (PAS.rebond / 2) * (1 - Math.cos(4 * Math.PI * (q - 0.3)));
+
+/** ce qui dépasse le plus sous la cheville, le pied tourné de f degrés (talon, plante ou pointe) */
+const dessous = (c, f) => Math.max(...[-14, 20, c.pointe].map((x) => c.pied * (x * Math.sin(f * RAD) + c.semelle * Math.cos(f * RAD))));
+
+/** le point le plus bas d'une jambe libre, par rapport à la hanche */
+const piedLibre = (c, j) => c.cuisse * Math.cos(j.h * RAD) + c.tibia * Math.cos((j.h - j.k) * RAD) + dessous(c, j.f);
+
 /** une jambe à l'instant q du cycle (0 : le talon touche le sol) */
 function jambeQuiMarche(c, q) {
-  const appui = (s) => {
-    const talon = Math.max(0, (s - 0.7) / 0.3) ** 2; // le talon se lève en fin d'appui, on roule sur les orteils
-    const x = PAS.avant - (PAS.avant + PAS.arriere) * s;
-    const y = 248 + 6 * Math.sin(Math.PI * s) - 15 * talon;
-    return { ...versCheville(c, x, y), f: talon > 0 ? 30 * talon : -14 * Math.max(0, 1 - s / 0.18) };
-  };
-  if (q < PAS.appui) return appui(q / PAS.appui);
+  const vitesse = (PAS.avant + PAS.arriere) / PAS.appui; // ce que le corps avance pendant un cycle
+  if (q < PAS.appui) {
+    const s = q / PAS.appui;
+    if (s <= PAS.talon) {
+      // le talon touche, puis le pied se pose à plat ; la cheville recule à la vitesse du corps
+      const f = -14 * Math.max(0, 1 - s / 0.2) ** 1.5;
+      return { ...versCheville(c, PAS.avant - vitesse * q, sol(c, q) - dessous(c, f)), f };
+    }
+    // le talon se lève : le pied roule sur sa pointe, qui reste au même endroit du sol
+    const u = (s - PAS.talon) / (1 - PAS.talon);
+    const f = 36 * u ** 1.3;
+    const [px, py] = [c.pied * c.pointe, c.pied * c.semelle];
+    const [sn, cs] = [Math.sin(f * RAD), Math.cos(f * RAD)];
+    const ax = PAS.avant - vitesse * q + px - (px * cs - py * sn);
+    const ay = sol(c, q) - (px * sn + py * cs);
+    return { ...versCheville(c, ax, ay), f };
+  }
   // en l'air : la cuisse part vite vers l'avant, le genou plie juste ce qu'il faut pour que le pied passe
   const s = (q - PAS.appui) / (1 - PAS.appui);
-  const [a, b] = [appui(1), appui(0)];
-  return {
-    h: courbe([[0, a.h], [0.3, 12], [0.6, 22], [0.85, 26], [1, b.h]], s),
-    k: courbe([[0, a.k], [0.3, 60], [0.6, 32], [0.88, 8], [1, b.k]], s),
-    f: courbe([[0, a.f], [0.3, 16], [0.6, 0], [1, b.f]], s),
+  const [a, b] = [jambeQuiMarche(c, PAS.appui - 1e-9), jambeQuiMarche(c, 0)];
+  const j = {
+    h: courbe([[0, a.h], [0.3, 13], [0.6, 23], [0.85, 26], [1, b.h]], s),
+    k: courbe([[0, a.k], [0.3, 62], [0.6, 34], [0.88, 7], [1, b.k]], s),
+    f: courbe([[0, a.f], [0.3, 14], [0.6, 2], [0.88, -10], [1, b.f]], s),
   };
+  // s'il frôle le sol, le pied se relève un peu (plier le genou quand le tibia est en arrière, sinon lever la cuisse)
+  for (let n = 0; n < 60 && s > 0.04 && s < 0.96 && piedLibre(c, j) > sol(c, q) - 4; n++) {
+    if (j.h - j.k < 0) j.k += 0.5;
+    else j.h += 0.5;
+  }
+  return j;
 }
 
 function poseDeMarche(c, q) {
-  const bras = (p) => {
-    const a = 2 - 24 * Math.cos(2 * Math.PI * p);
-    return { a, e: 22 + 0.45 * (a + 24), main: 'poing' };
-  };
+  const tour = (p) => 2 * Math.PI * p;
+  const bras = (p) => ({
+    a: 2 - 24 * Math.cos(tour(p - 0.04)),
+    e: 24 + 18 * (0.5 - 0.5 * Math.cos(tour(p - 0.14))), // le coude se plie en retard sur l'épaule
+    main: 'poing',
+  });
   return {
-    lean: 7,
-    tete: -2,
-    echarpe: 64 + 8 * Math.sin(4 * Math.PI * q),
+    lean: 7 + 1.2 * Math.cos(2 * tour(q - 0.05)),
+    tete: -2 - 1.4 * Math.cos(2 * tour(q - 0.05)), // la tête compense : le regard reste droit
+    echarpe: 64 + 6 * Math.sin(2 * tour(q)) + 3 * Math.sin(5 * tour(q) + 1),
     jN: jambeQuiMarche(c, q),
     jF: jambeQuiMarche(c, (q + 0.5) % 1),
     bN: bras(q),
@@ -1258,6 +1291,10 @@ const images = Array.from({ length: PAS.images }, (_, i) => dessinerPose(joueur,
 // un seul cadre pour toutes les images : la hanche et le sol restent au même endroit d'une image à l'autre
 const cadrePas = cadre(images.flatMap((D) => D.pts));
 const foulee = (PAS.avant + PAS.arriere) / PAS.appui; // ce que le corps avance pendant un cycle
+// contrôle : la hanche doit rester à la hauteur prévue (sinon un pied s'enfonce ou flotte)
+const ecart = Math.max(...images.map((D, i) => Math.abs(-D.sq.hanche.y - sol(joueur.c, i / PAS.images))));
+if (ecart > 2.5) console.warn(`marche : la hanche s'écarte de ${num(ecart)} de la hauteur prévue`);
+rmSync(DOSSIER_PAS, { recursive: true, force: true });
 mkdirSync(DOSSIER_PAS, { recursive: true });
 images.forEach((D, i) => {
   const id = `joueur-pas-${String(i).padStart(2, '0')}`;
