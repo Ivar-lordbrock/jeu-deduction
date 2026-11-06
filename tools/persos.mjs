@@ -6,6 +6,7 @@
 // Usage : node tools/persos.mjs
 //   → src/assets/silhouettes/persos/<perso>-<pose>.svg  (une silhouette par fichier)
 //   → docs/planche-persos.svg                           (toutes les poses, avec l'éclairage de la scène)
+//   → src/assets/silhouettes/persos/pas/                (le cycle de marche du joueur, pour l'intro)
 
 import { mkdirSync, writeFileSync } from 'node:fs';
 
@@ -1068,7 +1069,10 @@ const PERSOS = [commissaire, agent, journaliste, joueur, temoin, docteur, detect
 // ——— sortie ———
 
 function dessiner(perso, poseId) {
-  const pose = perso.poses[poseId];
+  return dessinerPose(perso, perso.poses[poseId]);
+}
+
+function dessinerPose(perso, pose) {
   const c = perso.c;
   const bas = plusBas(c, squelette(c, pose, v(0, 0)));
   const sq = squelette(c, pose, v(0, -bas));
@@ -1174,4 +1178,105 @@ ${corps}
 </svg>
 `,
 );
-console.log(`${fichiers} silhouettes, planche ${L}×${H}`);
+// ——— le cycle de marche du joueur (l'intro du jeu) ———
+// La jambe d'appui est calculée à l'envers : sa cheville recule en ligne droite sous la hanche,
+// à vitesse constante, si bien que le pied ne patine pas quand le corps avance d'autant.
+// La jambe libre repasse devant en pliant le genou ; les bras balancent à l'opposé des jambes.
+
+const PAS = {
+  images: 24,
+  /** part du cycle où le pied est posé */
+  appui: 0.6,
+  /** la cheville, devant la hanche quand le talon touche, derrière quand les orteils quittent le sol */
+  avant: 72,
+  arriere: 90,
+};
+const DOSSIER_PAS = new URL('pas/', DOSSIER);
+
+/** angles de la jambe pour une cheville placée en (x, y) par rapport à la hanche (le genou plie vers l'avant) */
+function versCheville(c, x, y) {
+  const d = Math.min(Math.hypot(x, y), c.cuisse + c.tibia - 0.5);
+  const angle = Math.atan2(x, y) / RAD;
+  const a = Math.acos((c.cuisse ** 2 + d * d - c.tibia ** 2) / (2 * c.cuisse * d)) / RAD;
+  const b = Math.acos((c.tibia ** 2 + d * d - c.cuisse ** 2) / (2 * c.tibia * d)) / RAD;
+  return { h: angle + a, k: a + b };
+}
+
+/** courbe douce passant par des clés [s, valeur] (spline de Hermite) */
+function courbe(cles, s) {
+  let i = 0;
+  while (i < cles.length - 2 && s > cles[i + 1][0]) i++;
+  const pente = (j) => {
+    const a = cles[Math.max(0, j - 1)];
+    const b = cles[Math.min(cles.length - 1, j + 1)];
+    return (b[1] - a[1]) / (b[0] - a[0]);
+  };
+  const [s0, v0] = cles[i];
+  const [s1, v1] = cles[i + 1];
+  const d = s1 - s0;
+  const t = (s - s0) / d;
+  const [m0, m1] = [pente(i) * d, pente(i + 1) * d];
+  return (2 * t ** 3 - 3 * t ** 2 + 1) * v0 + (t ** 3 - 2 * t ** 2 + t) * m0 + (3 * t ** 2 - 2 * t ** 3) * v1 + (t ** 3 - t ** 2) * m1;
+}
+
+/** une jambe à l'instant q du cycle (0 : le talon touche le sol) */
+function jambeQuiMarche(c, q) {
+  const appui = (s) => {
+    const talon = Math.max(0, (s - 0.7) / 0.3) ** 2; // le talon se lève en fin d'appui, on roule sur les orteils
+    const x = PAS.avant - (PAS.avant + PAS.arriere) * s;
+    const y = 248 + 6 * Math.sin(Math.PI * s) - 15 * talon;
+    return { ...versCheville(c, x, y), f: talon > 0 ? 30 * talon : -14 * Math.max(0, 1 - s / 0.18) };
+  };
+  if (q < PAS.appui) return appui(q / PAS.appui);
+  // en l'air : la cuisse part vite vers l'avant, le genou plie juste ce qu'il faut pour que le pied passe
+  const s = (q - PAS.appui) / (1 - PAS.appui);
+  const [a, b] = [appui(1), appui(0)];
+  return {
+    h: courbe([[0, a.h], [0.3, 12], [0.6, 22], [0.85, 26], [1, b.h]], s),
+    k: courbe([[0, a.k], [0.3, 60], [0.6, 32], [0.88, 8], [1, b.k]], s),
+    f: courbe([[0, a.f], [0.3, 16], [0.6, 0], [1, b.f]], s),
+  };
+}
+
+function poseDeMarche(c, q) {
+  const bras = (p) => {
+    const a = 2 - 24 * Math.cos(2 * Math.PI * p);
+    return { a, e: 22 + 0.45 * (a + 24), main: 'poing' };
+  };
+  return {
+    lean: 7,
+    tete: -2,
+    echarpe: 64 + 8 * Math.sin(4 * Math.PI * q),
+    jN: jambeQuiMarche(c, q),
+    jF: jambeQuiMarche(c, (q + 0.5) % 1),
+    bN: bras(q),
+    bF: bras(q + 0.5),
+  };
+}
+
+const images = Array.from({ length: PAS.images }, (_, i) => dessinerPose(joueur, poseDeMarche(joueur.c, i / PAS.images)));
+// un seul cadre pour toutes les images : la hanche et le sol restent au même endroit d'une image à l'autre
+const cadrePas = cadre(images.flatMap((D) => D.pts));
+const foulee = (PAS.avant + PAS.arriere) / PAS.appui; // ce que le corps avance pendant un cycle
+mkdirSync(DOSSIER_PAS, { recursive: true });
+images.forEach((D, i) => {
+  const id = `joueur-pas-${String(i).padStart(2, '0')}`;
+  const { defs, corps } = calques(id, D, cadrePas);
+  const b = cadrePas;
+  writeFileSync(
+    new URL(`${id}.svg`, DOSSIER_PAS),
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${b.x} ${b.y} ${b.w} ${b.h}" width="${b.w}" height="${b.h}">
+<!-- ${joueur.nom} qui marche : image ${i + 1} sur ${PAS.images} du cycle (tools/persos.mjs). Tourné vers la droite ; le sol est en y = 0, la hanche en x = 0. -->
+<defs>${defs}</defs>
+${corps}
+</svg>
+`,
+  );
+});
+writeFileSync(
+  new URL('pas.json', DOSSIER_PAS),
+  `${JSON.stringify({ images: PAS.images, foulee: Number(num(foulee)), viewBox: [cadrePas.x, cadrePas.y, cadrePas.w, cadrePas.h] })}
+`,
+);
+
+console.log(`${fichiers} silhouettes, planche ${L}×${H}, ${PAS.images} images de marche`);

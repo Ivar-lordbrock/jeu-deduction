@@ -61,6 +61,10 @@ const AMBIENCE_LEVEL = 0.35;
 const MUSIC_LEVEL = 0.45;
 /** Silence entre deux passages de la musique, en secondes : elle revient sans tourner en boucle. */
 const MUSIC_GAP = 25;
+/** Pendant l'intro, c'est un petit film : la pluie (+8 dB) et les bruitages (+6 dB) passent devant. */
+const INTRO_AMBIENCE = 0.88;
+const INTRO_SFX = 2;
+let introMix = false;
 
 // ———————————————————————————————— les enregistrements ————————————————————————————————
 
@@ -267,9 +271,9 @@ function ensure(): AudioContext | null {
   comp.ratio.value = 3;
   comp.connect(ctx.destination);
   master = gain(muted ? 0 : VOLUME, comp);
-  ambienceBus = gain(AMBIENCE_LEVEL, master);
+  ambienceBus = gain(introMix ? INTRO_AMBIENCE : AMBIENCE_LEVEL, master);
   musicBus = gain(0, master);
-  sfxBus = gain(1, master);
+  sfxBus = gain(introMix ? INTRO_SFX : 1, master);
   const room = ctx.createConvolver();
   room.buffer = impulse(1.2, 3.2);
   room.connect(master);
@@ -626,6 +630,21 @@ export function restartMusic(): void {
   startMusic();
 }
 
+/** L'intro monte la rue et les bruitages le temps du film, puis rend le mélange du jeu. */
+export function setIntroMix(on: boolean): void {
+  introMix = on;
+  if (!ctx) return;
+  const t = ctx.currentTime;
+  for (const [bus, value] of [
+    [ambienceBus, on ? INTRO_AMBIENCE : AMBIENCE_LEVEL],
+    [sfxBus, on ? INTRO_SFX : 1],
+  ] as const) {
+    bus.gain.cancelScheduledValues(t);
+    bus.gain.setValueAtTime(bus.gain.value, t);
+    bus.gain.linearRampToValueAtTime(value, t + (on ? 1.5 : 2.5));
+  }
+}
+
 function pauseMusic() {
   window.clearTimeout(musicTimer);
   musicTimer = 0;
@@ -686,7 +705,7 @@ export const isMuted = (): boolean => muted;
 
 // En développement seulement : pour régler les sons depuis la console (__son.playSound('stamp')).
 if (import.meta.env.DEV && typeof window !== 'undefined') {
-  (window as unknown as Record<string, unknown>).__son = { playSound, setAmbience, master: () => master, ctx: () => ctx, music: () => music, ready };
+  (window as unknown as Record<string, unknown>).__son = { playSound, setAmbience, master: () => master, ctx: () => ctx, music: () => music, buses: () => ({ ambience: ambienceBus?.gain.value, sfx: sfxBus?.gain.value, music: musicBus?.gain.value }), ready };
 }
 
 export function toggleSound(): void {

@@ -1,5 +1,5 @@
 import boothMap from '../assets/maps/booth-whitechapel.jpg';
-import reporterUrl from '../assets/silhouettes/persos/joueur-marche.svg';
+import walk from '../assets/silhouettes/persos/pas/pas.json';
 import fogUrl from '../assets/textures/fog-1.png';
 import paperUrl from '../assets/textures/paper.jpg';
 import { cases } from '../cases/registry';
@@ -7,7 +7,7 @@ import { GAME_TITLE } from '../config';
 import { h } from '../dom';
 import { engravingUrl } from './art';
 import { MAP_H, MAP_PINS, MAP_W } from './menu';
-import { playSound, prepareEffects, restartMusic, type Sound } from './sound';
+import { playSound, prepareEffects, restartMusic, setIntroMix, type Sound } from './sound';
 
 /**
  * Le film d'ouverture : une minute, dessinée en direct sur un canvas. Les gravures de Doré défilent
@@ -18,6 +18,13 @@ import { playSound, prepareEffects, restartMusic, type Sound } from './sound';
  */
 
 const INTRO_KEY = 'jeu-deduction:v1:@intro';
+
+/** Le cycle de marche du reporter (tools/persos.mjs) : une image par instant du pas, dans l'ordre. */
+const WALK_URLS = Object.entries(
+  import.meta.glob<string>('../assets/silhouettes/persos/pas/*.svg', { eager: true, query: '?url', import: 'default' }),
+)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([, url]) => url);
 
 export function introSeen(): boolean {
   try {
@@ -243,12 +250,13 @@ export function openIntro(opts: IntroOptions): void {
   const names = ['over-london-by-rail', 'wentworth-street', 'bluegate-fields', 'bulls-eye', 'whitechapel'];
   const img: Record<string, HTMLImageElement | null> = {};
   let papers: HTMLCanvasElement[] = [];
+  let steps: HTMLImageElement[] = [];
   const grain = makeGrain();
   const pins = cases.filter((c) => !c.draft && MAP_PINS[c.id]).map((c) => MAP_PINS[c.id]);
   const ready = Promise.all([
     ...names.map(async (n) => (img[n] = await loadImage(engravingUrl(n) ?? ''))),
     loadImage(boothMap).then((i) => (img.map = i)),
-    loadImage(reporterUrl).then((i) => (img.reporter = i)),
+    Promise.all(WALK_URLS.map(loadImage)).then((frames) => (steps = frames.filter((f): f is HTMLImageElement => !!f))),
     loadImage(fogUrl).then((i) => (img.fog = i)),
     Promise.all([
       loadImage(paperUrl),
@@ -319,14 +327,18 @@ export function openIntro(opts: IntroOptions): void {
     // Wentworth Street : la foule ; le reporter passe au premier plan
     engraving('wentworth-street', { x: 0.5, y: 0.3, z: 1.12 }, { x: 0.5, y: 0.62, z: 1 }, 0.28, (c, local) => {
       fog(c, local, 0.18);
-      const r = img.reporter;
-      if (!r) return;
-      const hh = H * 0.6;
-      const ww = (hh * r.naturalWidth) / r.naturalHeight;
-      const q = clamp01((local - 0.8) / 7.4);
-      const x = still ? W * 0.72 : -ww + q * (W + ww * 2);
-      const y = H * 1.0 - hh + (still ? 0 : Math.abs(Math.sin(local * Math.PI * 1.7)) * H * -0.006);
-      c.drawImage(r, x - ww / 2, y, ww, hh);
+      if (steps.length < walk.images) return;
+      // il traverse l'image en marchant ; la vitesse suit la longueur du pas, pour que les pieds ne glissent pas
+      const [vx, vy, vw, vh] = walk.viewBox;
+      const k = (H * 0.6) / vh; // pixels par unité du dessin
+      const stride = walk.foulee * k; // ce qu'il avance pendant un cycle
+      const cycle = Math.max(0.95, Math.min(1.35, (stride * 7.6) / (W + vw * k * 1.1)));
+      const t = local - 0.4;
+      const n = still ? 0 : Math.floor((t / cycle) * walk.images);
+      const frame = steps[((n % walk.images) + walk.images) % walk.images];
+      // le corps avance d'image en image, comme au cinéma : le pied posé ne bouge pas d'un pixel
+      const hip = still ? W * 0.72 : -vw * k * 0.55 + (stride * n) / walk.images;
+      c.drawImage(frame, hip + vx * k, H * 0.99 + vy * k, vw * k, vh * k);
     }),
     // Bluegate Fields, la nuit
     engraving('bluegate-fields', { x: 0.5, y: 0.78, z: 1.2 }, { x: 0.5, y: 0.5, z: 1.02 }, 0.4, (c, local) => fog(c, local, 0.22)),
@@ -534,6 +546,7 @@ export function openIntro(opts: IntroOptions): void {
     playing = true;
     start?.remove();
     skip.focus({ preventScroll: true });
+    setIntroMix(true);
     restartMusic();
     raf = requestAnimationFrame(frame);
   }
@@ -542,6 +555,7 @@ export function openIntro(opts: IntroOptions): void {
     if (closing) return;
     closing = true;
     markSeen();
+    setIntroMix(false);
     window.removeEventListener('keydown', onKey, true);
     overlay.classList.add('closing');
     if (fast) overlay.classList.add('fast');
