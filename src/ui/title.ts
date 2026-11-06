@@ -12,6 +12,8 @@ interface TitleActions {
   prologue(): void;
   /** Aide-mémoire des règles. */
   rules(): void;
+  /** Tout effacer pour rejouer depuis le début. */
+  restart(): void;
 }
 
 /** Écran titre : un seul bouton principal, qui sait où le joueur en est. */
@@ -56,6 +58,13 @@ export function renderTitle(root: HTMLElement, statuses: CaseStatus[], a: TitleA
             h('button', { class: 'btn ghost', onClick: () => a.cases() }, 'Les affaires'),
             story.prologue?.length ? h('button', { class: 'btn ghost', onClick: () => a.prologue() }, 'Prologue') : null,
             h('button', { class: 'btn ghost', onClick: () => a.rules() }, 'Comment jouer'),
+            begun
+              ? h(
+                  'button',
+                  { class: 'btn ghost', title: 'Effacer toute la progression et rejouer depuis le prologue', onClick: () => a.restart() },
+                  'Tout recommencer',
+                )
+              : null,
           ),
         ),
         import.meta.env.DEV

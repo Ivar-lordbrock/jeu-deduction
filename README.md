@@ -46,6 +46,10 @@ ses gouttes), et chaque geste son bruit : le crayon, le papier, la machine à é
 du juge. Ce sont de vrais enregistrements, libres de droits (voir [CREDITS.md](CREDITS.md)).
 Le bouton du son, ou la touche M, le coupe.
 
+La partie est sauvegardée dans le navigateur. Pour rejouer, « Recommencer » (en haut d'une
+affaire) efface cette affaire, et « Tout recommencer » (sur l'écran titre) efface toute la
+partie, prologue compris. Le choix du son et la taille de la gazette sont gardés.
+
 ## Lancer le jeu
 
 Il faut [Node.js](https://nodejs.org/) 22 ou plus récent.

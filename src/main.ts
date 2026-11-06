@@ -4,7 +4,7 @@ import { GAME_TITLE, SEQUENTIAL_CASES, story } from './config';
 import { h } from './dom';
 import { campaignStatus, nextCase } from './engine/campaign';
 import { checkCase } from './engine/checkCase';
-import { loadFlags, loadProgress, setFlag } from './engine/progress';
+import { clearAllProgress, loadFlags, loadProgress, setFlag } from './engine/progress';
 import { openCase } from './ui/caseScreen';
 import { renderCases } from './ui/menu';
 import { renderPrologue } from './ui/prologue';
@@ -106,6 +106,11 @@ function show(r: Route, history_: 'push' | 'replace' | 'none' = 'push') {
         cases: () => show({ name: 'cases' }),
         prologue: () => show({ name: 'prologue' }),
         rules: () => openRules(),
+        restart: () => {
+          if (!confirm('Tout recommencer depuis le début ? Les affaires résolues, les mots notés et ce qui est écrit dans la gazette seront effacés.')) return;
+          clearAllProgress();
+          show({ name: 'title' }, 'replace');
+        },
       });
       break;
     case 'prologue':

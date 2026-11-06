@@ -79,6 +79,23 @@ export function clearProgress(caseId: string): void {
   }
 }
 
+/** Réglages du joueur, gardés quand il recommence le jeu (le son, la taille de la gazette). */
+const SETTINGS = ['@son', '@gazette'].map((k) => KEY_PREFIX + k);
+
+/** Tout recommencer : efface la progression de toutes les affaires, le prologue vu, le tutoriel fait. */
+export function clearAllProgress(): void {
+  try {
+    const keys: string[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k?.startsWith(KEY_PREFIX) && !SETTINGS.includes(k)) keys.push(k);
+    }
+    keys.forEach((k) => localStorage.removeItem(k));
+  } catch {
+    // idem
+  }
+}
+
 export function isCaseSolved(c: CaseData, progress: CaseProgress): boolean {
   return c.pages.length > 0 && c.pages.every((p) => progress.solved.includes(p.id));
 }
