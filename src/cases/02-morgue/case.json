@@ -6,9 +6,9 @@
   "intro": "À la morgue de Whitechapel, le 30 septembre 1888, au matin.\nLes deux corps découverts cette nuit ont été transportés ici, chacun allongé sur une table d'examen en acier. L'atmosphère est glaciale et lourde d'odeurs d'acide phénique. Le docteur Albert Jefferson s'affaire déjà au scalpel pour consigner les horribles blessures dans son journal. Près de la porte, l'agent Edouard Davis monte la garde, veillant à ce qu'aucun journaliste ou curieux ne perturbe l'autopsie. Vous vous êtes faufilé à l'intérieur pour examiner les corps de près : les gorges tranchées net et les mutilations abdominales portent la signature macabre d'un seul et même tueur. Observez chaque détail, lisez les étiquettes et formulez vos premières théories.",
   "epilogue": "L'examen minutieux des corps ne laisse plus aucun doute. La précision chirurgicale des incisions au niveau du cou et de l'abdomen confirme qu'il ne s'agit pas de crimes passionnels ou de simple proxénétisme, mais de l'œuvre préméditée d'un maniaque anatomiste.",
   "notes": {
-    "moment": "À écrire. Idée : le 30 septembre 1888, dans la matinée, après la scène du poste. Le docteur Albert Jefferson examine les deux corps ; l'agent Edouard Davis garde la porte ; le joueur s'est glissé entre les tables avec sa loupe.",
-    "truth": "À écrire : ce que les blessures révèlent sur chaque meurtre, et ce que le joueur doit en conclure.",
-    "falseLeads": "À écrire.",
+    "moment": "Dimanche 30 septembre 1888, dans la matinée, après la scène du poste. Le docteur Albert Jefferson examine les deux corps ; l'agent Edouard Davis garde la porte ; le joueur s'est glissé entre les tables avec sa loupe.",
+    "truth": "Corps n° 1, table de gauche : l'inconnue de King's Row, tuée vers 1 h. Corps n° 2, table de droite : Margaret Jenkins, couturière, tuée à Wallace Street vers 2 h 30, reconnue par Elisabeth Coyle. Même tueur : gorge tranchée (cause de la mort : hémorragie), puis mutilations abdominales après la mort. Le joueur relie le numéro de chaque étiquette à la fiche du journal du médecin.",
+    "falseLeads": "Distracteurs : victime, cinquième (le docteur compte cinq victimes), Elisabeth Coyle (la témoin, pas la victime), lutte (le sang sous les ongles du corps n° 1 : impossible de dire à qui il appartient).",
     "other": "Scène générée par tools/scene-morgue.mjs (npm run scene:morgue). Les corps sont couverts : les blessures se décrivent dans les fiches, jamais dans l'image. Corps n° 1 (table de gauche) : l'inconnue de King's Row, entièrement couverte, pieds visibles. Corps n° 2 (table de droite) : Margaret Jenkins, drap rabattu aux épaules, visage de profil."
   },
   "scene": {
@@ -108,7 +108,7 @@
         "w": 96,
         "h": 128
       },
-      "text": "Un drap couvre entièrement le corps. Seuls les pieds nus dépassent, une étiquette nouée à l'orteil.",
+      "text": "Un drap couvre entièrement le corps. Du sang séché l'a traversé, au cou et au ventre. Seuls les pieds nus dépassent, une étiquette nouée à l'orteil.",
       "details": [
         {
           "label": "Les blessures",
@@ -134,11 +134,15 @@
         "w": 96,
         "h": 128
       },
-      "text": "Le drap est rabattu jusqu'aux épaules. Une femme, les cheveux défaits, le visage calme.",
+      "text": "Le drap est rabattu jusqu'aux épaules. Une femme, les cheveux défaits, le visage calme. Le sang a traversé le drap, au cou et au ventre.",
       "details": [
         {
           "label": "Les blessures",
           "text": "La victime a la [[gorge-tranchee]] et des [[mutilations-abdominales]] multiples, administrées après la mort."
+        },
+        {
+          "label": "Les mains",
+          "text": "Le bout de ses doigts est criblé de petites piqûres, comme en laisse l'aiguille. Le pouce et l'index de la main droite sont durcis."
         }
       ],
       "notes": "Corps n° 2. Le docteur est penché sur le cou."
@@ -195,11 +199,11 @@
       "details": [
         {
           "label": "Corps n° 1",
-          "text": "« Femme, environ quarante ans, nom inconnu. Trouvée à [[kings-row|King's Row]] vers une heure du matin. »"
+          "text": "« Femme, environ quarante ans, nom [[inconnue|inconnu]]. Trouvée à [[kings-row|King's Row]] vers une heure du matin. »"
         },
         {
           "label": "Corps n° 2",
-          "text": "« Femme, trente ans environ. Trouvée à [[wallace|Wallace Street]] vers deux heures et demie. Identité reconnue par la témoin [[elisabeth-coyle]] : Margaret Jenkins. Profession : couturière. »"
+          "text": "« Femme, trente ans environ. Trouvée à [[wallace|Wallace Street]] vers deux heures et demie. Identité reconnue par la témoin [[elisabeth-coyle]] : [[jenkins|Margaret Jenkins]]. Profession : [[couturiere|couturière]]. »"
         }
       ]
     },
@@ -213,7 +217,7 @@
         "w": 50,
         "h": 39
       },
-      "text": "« N° 1. [[inconnue|Inconnue]]. King's Row. 30 sept. 1888. »"
+      "text": "« N° 1. King's Row. 30 sept. 1888. »"
     },
     {
       "id": "etiquette-2",
@@ -225,7 +229,7 @@
         "w": 43,
         "h": 33
       },
-      "text": "« N° 2. [[jenkins|Margaret Jenkins]], profession : [[couturiere]]. Wallace Street. 30 sept. 1888. »"
+      "text": "« N° 2. Wallace Street. 30 sept. 1888. »"
     }
   ],
   "pages": [
@@ -250,6 +254,11 @@
           "zone": "corps-2",
           "answer": "jenkins"
         }
+      ],
+      "hints": [
+        "Deux hommes se présentent. Les deux corps, eux, portent un numéro.",
+        "Chaque étiquette nouée à un orteil donne un numéro et un lieu.",
+        "Le journal du médecin dit qui est le corps n° 1 et qui est le corps n° 2. Reste à voir quelle table porte quel numéro."
       ]
     },
     {
@@ -262,6 +271,11 @@
         "Sur la table de droite repose {jenkins}, reconnue comme {couturiere}, dont le corps a été signalé à {wallace}.",
         "L'examen des dépouilles révèle que la cause immédiate du décès est une {gorge-tranchee} ayant provoqué une {hemorragie} fatale et rapide.",
         "Enfin, les incisions pratiquées sur le torse confirment qu'il s'agit de {mutilations-abdominales} d'ordre {post-mortem}, maculées de {sang} séché, marquant la signature implacable du tueur."
+      ],
+      "hints": [
+        "Le journal ouvert sur le pupitre contient presque tout.",
+        "Chaque fiche du journal donne le lieu de la découverte et, quand on la connaît, la profession.",
+        "La cause de la mort est écrite à la fin du journal. Ce qui a été fait après la mort se lit dans les blessures du corps n° 1."
       ]
     }
   ]
