@@ -3,6 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      // Le jeu est pensé pour un écran d'ordinateur (1100 px de large au moins) : sur un téléphone ou une
+      // petite tablette, on affiche la page entière, dézoomée, plutôt qu'un morceau coupé à gauche.
+      if (screen.width < 1100) document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=1100');
+    </script>
     <title>Whitechapel, 1888</title>
   </head>
   <body>
