@@ -12,7 +12,7 @@
     "falseLeads": "Distracteurs : Margaret Jenkins (la victime), le cocher, la demi-couronne, 5 km, Whitechapel, le London Pictorial.",
     "other": "Affaire tutoriel (« tutorial »: true dans case.json) : le jeu guide le joueur pas à pas. Histoire écrite par l'auteur ; King's Row et Wallace Street sont des lieux inventés."
   },
-  "scene": { "image": "scene.svg", "width": 1600, "height": 900 },
+  "scene": { "image": "scene-ia.png", "width": 1600, "height": 900 },
   "tolerance": 2,
   "words": {
     "winkoff": { "label": "Alan Winkoff", "category": "person" },

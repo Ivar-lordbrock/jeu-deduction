@@ -12,7 +12,7 @@
     "other": "Brouillon écrit par Claude : à relire et à réécrire librement. L'affiche du comité et sa date (lundi 1er octobre) sont arrangées pour le jeu. Scène : tools/scene-fruiterie.mjs (npm run scene:fruiterie). Bruits des zones : sound.ts (ZONE_SOUNDS) ; position sur la carte : menu.ts (MAP_PINS)."
   },
   "scene": {
-    "image": "scene.svg",
+    "image": "scene-ia.png",
     "width": 1600,
     "height": 900
   },
