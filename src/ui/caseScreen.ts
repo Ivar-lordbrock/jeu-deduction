@@ -10,6 +10,7 @@ import { createGuide, type Guide } from './guide';
 import { renderNotebook } from './notebook';
 import { openRules } from './rules';
 import type { Actions, Session } from './session';
+import { playSound, soundButton } from './sound';
 
 export interface CaseScreenOptions {
   /** Ligne au-dessus du titre : « Affaire 1 · Chapitre 1 — … ». */
@@ -93,10 +94,12 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
   function afterPageChange(page: Page) {
     const ev = evaluatePage(data, page, s.progress);
     if (ev.verdict === 'solved' && !s.progress.solved.includes(page.id)) {
+      playSound('stamp', 0.12);
       s.progress.solved.push(page.id);
       s.justSolved = page.id;
       s.selectedSlot = null;
       if (isCaseSolved(data, s.progress)) {
+        playSound('victory', 1.1);
         s.showEpilogue = true;
         // L'affaire est résolue avant la fin du tutoriel : inutile de continuer.
         if (guide) {
@@ -105,6 +108,9 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
           setFlag('tutorialDone');
         }
       }
+    } else if (page.kind !== 'chronology' && (ev.verdict === 'close' || ev.verdict === 'wrong')) {
+      // la chronologie se juge à chaque déplacement : on ne sonne que sa réussite
+      playSound(ev.verdict, 0.15);
     }
     save();
   }
@@ -116,6 +122,7 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
     const slots = s.progress.slots[pageId] ?? [];
     const next = Array.from({ length: count }, (_, i) => slots[i] ?? null);
     next[index] = wordId;
+    playSound(wordId ? 'type' : 'untype');
     s.progress.slots[pageId] = next;
     afterPageChange(page);
   }
@@ -137,12 +144,14 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
     collect(wordId) {
       if (!s.progress.collected.includes(wordId)) {
         s.progress.collected.push(wordId);
+        playSound('pen');
         s.lastCollected = wordId;
         save();
       }
       render();
     },
     openZone(zoneId) {
+      playSound(data.zones.find((z) => z.id === zoneId)?.kind === 'document' ? 'paper' : 'paperSoft');
       s.openZone = zoneId;
       if (!s.progress.seenZones.includes(zoneId)) {
         s.progress.seenZones.push(zoneId);
@@ -151,14 +160,17 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
       render();
     },
     closeZone() {
+      if (s.openZone) playSound('paperSoft');
       s.openZone = null;
       render();
     },
     toggleZones() {
+      playSound('click');
       s.showZones = !s.showZones;
       render();
     },
     toggleGazette() {
+      playSound('paper');
       s.gazetteFolded = !s.gazetteFolded;
       saveGazettePref(gazetteHeight, s.gazetteFolded);
       render();
@@ -170,6 +182,7 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
         s.armedWord = null;
         s.selectedSlot = null;
       } else {
+        playSound('click');
         const same = s.selectedSlot?.page === pageId && s.selectedSlot.index === index;
         s.selectedSlot = same ? null : { page: pageId, index };
       }
@@ -186,6 +199,7 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
         fill(sel.page, sel.index, wordId);
         selectNextEmpty(sel.page, sel.index);
       } else {
+        playSound('click');
         s.armedWord = s.armedWord === wordId ? null : wordId;
       }
       render();
@@ -209,35 +223,42 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
       const [moved] = order.splice(from, 1);
       order.splice(to, 0, moved);
       s.progress.orders[pageId] = order;
+      playSound('type');
       afterPageChange(page);
       render();
     },
     revealHint(pageId) {
       s.progress.hints[pageId] = (s.progress.hints[pageId] ?? 0) + 1;
+      playSound('hint');
       s.justHinted = pageId;
       save();
       render();
     },
     dismissIntro() {
+      playSound('paper');
       s.progress.introSeen = true;
       save();
       render();
     },
     closeEpilogue() {
+      playSound('click');
       s.showEpilogue = false;
       render();
     },
     reset() {
       if (!confirm('Recommencer cette affaire depuis le début ? Votre progression sera effacée.')) return;
+      playSound('paper');
       clearProgress(data.id);
       s.progress = emptyProgress(data);
       Object.assign(s, { openZone: null, selectedSlot: null, armedWord: null, showEpilogue: false });
       render();
     },
     exit() {
+      playSound('click');
       opts.exit();
     },
     help() {
+      playSound('paper');
       openRules({
         replayTutorial: data.tutorial ? startGuide : undefined,
         onClose: () => guide?.sync(),
@@ -380,6 +401,7 @@ function renderHeader(s: Session, a: Actions, kicker: string): HTMLElement {
         { class: 'btn ghost small help-btn', 'data-tool': 'help', title: 'Comment jouer', 'aria-label': 'Comment jouer', onClick: () => a.help() },
         '?',
       ),
+      soundButton(),
     ),
   );
 }

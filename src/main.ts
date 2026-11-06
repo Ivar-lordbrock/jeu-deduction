@@ -9,10 +9,13 @@ import { openCase } from './ui/caseScreen';
 import { renderCases } from './ui/menu';
 import { renderPrologue } from './ui/prologue';
 import { openRules } from './ui/rules';
+import { ambienceFor, setAmbience, soundButton } from './ui/sound';
 import { renderTitle } from './ui/title';
 
 const root = document.getElementById('app') as HTMLElement;
 document.title = GAME_TITLE;
+// Le bouton du son flotte sur les menus ; dans une affaire, il est dans l'en-tête.
+document.body.append(soundButton('sound-float'));
 
 // Quand l'éditeur enregistre une affaire ou l'histoire, le jeu se recharge (sur l'écran ouvert).
 if (import.meta.hot) {
@@ -93,6 +96,7 @@ function show(r: Route, history_: 'push' | 'replace' | 'none' = 'push') {
   else if (history_ === 'replace') history.replaceState(null, '', url);
   root.className = `screen-${r.name}`;
   window.scrollTo(0, 0);
+  setAmbience(r.name === 'case' ? ambienceFor(r.c.id) : 'street');
 
   switch (r.name) {
     case 'title':

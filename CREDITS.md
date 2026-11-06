@@ -68,4 +68,6 @@ Dans la scène de la morgue viennent d'Openclipart le pupitre (et son livre ouve
 
 Le décor du commissariat (`src/cases/01-leman-street/scene.svg`, généré par `tools/scene-commissariat.mjs` : la pièce en perspective, murs, meubles, papiers, lumière) celui de la morgue (`src/cases/02-morgue/scene.svg`, généré par `tools/scene-morgue.mjs`) et les toits de l'écran titre (`src/assets/skyline.svg`) sont dessinés pour le jeu, en SVG.
 
+L'ambiance sonore et les bruitages (`src/ui/sound.ts`) sont fabriqués par le code du jeu, avec l'API Web Audio : pluie, vent, cloche lointaine, pendule, gouttes sur le carrelage, becs de gaz, plume, papier, caractère d'imprimerie, tampon, carillon. Le jeu ne contient aucun fichier son.
+
 Les silhouettes des personnages récurrents (`src/assets/silhouettes/persos/` : commissaire, agent, journaliste, joueur, témoin, docteur, quatre ou cinq poses chacun) sont aussi dessinées pour le jeu, par `tools/persos.mjs`, en s'inspirant des profils découpés de l'époque cités plus haut. Elles n'en reprennent aucun tracé. La scène contient aussi, en petit et teintées, deux gravures de Doré citées plus haut : « Bluegate Fields » vue par la fenêtre et « The Bull's-Eye » punaisée au mur.

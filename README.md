@@ -41,6 +41,10 @@ en dessous.
 3. **Valider** : un article complet est jugé. Le jeu dit « Validé », « N erreurs ou moins »
    ou rien de plus : jamais où sont les erreurs.
 
+Chaque lieu a son ambiance sonore (la rue sous la pluie, le poste et sa pendule, la morgue et
+ses gouttes), et chaque geste son bruit : la plume, le papier, le caractère d'imprimerie, le
+tampon. Le bouton du son, ou la touche M, le coupe.
+
 ## Lancer le jeu
 
 Il faut [Node.js](https://nodejs.org/) 22 ou plus récent.
@@ -140,6 +144,7 @@ src/
     guide.ts         tutoriel guidé de la première affaire
     rules.ts         aide-mémoire « Comment jouer »
     art.ts           gravures, icônes et brouillard
+    sound.ts         ambiance sonore et bruitages, fabriqués par le code (Web Audio)
   editor/            l'éditeur (Preact)
 tests/               tests du moteur et des affaires
 docs/                format et gabarit d'écriture, planche des personnages
@@ -165,5 +170,6 @@ La planche [docs/planche-persos.svg](docs/planche-persos.svg) les montre tous av
 - [ ] Plusieurs scènes par affaire (pièces, moments différents)
 - [ ] Glisser-déposer pour la chronologie
 - [ ] Carte ou frise reliant les affaires (le fil rouge)
-- [ ] Musique, sons, écran titre
+- [x] Ambiance sonore et bruitages (sans fichier son : `src/ui/sound.ts`)
+- [ ] Musique
 - [ ] Portage sur Godot

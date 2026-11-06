@@ -337,6 +337,12 @@ h1, h2, h3 { font-family: var(--serif); font-weight: normal; margin: 0; }
 .case-title { font-size: 21px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .header-tools { display: flex; gap: 6px; align-items: center; }
 .help-btn { width: 34px; height: 34px; padding: 0; border-radius: 50%; font-weight: 700; font-size: 16px; }
+/* le bouton du son : dans l'en-tête d'une affaire, ou flottant en haut à droite des menus */
+.sound-btn { width: 34px; height: 34px; padding: 0; border-radius: 50%; display: inline-grid; place-items: center; }
+.sound-btn svg { width: 18px; height: 18px; }
+.sound-btn[aria-pressed='true'] { opacity: 0.6; }
+.sound-float { position: fixed; top: 14px; right: 14px; z-index: 40; background: rgb(12 20 19 / 0.65); }
+#app.screen-case ~ .sound-float { display: none; }
 
 /* ---------- Corps d'une affaire : carnet à gauche, gazette au-dessus de la scène ---------- */
 .case-body {
