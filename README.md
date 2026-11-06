@@ -42,8 +42,9 @@ en dessous.
    ou rien de plus : jamais où sont les erreurs.
 
 Chaque lieu a son ambiance sonore (la rue sous la pluie, le poste et sa pendule, la morgue et
-ses gouttes), et chaque geste son bruit : la plume, le papier, le caractère d'imprimerie, le
-tampon. Le bouton du son, ou la touche M, le coupe.
+ses gouttes), et chaque geste son bruit : le crayon, le papier, la machine à écrire, le marteau
+du juge. Ce sont de vrais enregistrements, libres de droits (voir [CREDITS.md](CREDITS.md)).
+Le bouton du son, ou la touche M, le coupe.
 
 ## Lancer le jeu
 
@@ -125,7 +126,7 @@ src/
   types.ts           format des données d'une affaire
   story/story.json   l'histoire : titre, personnages, chapitres
   cases/             une affaire par dossier (case.json + image)
-  assets/            gravures de Doré, silhouettes, icônes, polices, textures (sources : CREDITS.md)
+  assets/            gravures de Doré, silhouettes, icônes, polices, textures, sons (sources : CREDITS.md)
   engine/
     markup.ts        lecture des [[mots]] et des {cases}
     validation.ts    jugement des pages, règle « N erreurs ou moins »
@@ -144,7 +145,7 @@ src/
     guide.ts         tutoriel guidé de la première affaire
     rules.ts         aide-mémoire « Comment jouer »
     art.ts           gravures, icônes et brouillard
-    sound.ts         ambiance sonore et bruitages, fabriqués par le code (Web Audio)
+    sound.ts         ambiance sonore et bruitages (enregistrements de src/assets/sounds)
   editor/            l'éditeur (Preact)
 tests/               tests du moteur et des affaires
 docs/                format et gabarit d'écriture, planche des personnages
@@ -170,6 +171,6 @@ La planche [docs/planche-persos.svg](docs/planche-persos.svg) les montre tous av
 - [ ] Plusieurs scènes par affaire (pièces, moments différents)
 - [ ] Glisser-déposer pour la chronologie
 - [ ] Carte ou frise reliant les affaires (le fil rouge)
-- [x] Ambiance sonore et bruitages (sans fichier son : `src/ui/sound.ts`)
+- [x] Ambiance sonore et bruitages (enregistrements CC0 de BigSoundBank : `src/ui/sound.ts`)
 - [ ] Musique
 - [ ] Portage sur Godot

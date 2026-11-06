@@ -65,7 +65,7 @@ export function renderTitle(root: HTMLElement, statuses: CaseStatus[], a: TitleA
       h(
         'p',
         { class: 'title-credits' },
-        'Gravures : Gustave Doré, « London, a Pilgrimage » (1872), domaine public · Icônes : Lorc et Delapouite, game-icons.net (CC BY 3.0) · Polices IM Fell et UnifrakturMaguntia (OFL) · Silhouettes : Openclipart (CC0) · Textures : ambientCG et Kenney (CC0)',
+        'Gravures : Gustave Doré, « London, a Pilgrimage » (1872), domaine public · Icônes : Lorc et Delapouite, game-icons.net (CC BY 3.0) · Polices IM Fell et UnifrakturMaguntia (OFL) · Silhouettes : Openclipart (CC0) · Textures : ambientCG et Kenney (CC0) · Sons : Joseph Sardin, BigSoundBank.com (CC0)',
       ),
     ),
   );

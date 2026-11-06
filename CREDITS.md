@@ -36,6 +36,29 @@ Fichiers SVG d'origine, non modifiés (`src/assets/icons/`), colorés par le CSS
 - `textures/paper.jpg` : **Paper006** d'[ambientCG](https://ambientcg.com/view?id=Paper006), [CC0](https://docs.ambientcg.com/license/). Carte de couleur seule, recompressée en 768 px.
 - `textures/fog-1.png` à `fog-3.png` : `smoke_01`, `smoke_04` et `smoke_07` du **Particle Pack** de [Kenney](https://kenney.nl) ([OpenGameArt](https://opengameart.org/content/particle-pack-80-sprites)), [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Réduits en 256 px.
 
+## Sons — CC0 (domaine public)
+
+Ambiances et bruitages : vrais enregistrements de **Joseph Sardin**, sur [BigSoundBank](https://bigsoundbank.com), sous licence [Creative Commons CC0 1.0](https://bigsoundbank.com/licenses.html), sans aucune restriction. Pour le remercier : « Sons additionnels : Joseph SARDIN - BigSoundBank.com ».
+
+Dans `src/assets/sounds/`, les MP3 d'origine sont coupés aux limites de trames (sans réencodage) et débarrassés de leurs balises. Le jeu fait les boucles, les filtres et les volumes en direct (`src/ui/sound.ts`).
+
+| Fichier | Son d'origine | N° | Passage gardé |
+|---|---|---|---|
+| `pluie-rue.mp3` | « Rain on concrete » | [1289](https://bigsoundbank.com/rain-on-concrete-s1289.html) | 2 à 22 s |
+| `vent.mp3` | « Whistling of the Wind #1 » | [0147](https://bigsoundbank.com/whistling-of-the-wind-1-s0147.html) | 0 à 24 s |
+| `pluie-vitre.mp3` | « Rain on car windshield #2 » | [1297](https://bigsoundbank.com/rain-on-car-windshield-2-s1297.html) | 4 à 24 s |
+| `gouttes.mp3` | « Drops of water #1 » | [1384](https://bigsoundbank.com/drops-of-water-1-s1384.html) | entier |
+| `pendule.mp3` | « Grandfather clock, ticking » | [1567](https://bigsoundbank.com/grandfather-clock-ticking-s1567.html) | 2,5 à 9,35 s |
+| `cloche-loin.mp3` | « Bell 1 O'clock » | [3446](https://bigsoundbank.com/bell-1-o-clock-s3446.html) | 0 à 5 s |
+| `cloches.mp3` | « Bell 5 O'clock » | [3445](https://bigsoundbank.com/bell-5-o-clock-s3445.html) | les deux derniers coups |
+| `crayon.mp3` | « Pencil #2 » | [3233](https://bigsoundbank.com/pencil-2-s3233.html) | 0,3 à 5,3 s |
+| `journal.mp3` | « News paper, pages » | [1250](https://bigsoundbank.com/news-paper-pages-s1250.html) | 5,6 à 13,5 s |
+| `page-1.mp3`, `page-2.mp3` | « Pages that Turn #5 » et « #6 » | [2212](https://bigsoundbank.com/pages-that-turn-5-s2212.html), [2213](https://bigsoundbank.com/pages-that-turn-6-s2213.html) | entiers |
+| `grande-page.mp3` | « Great Page that Turns #1 » | [0362](https://bigsoundbank.com/great-page-that-turns-1-s0362.html) | entier |
+| `touche.mp3`, `espace.mp3` | « Typewriter, Key » et « Typewriter, space » | [2842](https://bigsoundbank.com/typewriter-key-s2842.html), [2843](https://bigsoundbank.com/typewriter-space-s2843.html) | entiers |
+| `marteau.mp3` | « Gavel, 1 blow » | [1588](https://bigsoundbank.com/gavel-1-blow-s1588.html) | entier |
+| `livre.mp3` | « Closed book #1 » | [1410](https://bigsoundbank.com/closed-book-1-s1410.html) | entier |
+
 ## Silhouettes — CC0 (domaine public)
 
 Personnages et décor de rue en silhouettes, venus d'[Openclipart](https://openclipart.org), où tout est versé dans le domaine public ([CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)). Tous ont été publiés entre 2007 et 2021, avant les générateurs d'images par IA. Dans `src/assets/silhouettes/`, les fichiers sont débarrassés de leurs métadonnées d'éditeur ; chacun garde en tête une ligne avec son numéro, son titre et son auteur.
@@ -67,7 +90,5 @@ Dans la scène de la morgue viennent d'Openclipart le pupitre (et son livre ouve
 ## Dessins originaux du projet
 
 Le décor du commissariat (`src/cases/01-leman-street/scene.svg`, généré par `tools/scene-commissariat.mjs` : la pièce en perspective, murs, meubles, papiers, lumière) celui de la morgue (`src/cases/02-morgue/scene.svg`, généré par `tools/scene-morgue.mjs`) et les toits de l'écran titre (`src/assets/skyline.svg`) sont dessinés pour le jeu, en SVG.
-
-L'ambiance sonore et les bruitages (`src/ui/sound.ts`) sont fabriqués par le code du jeu, avec l'API Web Audio : pluie, vent, cloche lointaine, pendule, gouttes sur le carrelage, becs de gaz, plume, papier, caractère d'imprimerie, tampon, carillon. Le jeu ne contient aucun fichier son.
 
 Les silhouettes des personnages récurrents (`src/assets/silhouettes/persos/` : commissaire, agent, journaliste, joueur, témoin, docteur, quatre ou cinq poses chacun) sont aussi dessinées pour le jeu, par `tools/persos.mjs`, en s'inspirant des profils découpés de l'époque cités plus haut. Elles n'en reprennent aucun tracé. La scène contient aussi, en petit et teintées, deux gravures de Doré citées plus haut : « Bluegate Fields » vue par la fenêtre et « The Bull's-Eye » punaisée au mur.
