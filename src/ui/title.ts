@@ -14,6 +14,8 @@ interface TitleActions {
   rules(): void;
   /** Tout effacer pour rejouer depuis le début. */
   restart(): void;
+  /** Code de sauvegarde : continuer la partie sur un autre ordinateur. */
+  save(): void;
 }
 
 /** Écran titre : un seul bouton principal, qui sait où le joueur en est. */
@@ -58,6 +60,7 @@ export function renderTitle(root: HTMLElement, statuses: CaseStatus[], a: TitleA
             h('button', { class: 'btn ghost', onClick: () => a.cases() }, 'Les affaires'),
             story.prologue?.length ? h('button', { class: 'btn ghost', onClick: () => a.prologue() }, 'Prologue') : null,
             h('button', { class: 'btn ghost', onClick: () => a.rules() }, 'Comment jouer'),
+            h('button', { class: 'btn ghost', title: 'Continuer la partie sur un autre ordinateur', onClick: () => a.save() }, 'Sauvegarde'),
             begun
               ? h(
                   'button',
@@ -74,7 +77,7 @@ export function renderTitle(root: HTMLElement, statuses: CaseStatus[], a: TitleA
       h(
         'p',
         { class: 'title-credits' },
-        'Gravures : Gustave Doré, « London, a Pilgrimage » (1872), domaine public · Icônes : Lorc et Delapouite, game-icons.net (CC BY 3.0) · Polices IM Fell et UnifrakturMaguntia (OFL) · Silhouettes : Openclipart (CC0) · Textures : ambientCG et Kenney (CC0) · Sons : Joseph Sardin, BigSoundBank.com (CC0)',
+        'Gravures : Gustave Doré, « London, a Pilgrimage » (1872), domaine public · Icônes : Lorc et Delapouite, game-icons.net (CC BY 3.0) · Polices IM Fell et UnifrakturMaguntia (OFL) · Silhouettes : Openclipart (CC0) · Textures : ambientCG et Kenney (CC0) · Sons : Joseph Sardin, BigSoundBank.com (CC0) · Carte : Charles Booth (1887), domaine public',
       ),
     ),
   );

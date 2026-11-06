@@ -9,6 +9,7 @@ import { openCase } from './ui/caseScreen';
 import { renderCases } from './ui/menu';
 import { renderPrologue } from './ui/prologue';
 import { openRules } from './ui/rules';
+import { openSaveDialog } from './ui/saveDialog';
 import { ambienceFor, setAmbience, soundButton } from './ui/sound';
 import { renderTitle } from './ui/title';
 
@@ -111,6 +112,7 @@ function show(r: Route, history_: 'push' | 'replace' | 'none' = 'push') {
           clearAllProgress();
           show({ name: 'title' }, 'replace');
         },
+        save: () => openSaveDialog({ onImported: () => show({ name: 'title' }, 'replace') }),
       });
       break;
     case 'prologue':
@@ -137,6 +139,7 @@ function show(r: Route, history_: 'push' | 'replace' | 'none' = 'push') {
       const following = list.slice(idx + 1).find((s) => !s.data.draft);
       dispose = openCase(root, r.c, {
         kicker: kickerOf(r.c),
+        number: list[idx]?.number ?? undefined,
         exit: () => show({ name: 'cases' }),
         next: following ? () => show({ name: 'case', c: following.data }) : undefined,
       });

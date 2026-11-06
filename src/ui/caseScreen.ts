@@ -5,16 +5,19 @@ import { currentOrder, evaluatePage, expectedSlots } from '../engine/validation'
 import type { Page } from '../types';
 import { icon } from './art';
 import { renderScene } from './explore';
+import { openFrontPage, renderReport } from './frontPage';
 import { renderGazette } from './gazette';
 import { createGuide, type Guide } from './guide';
 import { renderNotebook } from './notebook';
 import { openRules } from './rules';
 import type { Actions, Session } from './session';
-import { playSound, soundButton } from './sound';
+import { playSound, prepareSounds, soundButton, zoneSound } from './sound';
 
 export interface CaseScreenOptions {
   /** Ligne au-dessus du titre : « Affaire 1 · Chapitre 1 — … ». */
   kicker: string;
+  /** Numéro de l'affaire dans la campagne (pour la une). */
+  number?: number;
   exit(): void;
   /** Affaire suivante, proposée à la fin (absente pour la dernière). */
   next?: () => void;
@@ -25,6 +28,8 @@ export interface CaseScreenOptions {
 const GAZETTE_KEY = 'jeu-deduction:v1:@gazette';
 const MIN_GAZETTE = 120;
 const MIN_SCENE = 200;
+/** Le temps d'enquête ne compte plus après 90 s sans un geste (le joueur est parti). */
+const IDLE_MS = 90_000;
 
 function loadGazettePref(): { height: number | null; folded: boolean } {
   try {
@@ -70,7 +75,35 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
   const sceneImg = h('img', { class: 'scene-img', src: data.sceneUrl, alt: '', draggable: 'false' });
 
   const pageById = (id: string): Page | undefined => data.pages.find((p) => p.id === id);
-  const save = () => saveProgress(data.id, s.progress);
+
+  // Temps d'enquête (pour le rapport de fin) : il court tant que l'onglet est visible, que le
+  // joueur est là et que l'affaire n'est pas résolue. Ajouté à la progression à chaque sauvegarde.
+  let since: number | null = null;
+  let lastActivity = performance.now();
+  function tick() {
+    const now = performance.now();
+    if (since !== null) s.progress.elapsed += Math.round(Math.max(0, Math.min(now, lastActivity + IDLE_MS) - since));
+    since = document.visibilityState === 'visible' && !isCaseSolved(data, s.progress) ? now : null;
+  }
+  const save = () => {
+    tick();
+    saveProgress(data.id, s.progress);
+  };
+  const onActivity = () => {
+    if (since !== null && performance.now() - lastActivity > IDLE_MS) {
+      // retour après une absence : on compte jusqu'au départ, puis le temps reprend d'ici
+      tick();
+    }
+    lastActivity = performance.now();
+  };
+  root.addEventListener('pointerdown', onActivity, true);
+  root.addEventListener('pointermove', onActivity, true);
+  document.addEventListener('keydown', onActivity, true);
+  const onVisibility = () => save();
+  document.addEventListener('visibilitychange', onVisibility);
+  const clock = window.setInterval(save, 20_000);
+  tick();
+  prepareSounds(data.id);
 
   let guide: Guide | null = null;
   function startGuide() {
@@ -109,8 +142,9 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
         }
       }
     } else if (page.kind !== 'chronology' && (ev.verdict === 'close' || ev.verdict === 'wrong')) {
-      // la chronologie se juge à chaque déplacement : on ne sonne que sa réussite
+      // la chronologie se juge à chaque déplacement : on ne sonne (et ne compte) que sa réussite
       playSound(ev.verdict, 0.15);
+      s.progress.mistakes++;
     }
     save();
   }
@@ -151,7 +185,7 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
       render();
     },
     openZone(zoneId) {
-      playSound(data.zones.find((z) => z.id === zoneId)?.kind === 'document' ? 'paper' : 'paperSoft');
+      playSound(zoneSound(data.id, zoneId) ?? (data.zones.find((z) => z.id === zoneId)?.kind === 'document' ? 'paper' : 'paperSoft'));
       s.openZone = zoneId;
       if (!s.progress.seenZones.includes(zoneId)) {
         s.progress.seenZones.push(zoneId);
@@ -250,12 +284,17 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
       playSound('paper');
       clearProgress(data.id);
       s.progress = emptyProgress(data);
+      since = null;
+      tick();
       Object.assign(s, { openZone: null, selectedSlot: null, armedWord: null, showEpilogue: false });
       render();
     },
     exit() {
       playSound('click');
       opts.exit();
+    },
+    frontPage() {
+      openFrontPage(data, s.progress, { number: opts.number });
     },
     help() {
       playSound('paper');
@@ -363,6 +402,12 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
   if (data.tutorial && !loadFlags().tutorialDone) startGuide();
 
   return () => {
+    save();
+    window.clearInterval(clock);
+    root.removeEventListener('pointerdown', onActivity, true);
+    root.removeEventListener('pointermove', onActivity, true);
+    document.removeEventListener('keydown', onActivity, true);
+    document.removeEventListener('visibilitychange', onVisibility);
     document.removeEventListener('keydown', onKey);
     guide?.dispose();
     guide = null;
@@ -390,6 +435,14 @@ function renderHeader(s: Session, a: Actions, kicker: string): HTMLElement {
         icon('magnifying-glass'),
         s.showZones ? 'Masquer les zones' : 'Montrer les zones',
       ),
+      isCaseSolved(s.data, s.progress)
+        ? h(
+            'button',
+            { class: 'btn ghost small', 'data-tool': 'frontpage', title: 'La une de The Whitechapel Lantern, avec votre article', onClick: () => a.frontPage() },
+            icon('newspaper'),
+            'La une',
+          )
+        : null,
       h(
         'button',
         { class: 'btn ghost small', 'data-tool': 'reset', title: 'Effacer la progression de cette affaire', onClick: () => a.reset() },
@@ -436,10 +489,12 @@ function renderOverlay(s: Session, a: Actions): HTMLElement | null {
         h('span', { class: 'modal-kicker solved' }, 'Affaire résolue'),
         h('h2', {}, s.data.title),
         h('p', { class: 'story' }, s.data.epilogue),
+        renderReport(s.progress),
         h(
           'div',
           { class: 'modal-actions' },
           h('button', { class: 'btn ghost', onClick: () => a.closeEpilogue() }, 'Revoir la scène'),
+          h('button', { class: 'btn ghost', onClick: () => a.frontPage() }, icon('newspaper'), 'Voir la une'),
           a.next ? h('button', { class: 'btn ghost', onClick: () => a.exit() }, 'Retour aux affaires') : null,
           a.next
             ? h('button', { class: 'btn primary', onClick: () => a.next?.() }, 'Affaire suivante →')

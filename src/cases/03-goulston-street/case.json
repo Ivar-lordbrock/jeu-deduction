@@ -1,0 +1,300 @@
+{
+  "id": "goulston-street",
+  "order": 3,
+  "chapter": "chapitre-1",
+  "draft": true,
+  "title": "Le tablier et la craie",
+  "intro": "Londres, dimanche 30 septembre 1888, six heures du matin.\nÀ Goulston Street, devant l'entrée d'un immeuble ouvrier, un agent monte la garde. Le mur est mouillé, un seau traîne sur le trottoir : quelqu'un vient d'effacer quelque chose.\n\nCette nuit, un agent a trouvé ici un morceau de tablier taché de sang, et une phrase écrite à la craie. La phrase n'existe plus. Retrouvez d'où venait le tablier, qui a fait effacer le mur, et pourquoi.",
+  "epilogue": "Le morceau de tablier venait bien de Margaret Jenkins : après le meurtre de Wallace Street, l'assassin est passé par Goulston Street, entre 2 h 30 et 2 h 55, et s'en est débarrassé sous l'entrée 108-119.\n\nLa phrase, elle, a été effacée à 5 h 30 sur l'ordre du chef Alan Winkoff, qui craignait une émeute contre les habitants juifs du quartier. Le détective Hurst n'a jamais eu sa photographie. Il ne reste que la copie de l'agent Lane, et une question que personne ne pourra trancher : est-ce l'assassin qui a écrit ces mots ?",
+  "notes": {
+    "moment": "Dimanche 30 septembre 1888, vers 6 h, devant l'entrée 108-119 des Wentworth Model Dwellings, Goulston Street. La phrase à la craie vient d'être effacée (5 h 30). L'agent Lane garde l'entrée, le détective Hurst prend des notes, Hannah Mendel n'ose pas sortir ; le joueur arrive par la rue.",
+    "truth": "Faits réels, noms changés (voir story.json) : à 2 h 55, l'agent Alfred Lane (Alfred Long, division H) trouve sous l'entrée 108-119 un morceau de tablier taché de sang et, au-dessus, à la craie sur le jambage de briques noires : « The Juwes are the men That Will not be Blamed for nothing » (sa copie). Il était passé à 2 h 20 : rien. Le tablier complète celui de la victime de Wallace Street (Margaret Jenkins, d'après Catherine Eddowes). Vers 5 h, le détective Daniel Hurst (Daniel Halse, police de la City) demande d'attendre le photographe, ou d'effacer seulement la première ligne ; le surintendant Arden (Thomas Arnold) a déjà fait venir un agent avec une éponge. Le chef Alan Winkoff (Sir Charles Warren) arrive et fait tout effacer à 5 h 30, par peur d'une émeute contre les Juifs du quartier, accusés depuis l'affaire « Tablier de cuir » (John Pilcher, d'après John Pizer, cordonnier juif arrêté puis innocenté début septembre).",
+    "falseLeads": "Distracteurs : 2 h 20 (la ronde, rien), 5 h (la demande de Hurst), le surintendant Arden (il n'a pas donné l'ordre), John Pilcher (innocenté), l'inconnue de King's Row et le docteur Jefferson (dans le billet).",
+    "other": "Brouillon écrit par Claude : à relire et à réécrire librement. Hannah Mendel est inventée (une habitante de l'immeuble, pour dire la peur des émeutes). Scène : tools/scene-goulston.mjs (npm run scene:goulston). Bruits des zones : sound.ts (ZONE_SOUNDS) ; position sur la carte : menu.ts (MAP_PINS)."
+  },
+  "scene": {
+    "image": "scene.svg",
+    "width": 1600,
+    "height": 900
+  },
+  "startingWords": [
+    "goulston"
+  ],
+  "words": {
+    "goulston": {
+      "label": "Goulston Street",
+      "category": "place"
+    },
+    "lane": {
+      "label": "Alfred Lane",
+      "category": "person"
+    },
+    "hurst": {
+      "label": "Daniel Hurst",
+      "category": "person"
+    },
+    "mendel": {
+      "label": "Hannah Mendel",
+      "category": "person"
+    },
+    "winkoff": {
+      "label": "Alan Winkoff",
+      "category": "person"
+    },
+    "arden": {
+      "label": "Thomas Arden",
+      "category": "person"
+    },
+    "jenkins": {
+      "label": "Margaret Jenkins",
+      "category": "person"
+    },
+    "inconnue": {
+      "label": "l'inconnue",
+      "category": "person"
+    },
+    "jefferson": {
+      "label": "Albert Jefferson",
+      "category": "person"
+    },
+    "pilcher": {
+      "label": "John Pilcher",
+      "category": "person"
+    },
+    "tablier-de-cuir": {
+      "label": "Tablier de cuir",
+      "category": "person"
+    },
+    "deux-h-vingt": {
+      "label": "2 h 20",
+      "category": "other"
+    },
+    "deux-h-cinquante-cinq": {
+      "label": "2 h 55",
+      "category": "other"
+    },
+    "cinq-h": {
+      "label": "5 h",
+      "category": "other"
+    },
+    "cinq-h-trente": {
+      "label": "5 h 30",
+      "category": "other"
+    },
+    "tablier": {
+      "label": "tablier",
+      "category": "object"
+    },
+    "craie": {
+      "label": "craie",
+      "category": "object"
+    },
+    "photographier": {
+      "label": "photographier",
+      "category": "action"
+    },
+    "effacer": {
+      "label": "effacer",
+      "category": "action"
+    },
+    "emeute": {
+      "label": "émeute",
+      "category": "other"
+    },
+    "juifs": {
+      "label": "juifs",
+      "category": "other"
+    },
+    "wallace": {
+      "label": "Wallace Street",
+      "category": "place"
+    },
+    "kings-row": {
+      "label": "King's Row",
+      "category": "place"
+    }
+  },
+  "zones": [
+    {
+      "id": "plaque",
+      "kind": "object",
+      "label": "La plaque au-dessus de l'entrée",
+      "rect": {
+        "x": 938,
+        "y": 110,
+        "w": 104,
+        "h": 34
+      },
+      "text": "« 108 – 119 ». L'entrée des Wentworth Model Dwellings, un grand immeuble ouvrier de [[goulston|Goulston Street]]. Un escalier sombre monte vers des dizaines de logements."
+    },
+    {
+      "id": "affiche",
+      "kind": "document",
+      "label": "L'affiche sur le mur",
+      "rect": {
+        "x": 646,
+        "y": 314,
+        "w": 124,
+        "h": 164
+      },
+      "text": "Une affiche du Comet, à moitié décollée par la pluie.\n« LEATHER APRON RELEASED » : « Tablier de cuir » relâché.\n« Le cordonnier [[pilcher|John Pilcher]], que la rumeur appelait « [[tablier-de-cuir|Tablier de cuir]] », est innocenté et remis en liberté. Mais Whitechapel, lui, n'a pas oublié. »"
+    },
+    {
+      "id": "message",
+      "kind": "object",
+      "label": "Le mur mouillé",
+      "rect": {
+        "x": 796,
+        "y": 284,
+        "w": 70,
+        "h": 160
+      },
+      "text": "Le jambage de briques noires, à gauche de l'entrée, est encore trempé. L'eau a coulé en traînées blanchâtres jusqu'au trottoir : de la [[craie]] délayée.\nEn regardant de très près, on devine encore une lettre, « J », et plus bas trois autres, « wes ». Tout le reste a disparu.",
+      "notes": "Ici était écrite la phrase. Elle se lit en entier dans le carnet de l'agent Lane."
+    },
+    {
+      "id": "seau",
+      "kind": "object",
+      "label": "Le seau et la serpillière",
+      "rect": {
+        "x": 825,
+        "y": 589,
+        "w": 108,
+        "h": 96
+      },
+      "text": "Un seau d'eau trouble, blanchie par la craie, et une serpillière abandonnée contre le mur. Celui qui a lavé le jambage est reparti sans ranger ses affaires : on lui avait demandé de faire vite."
+    },
+    {
+      "id": "temoin",
+      "kind": "person",
+      "label": "La femme sur le seuil",
+      "rect": {
+        "x": 931,
+        "y": 284,
+        "w": 133,
+        "h": 368
+      },
+      "portrait": {
+        "x": 970,
+        "y": 281,
+        "w": 76,
+        "h": 101
+      },
+      "text": "Une femme en châle rouge, un panier au bras, n'ose pas sortir de l'entrée.\n« Je m'appelle [[mendel|Hannah Mendel]], j'habite au deuxième étage. Ici, presque tout l'immeuble est [[juifs|juif]] : des tailleurs, des cordonniers, des familles venues de Pologne. Depuis l'histoire du « [[tablier-de-cuir|Tablier de cuir]] », on nous crie dessus dans la rue.\nCe matin, j'ai entendu le grand chef dire à ses hommes que si les gens lisaient ce mur, il y aurait une [[emeute|émeute]] avant midi. »",
+      "notes": "Personnage inventé (une habitante de l'immeuble)."
+    },
+    {
+      "id": "agent",
+      "kind": "person",
+      "label": "L'agent devant l'entrée",
+      "character": "lane",
+      "rect": {
+        "x": 1179,
+        "y": 199,
+        "w": 110,
+        "h": 504
+      },
+      "portrait": {
+        "x": 1175,
+        "y": 193,
+        "w": 113,
+        "h": 151
+      },
+      "text": "Un agent garde l'entrée, raide comme un piquet.\n« Agent [[lane|Alfred Lane]], division H. Je fais ma ronde dans Goulston Street toute la nuit. À [[deux-h-vingt|2 h 20]], je suis passé ici : rien du tout. À [[deux-h-cinquante-cinq|2 h 55]], il y avait par terre, sous l'entrée, un morceau de [[tablier]] plein de sang. Et au-dessus, sur les briques noires, une phrase écrite à la [[craie]]. Je l'ai copiée dans mon carnet avant qu'on l'efface. »",
+      "details": [
+        {
+          "label": "Le carnet de l'agent Lane",
+          "text": "« 2 h 20 : ronde, rien à signaler.\n2 h 55 : sous l'entrée 108-119, un morceau de tablier taché de sang. Au-dessus, à la craie, sur le jambage de briques noires :\nThe Juwes are the men That Will not be Blamed for nothing\n(copié mot pour mot, avec l'orthographe). »\nPlus bas, au crayon : « Les Juifs sont des hommes qu'on n'accusera pas pour rien ? Ou le contraire ? Je ne comprends pas ce que ça veut dire. »"
+        },
+        {
+          "label": "Le billet du docteur, glissé dans le carnet",
+          "text": "« Morgue, 4 h 40. Le morceau de tablier apporté par l'agent Lane complète exactement le tablier de la seconde victime, [[jenkins|Margaret Jenkins]], tuée vers 2 h 30 à [[wallace|Wallace Street]] : même toile, même couture, même déchirure. Rien à voir avec [[inconnue|l'inconnue]] de [[kings-row|King's Row]]. — Dr [[jefferson|A. Jefferson]] »"
+        }
+      ]
+    },
+    {
+      "id": "detective",
+      "kind": "person",
+      "label": "L'homme en civil qui écrit",
+      "character": "hurst",
+      "rect": {
+        "x": 1290,
+        "y": 220,
+        "w": 208,
+        "h": 552
+      },
+      "portrait": {
+        "x": 1370,
+        "y": 217,
+        "w": 109,
+        "h": 145
+      },
+      "text": "Un homme en pardessus sombre écrit vite, la mâchoire serrée.\n« Détective [[hurst|Daniel Hurst]], police de la City. La femme de Wallace Street a été tuée chez nous : ce morceau de tablier nous regarde aussi. Ce mur était une preuve. J'ai demandé qu'on attende le jour pour le [[photographier]]. On m'a ri au nez. »",
+      "details": [
+        {
+          "label": "Les notes du détective Hurst",
+          "text": "« [[cinq-h|5 h]] : le surintendant [[arden|Arden]] a fait venir un agent avec une éponge, mais il attend un ordre. Je demande d'attendre le photographe, ou d'effacer seulement la première ligne.\n[[cinq-h-trente|5 h 30]] : le chef [[winkoff|Alan Winkoff]] arrive, lit la phrase et ordonne de l'[[effacer]] tout de suite, avant que le quartier se réveille. Pas de photographie. — D. H. »"
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "id": "qui",
+      "kind": "identities",
+      "title": "Qui est qui ?",
+      "people": [
+        {
+          "zone": "agent",
+          "answer": "lane"
+        },
+        {
+          "zone": "detective",
+          "answer": "hurst"
+        },
+        {
+          "zone": "temoin",
+          "answer": "mendel"
+        }
+      ],
+      "hints": [
+        "Chacun dit son nom quand on lui parle.",
+        "L'homme en civil n'est pas de la même police que l'agent en uniforme."
+      ]
+    },
+    {
+      "id": "quoi",
+      "kind": "sentences",
+      "title": "Que s'est-il passé à Goulston Street ?",
+      "sentences": [
+        "À {deux-h-vingt}, l'agent Alfred Lane passe devant l'entrée 108-119 : il n'y a rien.",
+        "À {deux-h-cinquante-cinq}, il y trouve un morceau de {tablier} taché de sang et, au-dessus, une phrase écrite à la {craie}.",
+        "D'après le docteur, ce tablier appartenait à {jenkins}, tuée à {wallace} peu avant.",
+        "Le détective Daniel Hurst voulait {photographier} la phrase, mais à {cinq-h-trente}, le chef {winkoff} l'a fait {effacer}.",
+        "Il craignait une {emeute} contre les habitants {juifs} du quartier, accusés depuis l'affaire du « {tablier-de-cuir} »."
+      ],
+      "hints": [
+        "L'agent Lane a tout noté dans son carnet : regardez-le de près.",
+        "Le billet du docteur dit à qui appartenait le tablier.",
+        "Les notes du détective donnent l'heure, et le nom de celui qui a donné l'ordre."
+      ]
+    },
+    {
+      "id": "quand",
+      "kind": "chronology",
+      "title": "Dans quel ordre ?",
+      "events": [
+        "L'agent Lane fait sa ronde : l'entrée est vide.",
+        "Margaret Jenkins est tuée à Wallace Street.",
+        "L'agent Lane trouve le morceau de tablier et la phrase à la craie.",
+        "Le détective Hurst demande d'attendre le photographe.",
+        "Sur l'ordre du chef Winkoff, la phrase est effacée."
+      ],
+      "hints": [
+        "Le carnet de l'agent donne deux heures.",
+        "Le billet du docteur donne l'heure du meurtre de Wallace Street.",
+        "Les notes du détective donnent les deux dernières heures."
+      ]
+    }
+  ]
+}

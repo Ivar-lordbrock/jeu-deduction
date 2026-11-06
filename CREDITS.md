@@ -58,6 +58,19 @@ Dans `src/assets/sounds/`, les MP3 d'origine sont coupés aux limites de trames 
 | `touche.mp3`, `espace.mp3` | « Typewriter, Key » et « Typewriter, space » | [2842](https://bigsoundbank.com/typewriter-key-s2842.html), [2843](https://bigsoundbank.com/typewriter-space-s2843.html) | entiers |
 | `marteau.mp3` | « Gavel, 1 blow » | [1588](https://bigsoundbank.com/gavel-1-blow-s1588.html) | entier |
 | `livre.mp3` | « Closed book #1 » | [1410](https://bigsoundbank.com/closed-book-1-s1410.html) | entier |
+| `presse.mp3` | « Heidelberg printing press #2 » | [3405](https://bigsoundbank.com/heidelberg-printing-press-2-s3405.html) | 0,9 à 4,5 s |
+| `sabots.mp3` | « Horse Trotting » | [0610](https://bigsoundbank.com/horse-trotting-s0610.html) | 0 à 4 s |
+| `pas.mp3` | « Footsteps, Shoe on Concrete » | [0514](https://bigsoundbank.com/footsteps-shoe-on-concrete-s0514.html) | 0,3 à 3,3 s |
+| `carillon.mp3` | « 1 pendulum chime » | [3360](https://bigsoundbank.com/1-pendulum-chime-s3360.html) | 2,85 à 9,5 s |
+| `tiroir.mp3` | « Wooden drawer, opening » | [1499](https://bigsoundbank.com/wooden-drawer-opening-s1499.html) | entier |
+| `drap-1.mp3`, `drap-2.mp3` | « Flag #1 » et « Flag #2 » | [1787](https://bigsoundbank.com/flag-1-s1787.html), [1788](https://bigsoundbank.com/flag-2-s1788.html) | entiers |
+| `ciseaux.mp3` | « Scissors » | [0008](https://bigsoundbank.com/scissors-s0008.html) | entier |
+| `seau.mp3` | « Mop and bucket Set » | [1579](https://bigsoundbank.com/mop-and-bucket-set-s1579.html) | 0,5 à 7,5 s |
+| `craie.mp3` | « Chalk on bitumen » | [3223](https://bigsoundbank.com/chalk-on-bitumen-s3223.html) | entier |
+
+## Carte — domaine public
+
+`maps/booth-whitechapel.jpg` (écran « Les affaires ») : Whitechapel sur la **Descriptive Map of London Poverty** de **Charles Booth**, « compiled from School Board Visitors' Reports in 1887 », numérisée par la David Rumsey Map Collection et versée sur [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Descriptive_Map_of_London_Poverty,_Compiled_From_School_Board_Visitors%27_Reports_in_1887._(IA_dr_descriptive-map-of-london-poverty-compiled-from-school-board-visitors-rep-10169000).jpg), où elle est marquée domaine public. Recadrée sur Whitechapel (1600 × 1150 px, JPEG recompressé).
 
 ## Silhouettes — CC0 (domaine public)
 
@@ -87,8 +100,10 @@ Dans la scène du commissariat, seules la foule, le fiacre et le réverbère vus
 
 Dans la scène de la morgue viennent d'Openclipart le pupitre (et son livre ouvert, qui sert de journal du docteur), la chaise et le porte-manteau, ainsi que la planche anatomique punaisée au mur : « Anatomical Man Line Art » de GDJ ([326032](https://openclipart.org/detail/326032), CC0), une gravure ancienne d'écorché, gardée en PNG de 400 px (`tools/scene-morgue/ecorche.png`).
 
+Dans la scène de Goulston Street viennent d'Openclipart les réverbères et les deux passants dans le brouillard (`reverbere`, `gentleman`, `monsieur-3`) et la lanterne au-dessus de l'entrée (`lanterne-murale`).
+
 ## Dessins originaux du projet
 
-Le décor du commissariat (`src/cases/01-leman-street/scene.svg`, généré par `tools/scene-commissariat.mjs` : la pièce en perspective, murs, meubles, papiers, lumière) celui de la morgue (`src/cases/02-morgue/scene.svg`, généré par `tools/scene-morgue.mjs`) et les toits de l'écran titre (`src/assets/skyline.svg`) sont dessinés pour le jeu, en SVG.
+Le décor du commissariat (`src/cases/01-leman-street/scene.svg`, généré par `tools/scene-commissariat.mjs` : la pièce en perspective, murs, meubles, papiers, lumière), celui de la morgue (`src/cases/02-morgue/scene.svg`, généré par `tools/scene-morgue.mjs`), celui de Goulston Street (`src/cases/03-goulston-street/scene.svg`, généré par `tools/scene-goulston.mjs`) et les toits de l'écran titre (`src/assets/skyline.svg`) sont dessinés pour le jeu, en SVG.
 
-Les silhouettes des personnages récurrents (`src/assets/silhouettes/persos/` : commissaire, agent, journaliste, joueur, témoin, docteur, quatre ou cinq poses chacun) sont aussi dessinées pour le jeu, par `tools/persos.mjs`, en s'inspirant des profils découpés de l'époque cités plus haut. Elles n'en reprennent aucun tracé. La scène contient aussi, en petit et teintées, deux gravures de Doré citées plus haut : « Bluegate Fields » vue par la fenêtre et « The Bull's-Eye » punaisée au mur.
+Les silhouettes des personnages récurrents (`src/assets/silhouettes/persos/` : commissaire, agent, journaliste, joueur, témoin, docteur, quatre ou cinq poses chacun, et le détective en civil, deux poses) sont aussi dessinées pour le jeu, par `tools/persos.mjs`, en s'inspirant des profils découpés de l'époque cités plus haut. Elles n'en reprennent aucun tracé. La scène contient aussi, en petit et teintées, deux gravures de Doré citées plus haut : « Bluegate Fields » vue par la fenêtre et « The Bull's-Eye » punaisée au mur.

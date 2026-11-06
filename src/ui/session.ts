@@ -44,6 +44,8 @@ export interface Actions {
   exit(): void;
   /** Aide-mémoire des règles (et, dans l'affaire tutoriel, « Revoir le tutoriel »). */
   help(): void;
+  /** La une de The Whitechapel Lantern, une fois l'affaire résolue. */
+  frontPage(): void;
   /** Passe à l'affaire suivante (absent pour la dernière). */
   next?: () => void;
 }

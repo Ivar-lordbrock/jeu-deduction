@@ -23,11 +23,32 @@ export type Sound =
   | 'wrong' // « Quelque chose ne colle pas »
   | 'hint' // un indice révélé
   | 'victory' // affaire résolue
-  | 'click'; // un bouton
+  | 'click' // un bouton
+  | 'press' // la une qui sort des presses
+  // les bruits des zones de la scène (voir ZONE_SOUNDS)
+  | 'hooves' // un fiacre passe sous la fenêtre
+  | 'steps' // un agent fait quelques pas
+  | 'chime' // la pendule sonne
+  | 'drawer' // un tiroir qu'on ouvre
+  | 'sheet' // le drap qu'on soulève
+  | 'scissors' // les ciseaux du docteur
+  | 'chalk' // la craie sur le mur
+  | 'bucket'; // le seau et la serpillière
 
 /** L'ambiance de chaque affaire, par identifiant ; les autres écrans sont dans la rue. */
 const AMBIENCES: Record<string, Ambience> = { 'leman-street': 'station', morgue: 'morgue' };
 export const ambienceFor = (caseId: string): Ambience => AMBIENCES[caseId] ?? 'street';
+
+/**
+ * Le bruit de certaines zones quand on les examine, par affaire puis par zone (à la place du
+ * froissement de la fiche). Gardé ici plutôt que dans case.json, que l'éditeur réécrit.
+ */
+const ZONE_SOUNDS: Record<string, Record<string, Sound>> = {
+  'leman-street': { fenetre: 'hooves', pendule: 'chime', tiroir: 'drawer' },
+  morgue: { 'corps-1': 'sheet', 'corps-2': 'sheet', agent: 'steps', docteur: 'scissors' },
+  'goulston-street': { message: 'chalk', seau: 'bucket', agent: 'steps' },
+};
+export const zoneSound = (caseId: string, zoneId: string): Sound | null => ZONE_SOUNDS[caseId]?.[zoneId] ?? null;
 
 const PREF_KEY = 'jeu-deduction:v1:@son';
 const VOLUME = 0.9;
@@ -52,7 +73,17 @@ type SampleName =
   | 'espace'
   | 'marteau'
   | 'livre'
-  | 'cloches';
+  | 'cloches'
+  | 'presse'
+  | 'sabots'
+  | 'pas'
+  | 'carillon'
+  | 'tiroir'
+  | 'drap-1'
+  | 'drap-2'
+  | 'ciseaux'
+  | 'craie'
+  | 'seau';
 
 interface Sample {
   buffer: AudioBuffer;
@@ -143,6 +174,16 @@ interface Effect {
   parts?: [number, number][];
   /** Part envoyée dans la réverbération (cloches, marteau). */
   room?: number;
+  /** Ne joue que le début de l'enregistrement (en secondes), puis fondu de sortie (`fadeOut`). */
+  length?: number;
+  fadeOut?: number;
+  /** Filtre passe-bas (un bruit entendu derrière une vitre). */
+  lowpass?: number;
+  /**
+   * Chargé seulement quand une affaire en a besoin (les bruits des zones, la presse), pas au
+   * premier geste du joueur comme les bruitages de tous les écrans.
+   */
+  lazy?: boolean;
 }
 
 const EFFECTS: Record<Sound, Effect> = {
@@ -157,9 +198,28 @@ const EFFECTS: Record<Sound, Effect> = {
   hint: { samples: ['grande-page'], db: -21 },
   victory: { samples: ['cloches'], db: -19, room: 0.3 },
   click: { samples: ['touche'], db: -31, rate: [1.15, 1.25] },
+  press: { samples: ['presse'], db: -22, fadeOut: 1.2, lazy: true },
+  hooves: { samples: ['sabots'], db: -27, lowpass: 1800, fadeOut: 0.8, lazy: true },
+  steps: { samples: ['pas'], db: -25, length: 2.2, fadeOut: 0.5, rate: [0.96, 1.04], lazy: true },
+  chime: { samples: ['carillon'], db: -25, room: 0.25, fadeOut: 1.5, lazy: true },
+  drawer: { samples: ['tiroir'], db: -23, lazy: true },
+  sheet: { samples: ['drap-1', 'drap-2'], db: -28, length: 1.4, fadeOut: 0.4, lazy: true },
+  scissors: { samples: ['ciseaux'], db: -24, part: 0.6, lazy: true },
+  chalk: { samples: ['craie'], db: -25, length: 2.2, fadeOut: 0.4, lazy: true },
+  bucket: { samples: ['seau'], db: -25, length: 3.5, fadeOut: 1, lazy: true },
 };
 
-const SFX_SAMPLES = [...new Set(Object.values(EFFECTS).flatMap((e) => e.samples))];
+const SFX_SAMPLES = [...new Set(Object.values(EFFECTS).flatMap((e) => (e.lazy ? [] : e.samples)))];
+/** Les enregistrements demandés par l'affaire ouverte (chargés dès que le son est autorisé). */
+const extra = new Set<SampleName>();
+const preload = () => [...SFX_SAMPLES, ...extra].forEach((s) => void load(s));
+
+/** L'affaire ouverte prépare ses bruits : ceux de ses zones, et la presse de la une de fin. */
+export function prepareSounds(caseId: string): void {
+  const sounds: Sound[] = ['press', ...Object.values(ZONE_SOUNDS[caseId] ?? {})];
+  sounds.forEach((s) => EFFECTS[s].samples.forEach((n) => extra.add(n)));
+  if (ctx && !muted) preload();
+}
 
 // ———————————————————————————————— moteur ————————————————————————————————
 
@@ -210,7 +270,7 @@ function unlock() {
   const c = ensure();
   if (!c) return;
   if (!muted && c.state === 'suspended') void c.resume();
-  if (!muted) SFX_SAMPLES.forEach((s) => void load(s));
+  if (!muted) preload();
   if (wanted && !current && !muted) startAmbience(wanted);
 }
 
@@ -518,7 +578,7 @@ export function playSound(sound: Sound, delay = 0): void {
   const src = c.createBufferSource();
   src.buffer = s.buffer;
   if (fx.rate) src.playbackRate.value = rand(fx.rate[0], fx.rate[1]);
-  const level = gain(0, sfxBus);
+  const level = gain(0, fx.lowpass ? chain(sfxBus, fx) : sfxBus);
   if (fx.room) level.connect(gain(fx.room, sfxRoom));
   const strength = (l: { active: number; peak: number }) => Math.min(fromDb(fx.db) / l.active, fromDb(-2) / l.peak);
   src.connect(level);
@@ -533,6 +593,16 @@ export function playSound(sound: Sound, delay = 0): void {
     level.gain.setValueAtTime(g, t + dur - 0.08);
     level.gain.linearRampToValueAtTime(0, t + dur);
     src.start(t, a, dur + 0.02);
+  } else if (fx.length || fx.fadeOut) {
+    // le début seulement, avec un fondu de sortie
+    const rate = src.playbackRate.value;
+    const dur = Math.min(fx.length ?? Infinity, s.buffer.duration) / rate;
+    const fade = Math.min(fx.fadeOut ?? 0.08, dur / 2);
+    const g = fx.length ? strength(loudness(s.buffer.getChannelData(0), s.buffer.sampleRate, 0, fx.length)) : strength(s.loud);
+    level.gain.setValueAtTime(g, t);
+    level.gain.setValueAtTime(g, t + dur - fade);
+    level.gain.linearRampToValueAtTime(0, t + dur);
+    src.start(t, 0, dur * rate + 0.02);
   } else {
     level.gain.value = strength(s.loud);
     src.start(t);
@@ -566,7 +636,7 @@ export function toggleSound(): void {
     } else {
       void c.resume();
       master.gain.linearRampToValueAtTime(VOLUME, t + 0.4);
-      SFX_SAMPLES.forEach((s) => void load(s));
+      preload();
       if (wanted && !current) startAmbience(wanted);
     }
   }

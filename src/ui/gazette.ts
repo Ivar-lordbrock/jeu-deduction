@@ -155,7 +155,7 @@ const PORTRAIT_H = 96;
  * sinon un cadre 3:4 de la largeur de la zone, calé en haut pour un personnage
  * debout (le visage), centré pour une zone plus large que haute.
  */
-function portraitRect(zone: Zone): Rect {
+export function portraitRect(zone: Zone): Rect {
   if (zone.portrait) return zone.portrait;
   const { x, y, w, h: zh } = zone.rect;
   const ph = (w * PORTRAIT_H) / PORTRAIT_W;

@@ -20,7 +20,13 @@ pour un écran d'ordinateur (pas de version mobile).
    à pas (examiner, noter, carnet, documents, zones, gazette, remplir et corriger une case,
    qui est qui, chronologie, verdict, indices). Il peut passer une étape ou tout le
    tutoriel, et le revoir avec le bouton « ? ».
-4. **Les affaires** : rangées par chapitre, l'affaire à reprendre est mise en avant.
+4. **Les affaires** : rangées par chapitre, à côté de la carte de la pauvreté de Charles Booth
+   (1887). Chaque affaire y a son épingle, reliées par le fil rouge dans l'ordre de l'enquête ;
+   l'affaire à reprendre est mise en avant.
+5. **Fin d'une affaire** : le rapport de l'inspecteur (temps d'enquête, indices demandés,
+   articles refusés, appréciation) et la une de *The Whitechapel Lantern*, imprimée avec les
+   articles du joueur. La une se télécharge en image (PNG) pour la partager ; le bouton « La une »
+   la rouvre ensuite depuis l'affaire.
 
 « Comment jouer » (écran titre, liste des affaires, bouton « ? ») ouvre un aide-mémoire des
 règles.
@@ -43,12 +49,16 @@ en dessous.
 
 Chaque lieu a son ambiance sonore (la rue sous la pluie, le poste et sa pendule, la morgue et
 ses gouttes), et chaque geste son bruit : le crayon, le papier, la machine à écrire, le marteau
-du juge. Ce sont de vrais enregistrements, libres de droits (voir [CREDITS.md](CREDITS.md)).
-Le bouton du son, ou la touche M, le coupe.
+du juge. Certaines zones ont le leur : un fiacre sous la fenêtre, la pendule qui sonne, le drap
+qu'on soulève (liste `ZONE_SOUNDS` de `src/ui/sound.ts`). Ce sont de vrais enregistrements,
+libres de droits (voir [CREDITS.md](CREDITS.md)). Le bouton du son, ou la touche M, le coupe.
 
 La partie est sauvegardée dans le navigateur. Pour rejouer, « Recommencer » (en haut d'une
 affaire) efface cette affaire, et « Tout recommencer » (sur l'écran titre) efface toute la
 partie, prologue compris. Le choix du son et la taille de la gazette sont gardés.
+
+« Sauvegarde » (écran titre) donne un code qui contient toute la partie : on le copie, puis on le
+colle dans la même fenêtre sur un autre ordinateur pour y continuer.
 
 ## Lancer le jeu
 
@@ -109,10 +119,14 @@ meurtre de King's Row et de Wallace Street : qui a renseigné The Comet ? Sa sc�
 les silhouettes des personnages récurrents, et deux gravures de Doré dans la fenêtre et au mur.
 Le script affiche les rectangles des personnages, à reporter dans les zones de `case.json`.
 
-L'affaire `src/cases/02-morgue` (« À la morgue ») est un brouillon, visible seulement avec `npm run dev` :
-les deux victimes de la nuit, le docteur Albert Jefferson et l'agent Edouard Davis. Sa scène est générée par
+L'affaire `src/cases/02-morgue` (« À la morgue ») : les deux victimes de la nuit, le docteur Albert
+Jefferson et l'agent Edouard Davis. Sa scène est générée par
 `tools/scene-morgue.mjs` (`npm run scene:morgue`). Les corps restent couverts : les blessures se décrivent
 dans les fiches, jamais dans l'image.
+
+L'affaire `src/cases/03-goulston-street` (« Le tablier et la craie ») est un brouillon, visible seulement
+avec `npm run dev` : le morceau de tablier et la phrase à la craie de Goulston Street, effacée avant le
+jour. Sa scène est générée par `tools/scene-goulston.mjs` (`npm run scene:goulston`).
 
 ## Structure
 
@@ -124,6 +138,7 @@ tools/
   scene-outils.mjs   perspective et placement des personnages, communs aux scènes
   scene-commissariat.mjs   dessine la scène de l'affaire 1 (npm run scene)
   scene-morgue.mjs   dessine la scène de la morgue (npm run scene:morgue)
+  scene-goulston.mjs dessine la scène de Goulston Street (npm run scene:goulston)
 src/
   main.ts            démarrage, menu ↔ affaire
   config.ts          titre du jeu, réglages généraux
@@ -135,14 +150,17 @@ src/
     markup.ts        lecture des [[mots]] et des {cases}
     validation.ts    jugement des pages, règle « N erreurs ou moins »
     progress.ts      sauvegarde dans le navigateur
+    saveCode.ts      code de sauvegarde, pour continuer sur un autre ordinateur
     campaign.ts      état des affaires (verrouillée, en cours…), affaire à reprendre
     checkCase.ts     vérification de cohérence d'une affaire
     slug.ts          identifiants tirés des titres
   ui/
     title.ts         écran titre
     prologue.ts      introduction de l'univers
-    menu.ts          liste des affaires
+    menu.ts          liste des affaires et carte de Booth
     caseScreen.ts    écran d'une affaire et actions du joueur
+    frontPage.ts     rapport de l'inspecteur et une de fin d'affaire
+    saveDialog.ts    fenêtre « Sauvegarde »
     notebook.ts      le carnet de mots, à gauche
     gazette.ts       la gazette : reconstitution des faits, au-dessus de la scène
     explore.ts       scène, zones cliquables et fiches
@@ -163,7 +181,7 @@ un brouillard vert-bleu, avec la lumière ambre du gaz. Les assets sont tous gra
 de Gustave Doré (1872, domaine public), silhouettes d'Openclipart (CC0), icônes de game-icons.net
 (CC BY 3.0), polices OFL et textures CC0. Les sources et licences sont dans [CREDITS.md](CREDITS.md).
 
-Les personnages récurrents (commissaire, agent, journaliste, joueur, témoin) sont dessinés pour le
+Les personnages récurrents (commissaire, agent, journaliste, joueur, témoin, docteur, détective) sont dessinés pour le
 jeu, de profil, en plusieurs poses : `src/assets/silhouettes/persos/`. Ils viennent de
 `tools/persos.mjs` : changer une pose, c'est changer quelques angles, puis `npm run persos`.
 La planche [docs/planche-persos.svg](docs/planche-persos.svg) les montre tous avec l'éclairage de la scène.
@@ -174,7 +192,7 @@ La planche [docs/planche-persos.svg](docs/planche-persos.svg) les montre tous av
 - [ ] Zoom et déplacement dans les grandes scènes
 - [ ] Plusieurs scènes par affaire (pièces, moments différents)
 - [ ] Glisser-déposer pour la chronologie
-- [ ] Carte ou frise reliant les affaires (le fil rouge)
+- [x] Carte reliant les affaires (le fil rouge, sur la carte de Booth)
 - [x] Ambiance sonore et bruitages (enregistrements CC0 de BigSoundBank : `src/ui/sound.ts`)
 - [ ] Musique
 - [ ] Portage sur Godot

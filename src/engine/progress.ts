@@ -14,6 +14,10 @@ export interface CaseProgress {
   solved: string[];
   /** Nombre d'indices révélés, par page. */
   hints: Record<string, number>;
+  /** Temps de jeu dans l'affaire, en millisecondes (arrêté quand elle est résolue). */
+  elapsed: number;
+  /** Articles complets jugés faux ou « presque » (pour le rapport de fin). */
+  mistakes: number;
 }
 
 const KEY_PREFIX = 'jeu-deduction:v1:';
@@ -27,11 +31,15 @@ export function emptyProgress(c: CaseData): CaseProgress {
     orders: {},
     solved: [],
     hints: {},
+    elapsed: 0,
+    mistakes: 0,
   };
 }
 
 const isObject = (v: unknown): v is Record<string, unknown> =>
   typeof v === 'object' && v !== null && !Array.isArray(v);
+
+const count = (v: unknown): number => (typeof v === 'number' && Number.isFinite(v) && v > 0 ? v : 0);
 
 const stringArray = (v: unknown, fallback: string[]): string[] =>
   Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : fallback;
@@ -57,6 +65,8 @@ export function loadProgress(c: CaseData): CaseProgress {
       orders: isObject(p.orders) ? (p.orders as CaseProgress['orders']) : {},
       solved: stringArray(p.solved, []),
       hints: isObject(p.hints) ? (p.hints as CaseProgress['hints']) : {},
+      elapsed: count(p.elapsed),
+      mistakes: count(p.mistakes),
     };
   } catch {
     return empty;
@@ -82,17 +92,55 @@ export function clearProgress(caseId: string): void {
 /** Réglages du joueur, gardés quand il recommence le jeu (le son, la taille de la gazette). */
 const SETTINGS = ['@son', '@gazette'].map((k) => KEY_PREFIX + k);
 
+/** Clés de la partie (les affaires, le prologue vu, le tutoriel fait), sans les réglages. */
+function gameKeys(): string[] {
+  const keys: string[] = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k?.startsWith(KEY_PREFIX) && !SETTINGS.includes(k)) keys.push(k);
+  }
+  return keys;
+}
+
 /** Tout recommencer : efface la progression de toutes les affaires, le prologue vu, le tutoriel fait. */
 export function clearAllProgress(): void {
   try {
-    const keys: string[] = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const k = localStorage.key(i);
-      if (k?.startsWith(KEY_PREFIX) && !SETTINGS.includes(k)) keys.push(k);
-    }
-    keys.forEach((k) => localStorage.removeItem(k));
+    gameKeys().forEach((k) => localStorage.removeItem(k));
   } catch {
     // idem
+  }
+}
+
+/** Toute la partie, pour le code de sauvegarde : { « leman-street » : {…}, « @jeu » : {…} }. */
+export function exportProgress(): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  try {
+    for (const k of gameKeys()) {
+      try {
+        out[k.slice(KEY_PREFIX.length)] = JSON.parse(localStorage.getItem(k) ?? 'null');
+      } catch {
+        // entrée illisible : on ne la transmet pas
+      }
+    }
+  } catch {
+    // stockage indisponible : partie vide
+  }
+  return out;
+}
+
+/** Une clé de partie acceptable dans un code de sauvegarde (pas un réglage, rien d'étrange). */
+export const isGameKey = (k: string): boolean => /^[@\w.-]{1,80}$/.test(k) && !SETTINGS.includes(KEY_PREFIX + k);
+
+/** Remplace toute la partie par celle d'un code de sauvegarde (les réglages restent). */
+export function importProgress(data: Record<string, unknown>): void {
+  clearAllProgress();
+  for (const [k, v] of Object.entries(data)) {
+    if (!isGameKey(k)) continue;
+    try {
+      localStorage.setItem(KEY_PREFIX + k, JSON.stringify(v));
+    } catch {
+      // idem
+    }
   }
 }
 

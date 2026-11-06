@@ -926,7 +926,50 @@ const docteur = {
   },
 };
 
-const PERSOS = [commissaire, agent, journaliste, joueur, temoin, docteur];
+const detective = {
+  id: 'detective',
+  nom: 'Le détective',
+  portrait: 'policier en civil : chapeau melon bas, moustache tombante, long pardessus sombre et uni, canne-parapluie',
+  c: { ...HOMME, cuisse: 140, tibia: 136, tete: 1.08 },
+  dessiner(D, sq, pose, c) {
+    jambes(D, sq, c);
+    const BUSTE = 'M -10 -194 C -22 -190 -32 -180 -34 -164 C -38 -138 -37 -110 -33 -86 C -31 -70 -33 -50 -35 -30 C -37 -10 -32 8 -18 16 L 16 18 C 28 10 32 -12 32 -38 C 32 -62 30 -82 32 -104 C 36 -130 36 -160 26 -178 C 23 -184 20 -188 16 -192 Z';
+    D.forme(BUSTE, sq.T);
+    manteau(D, sq, c, { dos: [[-36, -96], [-39, -20]], ventre: [[34, -20], [33, -96]], long: 1.22, ample: 12, fente: 0.5 });
+    // col de velours et boutonnage
+    D.forme('M -14 -200 C -24 -196 -30 -186 -32 -174 L -10 -178 Z', sq.T);
+    D.pli('M 30 -172 C 26 -140 28 -104 31 -70', sq.T, 1.6);
+    brasEtMains(D, sq, c);
+    const f = tete(D, sq, pose, c, [
+      VISAGE(1),
+      // melon plus bas que celui du journaliste
+      'M -28 -46 C -31 -58 -27 -77 0 -79 C 25 -79 32 -61 29 -46 Z',
+      'M -38 -44 C -35 -48 -20 -48 0 -48 C 18 -48 36 -50 42 -46 C 43 -42 39 -42 35 -42 C 18 -43 -14 -44 -33 -40 C -37 -39 -40 -41 -38 -44 Z',
+      // moustache tombante, qui dépasse du profil
+      'M 22 -11 C 30 -15 39 -14 44 -10 C 47 -6 46 -1 42 -2 C 38 -3 34 -6 28 -5 C 25 -5 22 -7 22 -11 Z',
+    ]);
+    D.pli('M -28 -52 C -6 -54 14 -54 29 -52', f, 2);
+    objets(D, sq, c, pose);
+  },
+  poses: {
+    note: {
+      nom: 'prend des notes',
+      lean: 2, tete: 14,
+      jN: { h: 5, k: 0 }, jF: { h: -5, k: 0 },
+      bN: { a: 26, e: 98, main: 'poing' }, bF: { a: 18, e: 108, main: 'poing' },
+      objets: [{ type: 'carnet', bras: 'N', rot: -10 }, { type: 'crayon', bras: 'F', rot: 40 }],
+    },
+    proteste: {
+      nom: 'tend la main vers le mur : « attendez le photographe ! »',
+      lean: -2, tete: -4,
+      jN: { h: 12, k: 2 }, jF: { h: -8, k: 0 },
+      bN: { a: 72, e: 16, main: 'ouverte' }, bF: { a: 8, e: 22, main: 'poing' },
+      objets: [{ type: 'canne', bras: 'F' }],
+    },
+  },
+};
+
+const PERSOS = [commissaire, agent, journaliste, joueur, temoin, docteur, detective];
 
 // ——— sortie ———
 
