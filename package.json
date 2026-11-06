@@ -12,7 +12,7 @@
     "persos": "node tools/persos.mjs",
     "scene": "node tools/scene-commissariat.mjs",
     "scene:morgue": "node tools/scene-morgue.mjs",
-    "scene:goulston": "node tools/scene-goulston.mjs"
+    "scene:fruiterie": "node tools/scene-fruiterie.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",

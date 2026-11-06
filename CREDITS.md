@@ -65,8 +65,10 @@ Dans `src/assets/sounds/`, les MP3 d'origine sont coupés aux limites de trames 
 | `tiroir.mp3` | « Wooden drawer, opening » | [1499](https://bigsoundbank.com/wooden-drawer-opening-s1499.html) | entier |
 | `drap-1.mp3`, `drap-2.mp3` | « Flag #1 » et « Flag #2 » | [1787](https://bigsoundbank.com/flag-1-s1787.html), [1788](https://bigsoundbank.com/flag-2-s1788.html) | entiers |
 | `ciseaux.mp3` | « Scissors » | [0008](https://bigsoundbank.com/scissors-s0008.html) | entier |
-| `seau.mp3` | « Mop and bucket Set » | [1579](https://bigsoundbank.com/mop-and-bucket-set-s1579.html) | 0,5 à 7,5 s |
-| `craie.mp3` | « Chalk on bitumen » | [3223](https://bigsoundbank.com/chalk-on-bitumen-s3223.html) | entier |
+
+## Musique — domaine public
+
+`music/gymnopedie-1.mp3` (musique de fond, sur tous les écrans, très bas sous les ambiances) : la **Gymnopédie n° 1** (« Lent et douloureux ») d'**Erik Satie**, composée en 1888, jouée au piano par **Robin Alciatore** pour [Musopen](https://musopen.org), qui verse ses enregistrements dans le domaine public. Fichier « Erik Satie - gymnopedies - la 1 ere. lent et douloureux.ogg » sur [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Erik_Satie_-_gymnopedies_-_la_1_ere._lent_et_douloureux.ogg), marqué domaine public, dans la version MP3 produite par Commons (3 min 04 s), non retouchée.
 
 ## Carte — domaine public
 
@@ -100,10 +102,10 @@ Dans la scène du commissariat, seules la foule, le fiacre et le réverbère vus
 
 Dans la scène de la morgue viennent d'Openclipart le pupitre (et son livre ouvert, qui sert de journal du docteur), la chaise et le porte-manteau, ainsi que la planche anatomique punaisée au mur : « Anatomical Man Line Art » de GDJ ([326032](https://openclipart.org/detail/326032), CC0), une gravure ancienne d'écorché, gardée en PNG de 400 px (`tools/scene-morgue/ecorche.png`).
 
-Dans la scène de Goulston Street viennent d'Openclipart les réverbères et les deux passants dans le brouillard (`reverbere`, `gentleman`, `monsieur-3`) et la lanterne au-dessus de l'entrée (`lanterne-murale`).
+Dans la scène du marchand de fruits viennent d'Openclipart les réverbères et les deux passants dans le brouillard (`reverbere`, `gentleman`, `monsieur-3`).
 
 ## Dessins originaux du projet
 
-Le décor du commissariat (`src/cases/01-leman-street/scene.svg`, généré par `tools/scene-commissariat.mjs` : la pièce en perspective, murs, meubles, papiers, lumière), celui de la morgue (`src/cases/02-morgue/scene.svg`, généré par `tools/scene-morgue.mjs`), celui de Goulston Street (`src/cases/03-goulston-street/scene.svg`, généré par `tools/scene-goulston.mjs`) et les toits de l'écran titre (`src/assets/skyline.svg`) sont dessinés pour le jeu, en SVG.
+Le décor du commissariat (`src/cases/01-leman-street/scene.svg`, généré par `tools/scene-commissariat.mjs` : la pièce en perspective, murs, meubles, papiers, lumière), celui de la morgue (`src/cases/02-morgue/scene.svg`, généré par `tools/scene-morgue.mjs`), celui de la boutique du marchand de fruits (`src/cases/03-fruiterie/scene.svg`, généré par `tools/scene-fruiterie.mjs`) et les toits de l'écran titre (`src/assets/skyline.svg`) sont dessinés pour le jeu, en SVG.
 
-Les silhouettes des personnages récurrents (`src/assets/silhouettes/persos/` : commissaire, agent, journaliste, joueur, témoin, docteur, quatre ou cinq poses chacun, et le détective en civil, deux poses) sont aussi dessinées pour le jeu, par `tools/persos.mjs`, en s'inspirant des profils découpés de l'époque cités plus haut. Elles n'en reprennent aucun tracé. La scène contient aussi, en petit et teintées, deux gravures de Doré citées plus haut : « Bluegate Fields » vue par la fenêtre et « The Bull's-Eye » punaisée au mur.
+Les silhouettes des personnages récurrents (`src/assets/silhouettes/persos/` : commissaire, agent, journaliste, joueur, témoin, docteur, quatre à six poses chacun, puis le détective et le marchand de fruits, deux poses chacun) sont aussi dessinées pour le jeu, par `tools/persos.mjs`, en s'inspirant des profils découpés de l'époque cités plus haut. Elles n'en reprennent aucun tracé. La scène contient aussi, en petit et teintées, deux gravures de Doré citées plus haut : « Bluegate Fields » vue par la fenêtre et « The Bull's-Eye » punaisée au mur.

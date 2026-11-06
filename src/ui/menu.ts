@@ -28,7 +28,7 @@ const MAP_H = 1150;
 const MAP_PINS: Record<string, { x: number; y: number; place: string }> = {
   'leman-street': { x: 280, y: 1060, place: 'Poste de police de Leman Street' },
   morgue: { x: 500, y: 690, place: 'Morgue de Whitechapel, Old Montague Street' },
-  'goulston-street': { x: 130, y: 810, place: 'Goulston Street' },
+  fruiterie: { x: 602, y: 1037, place: "King's Row, la boutique du marchand de fruits" },
 };
 
 /** Les couleurs de Booth, de la misère à l'aisance. */

@@ -50,8 +50,9 @@ en dessous.
 Chaque lieu a son ambiance sonore (la rue sous la pluie, le poste et sa pendule, la morgue et
 ses gouttes), et chaque geste son bruit : le crayon, le papier, la machine à écrire, le marteau
 du juge. Certaines zones ont le leur : un fiacre sous la fenêtre, la pendule qui sonne, le drap
-qu'on soulève (liste `ZONE_SOUNDS` de `src/ui/sound.ts`). Ce sont de vrais enregistrements,
-libres de droits (voir [CREDITS.md](CREDITS.md)). Le bouton du son, ou la touche M, le coupe.
+qu'on soulève (liste `ZONE_SOUNDS` de `src/ui/sound.ts`). En fond, très bas, la Gymnopédie n° 1
+d'Erik Satie (1888), au piano, revient après un silence. Ce sont de vrais enregistrements,
+libres de droits (voir [CREDITS.md](CREDITS.md)). Le bouton du son, ou la touche M, coupe tout.
 
 La partie est sauvegardée dans le navigateur. Pour rejouer, « Recommencer » (en haut d'une
 affaire) efface cette affaire, et « Tout recommencer » (sur l'écran titre) efface toute la
@@ -124,9 +125,10 @@ Jefferson et l'agent Edouard Davis. Sa scène est générée par
 `tools/scene-morgue.mjs` (`npm run scene:morgue`). Les corps restent couverts : les blessures se décrivent
 dans les fiches, jamais dans l'image.
 
-L'affaire `src/cases/03-goulston-street` (« Le tablier et la craie ») est un brouillon, visible seulement
-avec `npm run dev` : le morceau de tablier et la phrase à la craie de Goulston Street, effacée avant le
-jour. Sa scène est générée par `tools/scene-goulston.mjs` (`npm run scene:goulston`).
+L'affaire `src/cases/03-fruiterie` (« Le marchand de raisins ») est un brouillon, visible seulement
+avec `npm run dev` : un marchand de fruits de King's Row dit avoir vendu du raisin à l'assassin,
+mais il n'a pas raconté la même histoire au sergent, au détective privé et au journal. Sa scène est
+générée par `tools/scene-fruiterie.mjs` (`npm run scene:fruiterie`).
 
 ## Structure
 
@@ -138,7 +140,7 @@ tools/
   scene-outils.mjs   perspective et placement des personnages, communs aux scènes
   scene-commissariat.mjs   dessine la scène de l'affaire 1 (npm run scene)
   scene-morgue.mjs   dessine la scène de la morgue (npm run scene:morgue)
-  scene-goulston.mjs dessine la scène de Goulston Street (npm run scene:goulston)
+  scene-fruiterie.mjs dessine la scène du marchand de fruits (npm run scene:fruiterie)
 src/
   main.ts            démarrage, menu ↔ affaire
   config.ts          titre du jeu, réglages généraux
@@ -167,7 +169,7 @@ src/
     guide.ts         tutoriel guidé de la première affaire
     rules.ts         aide-mémoire « Comment jouer »
     art.ts           gravures, icônes et brouillard
-    sound.ts         ambiance sonore et bruitages (enregistrements de src/assets/sounds)
+    sound.ts         ambiance sonore, bruitages et musique (src/assets/sounds, src/assets/music)
   editor/            l'éditeur (Preact)
 tests/               tests du moteur et des affaires
 docs/                format et gabarit d'écriture, planche des personnages
@@ -181,7 +183,7 @@ un brouillard vert-bleu, avec la lumière ambre du gaz. Les assets sont tous gra
 de Gustave Doré (1872, domaine public), silhouettes d'Openclipart (CC0), icônes de game-icons.net
 (CC BY 3.0), polices OFL et textures CC0. Les sources et licences sont dans [CREDITS.md](CREDITS.md).
 
-Les personnages récurrents (commissaire, agent, journaliste, joueur, témoin, docteur, détective) sont dessinés pour le
+Les personnages récurrents (commissaire, agent, journaliste, joueur, témoin, docteur, détective, marchand) sont dessinés pour le
 jeu, de profil, en plusieurs poses : `src/assets/silhouettes/persos/`. Ils viennent de
 `tools/persos.mjs` : changer une pose, c'est changer quelques angles, puis `npm run persos`.
 La planche [docs/planche-persos.svg](docs/planche-persos.svg) les montre tous avec l'éclairage de la scène.

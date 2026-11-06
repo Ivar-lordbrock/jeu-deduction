@@ -6,10 +6,12 @@
  *   pendule), la morgue (gouttes dans une salle carrelée, pluie au loin).
  * - Des bruitages pour chaque geste : crayon qui note un mot, papier, touche de machine à écrire,
  *   marteau du juge pour un article validé, cloches de l'affaire résolue.
+ * - En fond, très bas, la Gymnopédie n° 1 de Satie (1888, domaine public) : src/assets/music/.
  * - Les fichiers ne sont chargés qu'au premier geste du joueur (règle des navigateurs), et chaque ambiance
  *   seulement quand un écran la demande. Bouton « son » ou touche M pour couper ; le choix est gardé.
  */
 import { h } from '../dom';
+import musicUrl from '../assets/music/gymnopedie-1.mp3';
 
 export type Ambience = 'street' | 'station' | 'morgue';
 export type Sound =
@@ -31,9 +33,7 @@ export type Sound =
   | 'chime' // la pendule sonne
   | 'drawer' // un tiroir qu'on ouvre
   | 'sheet' // le drap qu'on soulève
-  | 'scissors' // les ciseaux du docteur
-  | 'chalk' // la craie sur le mur
-  | 'bucket'; // le seau et la serpillière
+  | 'scissors'; // les ciseaux du docteur
 
 /** L'ambiance de chaque affaire, par identifiant ; les autres écrans sont dans la rue. */
 const AMBIENCES: Record<string, Ambience> = { 'leman-street': 'station', morgue: 'morgue' };
@@ -46,12 +46,21 @@ export const ambienceFor = (caseId: string): Ambience => AMBIENCES[caseId] ?? 's
 const ZONE_SOUNDS: Record<string, Record<string, Sound>> = {
   'leman-street': { fenetre: 'hooves', pendule: 'chime', tiroir: 'drawer' },
   morgue: { 'corps-1': 'sheet', 'corps-2': 'sheet', agent: 'steps', docteur: 'scissors' },
-  'goulston-street': { message: 'chalk', seau: 'bucket', agent: 'steps' },
+  fruiterie: { cour: 'hooves', sergent: 'steps' },
 };
 export const zoneSound = (caseId: string, zoneId: string): Sound | null => ZONE_SOUNDS[caseId]?.[zoneId] ?? null;
 
 const PREF_KEY = 'jeu-deduction:v1:@son';
 const VOLUME = 0.9;
+/** Les ambiances restent discrètes sous la musique et les bruitages (−6 dB par rapport à la première version). */
+const AMBIENCE_LEVEL = 0.35;
+/**
+ * La musique, au niveau des ambiances : l'enregistrement est à −30,6 dB en moyenne, ramené vers −37 dB,
+ * comme la pluie des scènes.
+ */
+const MUSIC_LEVEL = 0.45;
+/** Silence entre deux passages de la musique, en secondes : elle revient sans tourner en boucle. */
+const MUSIC_GAP = 25;
 
 // ———————————————————————————————— les enregistrements ————————————————————————————————
 
@@ -81,9 +90,7 @@ type SampleName =
   | 'tiroir'
   | 'drap-1'
   | 'drap-2'
-  | 'ciseaux'
-  | 'craie'
-  | 'seau';
+  | 'ciseaux';
 
 interface Sample {
   buffer: AudioBuffer;
@@ -205,8 +212,6 @@ const EFFECTS: Record<Sound, Effect> = {
   drawer: { samples: ['tiroir'], db: -23, lazy: true },
   sheet: { samples: ['drap-1', 'drap-2'], db: -28, length: 1.4, fadeOut: 0.4, lazy: true },
   scissors: { samples: ['ciseaux'], db: -24, part: 0.6, lazy: true },
-  chalk: { samples: ['craie'], db: -25, length: 2.2, fadeOut: 0.4, lazy: true },
-  bucket: { samples: ['seau'], db: -25, length: 3.5, fadeOut: 1, lazy: true },
 };
 
 const SFX_SAMPLES = [...new Set(Object.values(EFFECTS).flatMap((e) => (e.lazy ? [] : e.samples)))];
@@ -240,6 +245,9 @@ let sfxBus: GainNode;
 let sfxRoom: GainNode;
 let wanted: Ambience | null = null;
 let current: { name: Ambience; stop: () => void } | null = null;
+let musicBus: GainNode;
+let music: HTMLAudioElement | null = null;
+let musicTimer = 0;
 
 const loading = new Map<SampleName, Promise<Sample | null>>();
 const ready = new Map<SampleName, Sample>();
@@ -255,7 +263,8 @@ function ensure(): AudioContext | null {
   comp.ratio.value = 3;
   comp.connect(ctx.destination);
   master = gain(muted ? 0 : VOLUME, comp);
-  ambienceBus = gain(0.7, master);
+  ambienceBus = gain(AMBIENCE_LEVEL, master);
+  musicBus = gain(0, master);
   sfxBus = gain(1, master);
   const room = ctx.createConvolver();
   room.buffer = impulse(1.2, 3.2);
@@ -272,6 +281,7 @@ function unlock() {
   if (!muted && c.state === 'suspended') void c.resume();
   if (!muted) preload();
   if (wanted && !current && !muted) startAmbience(wanted);
+  if (!muted) startMusic();
 }
 
 if (typeof document !== 'undefined') {
@@ -280,8 +290,13 @@ if (typeof document !== 'undefined') {
   // onglet caché : on se tait (et les sons aléatoires ne s'accumulent pas)
   document.addEventListener('visibilitychange', () => {
     if (!ctx) return;
-    if (document.hidden) void ctx.suspend();
-    else if (!muted) void ctx.resume();
+    if (document.hidden) {
+      void ctx.suspend();
+      pauseMusic();
+    } else if (!muted) {
+      void ctx.resume();
+      startMusic();
+    }
   });
   // M : couper ou remettre le son
   document.addEventListener('keydown', (e) => {
@@ -561,6 +576,43 @@ export function setAmbience(name: Ambience | null): void {
   if (name && ctx && !muted) startAmbience(name);
 }
 
+// ———————————————————————————————— la musique ————————————————————————————————
+
+/**
+ * La Gymnopédie n° 1 d'Erik Satie (1888), au piano, sur tous les écrans. Elle est lue au fil de
+ * l'eau par un <audio> (pas besoin de décoder les trois minutes d'un coup), branché sur le
+ * mélangeur : elle suit le volume général et le bouton du son. Elle monte doucement la première
+ * fois, puis revient après un silence.
+ */
+function startMusic() {
+  if (!ctx || muted || document.hidden) return;
+  if (!music) {
+    const el = new Audio(musicUrl);
+    el.preload = 'auto';
+    ctx.createMediaElementSource(el).connect(musicBus);
+    el.addEventListener('ended', () => {
+      musicTimer = window.setTimeout(() => {
+        musicTimer = 0;
+        startMusic();
+      }, MUSIC_GAP * 1000);
+    });
+    const t = ctx.currentTime;
+    musicBus.gain.setValueAtTime(0, t);
+    musicBus.gain.linearRampToValueAtTime(MUSIC_LEVEL, t + 8);
+    music = el;
+  }
+  if (musicTimer || !music.paused) return;
+  music.play().catch(() => {
+    // lecture refusée (pas encore de geste du joueur) : on réessaiera au prochain
+  });
+}
+
+function pauseMusic() {
+  window.clearTimeout(musicTimer);
+  musicTimer = 0;
+  music?.pause();
+}
+
 // ———————————————————————————————— bruitages ————————————————————————————————
 
 /** Joue un bruitage, tout de suite ou un peu plus tard (en secondes). Muet tant que le fichier n'est pas chargé. */
@@ -615,7 +667,7 @@ export const isMuted = (): boolean => muted;
 
 // En développement seulement : pour régler les sons depuis la console (__son.playSound('stamp')).
 if (import.meta.env.DEV && typeof window !== 'undefined') {
-  (window as unknown as Record<string, unknown>).__son = { playSound, setAmbience, master: () => master, ctx: () => ctx, ready };
+  (window as unknown as Record<string, unknown>).__son = { playSound, setAmbience, master: () => master, ctx: () => ctx, music: () => music, ready };
 }
 
 export function toggleSound(): void {
@@ -632,12 +684,17 @@ export function toggleSound(): void {
     master.gain.setValueAtTime(master.gain.value, t);
     if (muted) {
       master.gain.linearRampToValueAtTime(0, t + 0.25);
-      window.setTimeout(() => muted && void c.suspend(), 300);
+      window.setTimeout(() => {
+        if (!muted) return;
+        void c.suspend();
+        pauseMusic();
+      }, 300);
     } else {
       void c.resume();
       master.gain.linearRampToValueAtTime(VOLUME, t + 0.4);
       preload();
       if (wanted && !current) startAmbience(wanted);
+      startMusic();
     }
   }
   document.querySelectorAll<HTMLButtonElement>('.sound-btn').forEach(refresh);

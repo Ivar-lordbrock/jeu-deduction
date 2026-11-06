@@ -1,0 +1,301 @@
+{
+  "id": "fruiterie",
+  "order": 3,
+  "chapter": "chapitre-1",
+  "draft": true,
+  "title": "Le marchand de raisins",
+  "intro": "Londres, jeudi 4 octobre 1888, au matin.\nÀ King's Row, à deux pas de la ruelle où l'inconnue a été retrouvée dimanche, un vieux marchand de fruits brandit le journal du jour : il serait le seul à avoir vu l'assassin. Un détective privé vient le chercher pour la morgue ; un sergent de police relit son carnet en fronçant les sourcils.\n\nLe marchand dit-il la vérité ? Comparez ce qu'il a dit, à qui, et quand.",
+  "epilogue": "Matthew Pickett n'a pas dit la même chose à tout le monde. Dimanche, au sergent Wade, il n'avait rien vu : il avait fermé à 0 h 30, à cause de la pluie. Mardi, au détective Grant, payé par le comité de vigilance, il avait vendu du raisin à l'assassin et à sa victime. Pourtant, le docteur Jefferson n'a trouvé que des pastilles dans la main de l'inconnue.\n\nLa police jugea son récit trop changeant : Pickett ne fut jamais appelé à témoigner. Avait-il vraiment vu quelque chose, ou rêvait-il de la récompense, et de son nom dans le journal ? Personne ne le saura jamais.",
+  "notes": {
+    "moment": "Jeudi 4 octobre 1888, le matin, devant la boutique de Matthew Pickett, à King's Row, à côté du portail de la ruelle. Pickett brandit The Comet ; le détective Grant vient le chercher pour la morgue ; le sergent Wade relit son carnet ; le joueur arrive par la rue.",
+    "truth": "Faits réels, noms changés (voir story.json) : Matthew Pickett d'après Matthew Packer, marchand de fruits au 44 Berner Street, à deux portes de Dutfield's Yard. Le dimanche 30 septembre, le sergent Stephen Wade (Stephen White) l'interroge : il a fermé vers 0 h 30 à cause de la pluie et n'a rien vu de suspect. Le mardi 2 octobre, les détectives privés Grand et Batchelor (ici un seul : Charles Grant), engagés par le comité de vigilance de Joseph Larkin (George Lusk) et par un journal, l'interrogent : il dit avoir vendu vers 23 h 45 une demi-livre de raisin noir à un homme et à une femme, restés en face sous la pluie. Les détectives disent avoir trouvé une tige de grappe dans la rigole de la cour. Le 4 octobre, l'histoire paraît dans le journal (l'Evening News, ici The Comet) ; Wade revient voir Pickett et le trouve avec les détectives, qui l'emmènent à la morgue. À l'enquête, le médecin (ici Albert Jefferson) déclare qu'il n'y avait aucune trace de raisin ; la victime tenait un sachet de pastilles dans la main gauche. Pickett ne sera jamais appelé à témoigner. Dans la version de l'auteur, la cour est à King's Row et la victime reste « l'inconnue ».",
+    "falseLeads": "Distracteurs : 1 h (la découverte du corps), le cocher, la morgue, The Comet, King's Row, Joseph Larkin (il n'a jamais parlé à Pickett).",
+    "other": "Brouillon écrit par Claude : à relire et à réécrire librement. L'affiche du comité et sa date (lundi 1er octobre) sont arrangées pour le jeu. Scène : tools/scene-fruiterie.mjs (npm run scene:fruiterie). Bruits des zones : sound.ts (ZONE_SOUNDS) ; position sur la carte : menu.ts (MAP_PINS)."
+  },
+  "scene": {
+    "image": "scene.svg",
+    "width": 1600,
+    "height": 900
+  },
+  "startingWords": [
+    "kings-row"
+  ],
+  "words": {
+    "kings-row": {
+      "label": "King's Row",
+      "category": "place"
+    },
+    "pickett": {
+      "label": "Matthew Pickett",
+      "category": "person"
+    },
+    "wade": {
+      "label": "Stephen Wade",
+      "category": "person"
+    },
+    "grant": {
+      "label": "Charles Grant",
+      "category": "person"
+    },
+    "larkin": {
+      "label": "Joseph Larkin",
+      "category": "person"
+    },
+    "jefferson": {
+      "label": "Albert Jefferson",
+      "category": "person"
+    },
+    "inconnue": {
+      "label": "l'inconnue",
+      "category": "person"
+    },
+    "cocher": {
+      "label": "un cocher",
+      "category": "person"
+    },
+    "vingt-trois-h-quarante-cinq": {
+      "label": "23 h 45",
+      "category": "other"
+    },
+    "minuit-et-demi": {
+      "label": "0 h 30",
+      "category": "other"
+    },
+    "une-heure": {
+      "label": "1 h",
+      "category": "other"
+    },
+    "pluie": {
+      "label": "pluie",
+      "category": "other"
+    },
+    "raisin": {
+      "label": "raisin",
+      "category": "object"
+    },
+    "grappe": {
+      "label": "grappe",
+      "category": "object"
+    },
+    "pastilles": {
+      "label": "pastilles",
+      "category": "object"
+    },
+    "recompense": {
+      "label": "récompense",
+      "category": "other"
+    },
+    "comite": {
+      "label": "comité de vigilance",
+      "category": "other"
+    },
+    "the-comet": {
+      "label": "The Comet",
+      "category": "other"
+    },
+    "rigole": {
+      "label": "rigole",
+      "category": "place"
+    },
+    "morgue": {
+      "label": "morgue",
+      "category": "place"
+    }
+  },
+  "zones": [
+    {
+      "id": "enseigne",
+      "kind": "object",
+      "label": "L'enseigne de la boutique",
+      "rect": {
+        "x": 440,
+        "y": 112,
+        "w": 460,
+        "h": 86
+      },
+      "text": "« M. PICKETT — FRUITERER · GREENGROCER » : fruits et légumes. Une petite boutique de [[kings-row|King's Row]], tenue par [[pickett|Matthew Pickett]]. Juste à côté, un grand portail ferme une ruelle."
+    },
+    {
+      "id": "vitrine",
+      "kind": "object",
+      "label": "L'étal devant la vitrine",
+      "rect": {
+        "x": 448,
+        "y": 420,
+        "w": 196,
+        "h": 116
+      },
+      "text": "Des pommes, des oignons et des grappes de [[raisin]] noir, un peu flétries. Une ardoise est piquée dans le panier : « Black grapes, 6d lb », six pence la livre.\nLe soir, quand la porte est fermée, le marchand sert encore ses clients par la fenêtre."
+    },
+    {
+      "id": "cour",
+      "kind": "object",
+      "label": "Le portail de la ruelle",
+      "rect": {
+        "x": 1062,
+        "y": 150,
+        "w": 228,
+        "h": 490
+      },
+      "text": "Le grand portail de bois est entrouvert sur une ruelle sombre. C'est là, dans le noir, que [[cocher|un cocher]] a découvert [[inconnue|l'inconnue]], vers [[une-heure|1 h]] du matin, dans la nuit de samedi à dimanche.\nUne [[rigole]] sort de la ruelle et traverse le trottoir. Contre le mur, quelqu'un a posé quelques fleurs, déjà fanées.",
+      "notes": "Depuis dimanche, des centaines de curieux sont passés par cette ruelle : la tige de grappe pouvait venir de n'importe qui."
+    },
+    {
+      "id": "affiche",
+      "kind": "document",
+      "label": "L'affiche près du portail",
+      "rect": {
+        "x": 1318,
+        "y": 264,
+        "w": 120,
+        "h": 170
+      },
+      "text": "Une affiche toute neuve, collée près du portail.\n« COMITÉ DE VIGILANCE DE WHITECHAPEL. [[recompense|RÉCOMPENSE]] à qui donnera un renseignement utile sur l'assassin. Lundi 1er octobre 1888. Le président, [[larkin|Joseph Larkin]]. »"
+    },
+    {
+      "id": "journal",
+      "kind": "document",
+      "label": "Le journal sur la caisse",
+      "rect": {
+        "x": 359,
+        "y": 652,
+        "w": 101,
+        "h": 85
+      },
+      "text": "The Daily Ledger de ce matin, posé sur une caisse de pommes.\n« ENQUÊTE DU CORONER. Le docteur [[jefferson|Albert Jefferson]] a été entendu hier, mercredi. Dans la main gauche de [[inconnue|l'inconnue]], il a trouvé un petit sachet de [[pastilles]] pour l'haleine. Aucune trace de raisin, ni dans ses mains, ni sur ses vêtements. »"
+    },
+    {
+      "id": "marchand",
+      "kind": "person",
+      "label": "Le marchand au tablier",
+      "rect": {
+        "x": 649,
+        "y": 193,
+        "w": 195,
+        "h": 498
+      },
+      "portrait": {
+        "x": 666,
+        "y": 256,
+        "w": 101,
+        "h": 135
+      },
+      "text": "Un vieux marchand en tablier brandit le journal, très fier.\n« [[pickett|Matthew Pickett]], fruits et légumes, depuis trente ans ! Vous avez lu le journal ? Le marchand qui a vu l'assassin, c'est moi ! Il m'a acheté du [[raisin]], pour la femme qui était avec lui. Ce monsieur m'emmène à la [[morgue]] : je vais la reconnaître. »",
+      "details": [
+        {
+          "label": "The Comet de ce matin",
+          "text": "[[the-comet|The Comet]], jeudi 4 octobre.\n« LE MARCHAND A VU L'ASSASSIN ! Matthew Pickett a tout raconté mardi au détective [[grant|Charles Grant]]. Samedi soir, vers [[vingt-trois-h-quarante-cinq|23 h 45]], un homme et une femme lui ont acheté une demi-livre de raisin noir, puis sont restés en face, sous la [[pluie]]. La femme ? [[inconnue|L'inconnue]] de King's Row ! Le détective a même retrouvé une tige de [[grappe]] dans la [[rigole]]. »\nPar notre reporter, Tim Bradford."
+        }
+      ]
+    },
+    {
+      "id": "sergent",
+      "kind": "person",
+      "label": "Le policier au carnet",
+      "rect": {
+        "x": 844,
+        "y": 198,
+        "w": 173,
+        "h": 518
+      },
+      "portrait": {
+        "x": 898,
+        "y": 192,
+        "w": 115,
+        "h": 153
+      },
+      "text": "Un policier, trois galons sur la manche, relit son carnet en fronçant les sourcils.\n« Sergent [[wade|Stephen Wade]], division H. Dimanche matin, j'ai interrogé toute la rue, et ce monsieur aussi. Ce qu'il raconte aujourd'hui, il ne me l'a jamais dit. »",
+      "details": [
+        {
+          "label": "Le carnet du sergent Wade",
+          "text": "« Dimanche 30 septembre, 9 h. M. Pickett, marchand de fruits, à côté de la ruelle. A fermé sa boutique à [[minuit-et-demi|0 h 30]], à cause de la [[pluie]]. N'a vu personne dans la rue. N'a rien entendu. Rien de suspect. — S. W. »"
+        }
+      ]
+    },
+    {
+      "id": "detective",
+      "kind": "person",
+      "label": "L'homme au chapeau melon",
+      "rect": {
+        "x": 1438,
+        "y": 215,
+        "w": 122,
+        "h": 566
+      },
+      "portrait": {
+        "x": 1439,
+        "y": 215,
+        "w": 118,
+        "h": 157
+      },
+      "text": "Un homme en pardessus sombre s'impatiente, la canne à la main.\n« [[grant|Charles Grant]], détective privé. Le [[comite|comité de vigilance]] me paie pour faire ce que la police ne fait pas. M. Pickett m'a tout raconté mardi. Nous partons pour la [[morgue]] : s'il reconnaît la femme, l'enquête avance enfin ! »",
+      "details": [
+        {
+          "label": "La petite enveloppe du détective",
+          "text": "Une enveloppe brune, notée au crayon : « Tige de [[grappe]], trouvée mardi 2 octobre dans la [[rigole]] de la ruelle, au milieu des feuilles et de la boue. — C. G. »\nDedans, une petite tige de raisin, sèche et noircie."
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "id": "qui",
+      "kind": "identities",
+      "title": "Qui est qui ?",
+      "people": [
+        {
+          "zone": "marchand",
+          "answer": "pickett"
+        },
+        {
+          "zone": "sergent",
+          "answer": "wade"
+        },
+        {
+          "zone": "detective",
+          "answer": "grant"
+        }
+      ],
+      "hints": [
+        "Chacun dit son nom quand on lui parle.",
+        "Le nom du marchand est aussi écrit au-dessus de sa boutique."
+      ]
+    },
+    {
+      "id": "quoi",
+      "kind": "sentences",
+      "title": "Que dit vraiment le marchand ?",
+      "sentences": [
+        "Dimanche, Matthew Pickett dit au sergent {wade} qu'il a fermé à {minuit-et-demi}, à cause de la {pluie}, sans rien voir.",
+        "Mardi, il raconte au détective {grant} qu'à {vingt-trois-h-quarante-cinq}, il a vendu du {raisin} à un homme et à {inconnue}.",
+        "Payé par le {comite}, le détective dit avoir trouvé une tige de {grappe} dans la {rigole} de la ruelle.",
+        "Mais le docteur {jefferson} n'a trouvé dans sa main que des {pastilles}, et aucune trace de raisin.",
+        "Pickett n'a parlé du raisin qu'après l'affiche promettant une {recompense}."
+      ],
+      "hints": [
+        "Le carnet du sergent dit ce que Pickett racontait dimanche.",
+        "The Comet raconte ce qu'il a dit au détective, mardi.",
+        "Le journal posé sur la caisse donne le témoignage du docteur.",
+        "Regardez la date de l'affiche."
+      ]
+    },
+    {
+      "id": "quand",
+      "kind": "chronology",
+      "title": "Dans quel ordre ?",
+      "events": [
+        "D'après Pickett, un homme et une femme lui achètent du raisin.",
+        "Pickett ferme sa boutique, à cause de la pluie.",
+        "Un cocher découvre l'inconnue dans la ruelle.",
+        "Le sergent Wade interroge Pickett, qui n'a rien vu.",
+        "Le comité de vigilance promet une récompense.",
+        "Pickett raconte l'histoire du raisin au détective Grant."
+      ],
+      "hints": [
+        "The Comet et le carnet du sergent donnent les deux heures de la nuit.",
+        "Le portail de la ruelle dit quand le corps a été trouvé.",
+        "Comparez les jours : le carnet du sergent, l'affiche, l'enveloppe du détective."
+      ]
+    }
+  ]
+}

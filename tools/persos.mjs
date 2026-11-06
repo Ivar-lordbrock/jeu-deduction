@@ -572,6 +572,13 @@ const agent = {
       bN: { a: 40, e: -6, main: 'poing' }, bF: { a: 24, e: 20, main: 'ouverte' },
       objets: [{ type: 'lanterne', bras: 'N' }],
     },
+    carnet: {
+      nom: 'sergent, note dans son carnet',
+      lean: 2, tete: 12, galons: 3,
+      jN: { h: 5, k: 0 }, jF: { h: -5, k: 0 },
+      bN: { a: 26, e: 98, main: 'poing' }, bF: { a: 18, e: 108, main: 'poing' },
+      objets: [{ type: 'carnet', bras: 'N', rot: -10 }, { type: 'crayon', bras: 'F', rot: 40 }],
+    },
   },
 };
 
@@ -929,7 +936,7 @@ const docteur = {
 const detective = {
   id: 'detective',
   nom: 'Le détective',
-  portrait: 'policier en civil : chapeau melon bas, moustache tombante, long pardessus sombre et uni, canne-parapluie',
+  portrait: 'détective : chapeau melon bas, moustache tombante, long pardessus sombre et uni, canne-parapluie',
   c: { ...HOMME, cuisse: 140, tibia: 136, tete: 1.08 },
   dessiner(D, sq, pose, c) {
     jambes(D, sq, c);
@@ -959,8 +966,8 @@ const detective = {
       bN: { a: 26, e: 98, main: 'poing' }, bF: { a: 18, e: 108, main: 'poing' },
       objets: [{ type: 'carnet', bras: 'N', rot: -10 }, { type: 'crayon', bras: 'F', rot: 40 }],
     },
-    proteste: {
-      nom: 'tend la main vers le mur : « attendez le photographe ! »',
+    explique: {
+      nom: 'tend la main ouverte, explique',
       lean: -2, tete: -4,
       jN: { h: 12, k: 2 }, jF: { h: -8, k: 0 },
       bN: { a: 72, e: 16, main: 'ouverte' }, bF: { a: 8, e: 22, main: 'poing' },
@@ -969,7 +976,94 @@ const detective = {
   },
 };
 
-const PERSOS = [commissaire, agent, journaliste, joueur, temoin, docteur, detective];
+const TABLIER_FRUITIER = '#8a8466';
+const FOULARD = '#6e3a26';
+const BARBE = '#8e918a';
+
+const marchand = {
+  id: 'marchand',
+  nom: 'Le marchand de fruits',
+  portrait: 'vieux marchand : dos voûté, casquette plate, collier de barbe grise, foulard, manches retroussées, grand tablier de toile',
+  c: { ...HOMME, cuisse: 130, tibia: 126, bras: 100, avant: 84, epaule: [-4, -160], cou: [8, -190], rCuisse: 24, rGenou: 16, rBras: 14, rCoude: 12, rPoignet: 9, tete: 1.1 },
+  dessiner(D, sq, pose, c) {
+    const T = sq.T;
+    jambes(D, sq, c);
+    // buste voûté, un peu de ventre
+    D.forme(
+      'M -8 -186 C -24 -184 -38 -172 -40 -152 C -42 -128 -38 -104 -34 -84 C -32 -68 -34 -50 -35 -30 C -37 -10 -31 8 -18 14 L 18 16 C 34 8 42 -14 44 -40 C 46 -64 42 -88 38 -108 C 36 -130 34 -158 26 -174 C 22 -180 18 -184 14 -186 Z',
+      T,
+    );
+    // grand tablier : la bavette sur la poitrine, la jupe jusque sous les genoux
+    const bas = 1.4;
+    const devant = (j, t, plus) => {
+      const o = surJambe(j, t);
+      return v(o.x + (t <= 1 ? c.rCuisse : c.rGenou) + plus, o.y);
+    };
+    const avant = [sq.jN, sq.jF].reduce((a, j) => (surJambe(j, bas).x > surJambe(a, bas).x ? j : a));
+    const yb = Math.max(...[sq.jN, sq.jF].map((j) => surJambe(j, bas).y));
+    const xArr = Math.min(...[sq.jN, sq.jF].map((j) => surJambe(j, bas).x)) - 8;
+    const jupe = [T(-16, -72), T(44, -72), devant(avant, 0.4, 14), devant(avant, 1, 12), v(devant(avant, bas, 10).x, yb), v(xArr, yb)];
+    const dJupe = arrondi(jupe, 0.18);
+    D.formePts(dJupe, jupe);
+    D.accent(dJupe, null, TABLIER_FRUITIER);
+    const BAVETTE = 'M 14 -150 L 33 -152 C 38 -128 44 -100 44 -72 L 0 -72 C 4 -100 8 -126 14 -150 Z';
+    D.accent(BAVETTE, T, TABLIER_FRUITIER);
+    D.trait('M 15 -150 L 2 -184 M 31 -152 L 20 -186', T, TABLIER_FRUITIER, 2.4);
+    D.trait('M -16 -78 L 42 -78', T, '#5f5a45', 1.8);
+    D.pli(`M${pt(lerp(jupe[0], jupe[5], 0.5))} L${pt(v(xArr + 12, yb - 8))}`, null, 1.6);
+    D.pli('M 10 -112 L 34 -112 L 34 -94 L 12 -94', T, 1.4);
+    brasEtMains(D, sq, c);
+    // le bras proche passe devant le tablier : on le redessine en noir par-dessus
+    {
+      const b = sq.bN;
+      D.accents.push(`<path d="${gelule(b.epaule, b.coude, c.rBras, c.rCoude)}" fill="${NOIR}"/><path d="${gelule(b.coude, b.poignet, c.rCoude, c.rPoignet)}" fill="${NOIR}"/>`);
+      if (b.main !== 'cachee' && b.main !== 'poche') D.accent(MAINS[b.main], repereMembre(b.poignet, b.dir, c.main), NOIR);
+      if (b.main === 'doigt') {
+        const m = repereMembre(b.poignet, b.dir, c.main);
+        D.accents.push(`<path d="${gelule(m(4, 18), m(4, 46), 4.6 * c.main, 3.6 * c.main)}" fill="${NOIR}"/>`);
+      }
+    }
+    // manches de chemise retroussées au coude
+    for (const b of [sq.bF, sq.bN]) {
+      const u = unit(sub(b.poignet, b.coude));
+      const n = v(-u.y, u.x);
+      const m = add(b.coude, mul(u, 8));
+      D.trait(`M${pt(add(m, mul(n, c.rCoude)))} L${pt(sub(m, mul(n, c.rCoude)))}`, null, CHEMISE, 5, ' opacity="0.85"');
+    }
+    // foulard noué au cou
+    const tour = 'M -12 -186 C -2 -192 12 -190 20 -182 L 18 -170 C 8 -176 -4 -176 -12 -172 Z';
+    D.forme(tour, T);
+    D.accent(tour, T, FOULARD);
+    D.accent('M 14 -176 C 22 -174 26 -166 22 -158 C 18 -162 14 -166 12 -172 Z', T, FOULARD);
+    const f = tete(D, sq, pose, c, [
+      VISAGE(4),
+      // collier de barbe : le long de la mâchoire, sous le menton, le visage rasé
+      'M 4 -24 C 6 -12 8 -2 12 6 C 16 14 24 18 34 17 C 40 16 43 12 40 9 C 35 10 30 10 26 8 C 21 4 18 -6 17 -24 Z',
+      // casquette plate, large, enfoncée
+      'M -34 -38 C -38 -52 -31 -72 -6 -78 C 18 -82 36 -73 42 -60 C 46 -56 54 -54 58 -50 C 58 -45 52 -44 46 -44 C 30 -44 8 -44 -10 -40 C -21 -38 -29 -36 -34 -38 Z',
+    ]);
+    D.accent('M 4 -24 C 6 -12 8 -2 12 6 C 16 14 24 18 34 17 C 40 16 43 12 40 9 C 35 10 30 10 26 8 C 21 4 18 -6 17 -24 Z', f, BARBE, ' opacity="0.45"');
+    D.pli('M -31 -45 C -8 -49 20 -49 42 -49', f, 1.6);
+    objets(D, sq, c, pose);
+  },
+  poses: {
+    brandit: {
+      nom: 'brandit The Comet, fier de son histoire',
+      lean: 2, tete: -6,
+      jN: { h: 10, k: 2 }, jF: { h: -7, k: 0 },
+      bN: { a: 96, e: 34, main: 'poing' }, bF: { a: -30, e: 110, main: 'cachee', ra: 0.55 },
+      objets: [{ type: 'journal', bras: 'N', titre: 'THE COMET', taille: 1.5, rot: -6 }],
+    },
+    montre: {
+      nom: 'montre la cour du doigt',
+      lean: 6, tete: -2,
+      jN: { h: 8, k: 0 }, jF: { h: -6, k: 0 },
+      bN: { a: 92, e: 4, main: 'doigt' }, bF: { a: -20, e: 96, main: 'cachee', ra: 0.45 },
+    },
+  },
+};
+
+const PERSOS = [commissaire, agent, journaliste, joueur, temoin, docteur, detective, marchand];
 
 // ——— sortie ———
 
