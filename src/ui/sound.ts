@@ -36,7 +36,7 @@ export type Sound =
   | 'scissors'; // les ciseaux du docteur
 
 /** L'ambiance de chaque affaire, par identifiant ; les autres écrans sont dans la rue. */
-const AMBIENCES: Record<string, Ambience> = { 'leman-street': 'station', morgue: 'morgue' };
+const AMBIENCES: Record<string, Ambience> = { 'leman-street': 'station', morgue: 'morgue', 'agence-mercury': 'station' };
 export const ambienceFor = (caseId: string): Ambience => AMBIENCES[caseId] ?? 'street';
 
 /**
@@ -47,6 +47,7 @@ const ZONE_SOUNDS: Record<string, Record<string, Sound>> = {
   'leman-street': { fenetre: 'hooves', pendule: 'chime', tiroir: 'drawer' },
   morgue: { 'corps-1': 'sheet', 'corps-2': 'sheet', agent: 'steps', docteur: 'scissors' },
   fruiterie: { cour: 'hooves', sergent: 'steps' },
+  'agence-mercury': { agent: 'steps', sacs: 'sheet', bureau: 'drawer' },
 };
 export const zoneSound = (caseId: string, zoneId: string): Sound | null => ZONE_SOUNDS[caseId]?.[zoneId] ?? null;
 

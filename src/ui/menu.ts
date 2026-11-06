@@ -29,6 +29,8 @@ export const MAP_PINS: Record<string, { x: number; y: number; place: string }> =
   'leman-street': { x: 280, y: 1060, place: 'Poste de police de Leman Street' },
   morgue: { x: 500, y: 690, place: 'Morgue de Whitechapel, Old Montague Street' },
   fruiterie: { x: 602, y: 1037, place: "King's Row, la boutique du marchand de fruits" },
+  // hors du plan : l'agence est à l'ouest, près de Fleet Street ; l'épingle est au bord, sur la route d'Aldgate
+  'agence-mercury': { x: 36, y: 958, place: 'Agence Mercury, New Bridge Street, près de Fleet Street' },
 };
 
 /** Les couleurs de Booth, de la misère à l'aisance. */

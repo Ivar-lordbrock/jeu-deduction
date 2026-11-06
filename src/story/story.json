@@ -4,7 +4,7 @@
   "setting": "Londres, automne 1888. Whitechapel et l'East End : ruelles, garnis, brouillard et becs de gaz.",
   "tone": "Enquête victorienne sombre et réaliste, fidèle aux faits. La violence reste hors champ : on enquête sur ce qu'elle laisse derrière elle, et les victimes sont traitées avec respect.",
   "synopsis": "Le joueur est un petit reporter de l'East End qui rêve de devenir détective privé ; il reconstitue chaque affaire dans sa gazette. Automne 1888 : une série de meurtres frappe Whitechapel. Le 31 août à Buck's Row, puis le 8 septembre à Hanbury Street. Dans la nuit du 30 septembre, l'assassin tue deux fois, à King's Row puis à Wallace Street ; au poste, le chef de la police découvre que The Comet sait déjà tout. Une lettre signée « Jack the Ripper », reçue par une agence de presse, est publiée : le nom fait le tour du monde. Le 16 octobre, le président du comité de vigilance reçoit un colis « From hell ». Le 9 novembre, la dernière victime est retrouvée dans sa chambre de Miller's Court ; la veille, le chef de la police a démissionné. L'assassin ne sera jamais identifié.",
-  "notes": "Les faits, les dates et les lieux sont réels. Par respect, les noms des personnes et des journaux sont changés :\n- Sir Charles Warren → Alan Winkoff (chef de la police métropolitaine)\n- Sir Robert Anderson → Sir Robert Ansell (chef de la police judiciaire)\n- Henry Matthews → Henry Mallory (ministre de l'Intérieur)\n- Thomas Arnold → le surintendant Thomas Arden (division H)\n- Frederick Abberline → l'inspecteur Frederick Hollis\n- Edmund Reid → l'inspecteur Edmund Reeve\n- Major Henry Smith → le major Henry Sinclair (police de la City)\n- Daniel Halse → le détective Daniel Hurst (police de la City)\n- Alfred Long → l'agent Alfred Lane\n- Edward Watkins → l'agent Edward Walton\n- Louis Diemschutz → Louis Hartmann (le cocher de Berner Street)\n- George Lusk → Joseph Larkin (comité de vigilance)\n- John Pizer, dit « Tablier de cuir » → John Pilcher\n- Victimes : Mary Ann Nichols → Ellen Holt ; Annie Chapman → Agnes Croft ; Elizabeth Stride → Elsa Lindqvist ; Catherine Eddowes → Kate Ashby ; Mary Jane Kelly → Jenny Doyle\n- Journaux : The Star → The Comet ; Illustrated London News → The London Pictorial ; The Times → The Daily Ledger ; Daily News → The Morning Courier ; Le Figaro → Le Matinal ; New York Herald → New York Sentinel ; Central News Agency → l'agence Mercury\nLe surnom « Jack the Ripper » (Jack l'Éventreur) et les lieux sont gardés. Chapitre 1, version de l'auteur : le double meurtre a lieu à King's Row et à Wallace Street (lieux inventés). Victimes : une inconnue et Margaret Jenkins, couturière ; témoin : Elisabeth Coyle. L'adjoint William Stone et son neveu Tim Stone, qui signe Tim Bradford, sont inventés.",
+  "notes": "Les faits, les dates et les lieux sont réels. Par respect, les noms des personnes et des journaux sont changés :\n- Sir Charles Warren → Alan Winkoff (chef de la police métropolitaine)\n- Sir Robert Anderson → Sir Robert Ansell (chef de la police judiciaire)\n- Henry Matthews → Henry Mallory (ministre de l'Intérieur)\n- Thomas Arnold → le surintendant Thomas Arden (division H)\n- Frederick Abberline → l'inspecteur Frederick Hollis\n- Edmund Reid → l'inspecteur Edmund Reeve\n- Major Henry Smith → le major Henry Sinclair (police de la City)\n- Daniel Halse → le détective Daniel Hurst (police de la City)\n- Alfred Long → l'agent Alfred Lane\n- Edward Watkins → l'agent Edward Walton\n- Louis Diemschutz → Louis Hartmann (le cocher de Berner Street)\n- George Lusk → Joseph Larkin (comité de vigilance)\n- John Moore → John Moorland (directeur de l'agence Mercury)\n- Tom Bulling → Tom Bellamy (reporter de l'agence Mercury)\n- Adolphus Williamson → l'inspecteur principal Arthur Wilkins\n- John Pizer, dit « Tablier de cuir » → John Pilcher\n- Victimes : Mary Ann Nichols → Ellen Holt ; Annie Chapman → Agnes Croft ; Elizabeth Stride → Elsa Lindqvist ; Catherine Eddowes → Kate Ashby ; Mary Jane Kelly → Jenny Doyle\n- Journaux : The Star → The Comet ; Illustrated London News → The London Pictorial ; The Times → The Daily Ledger ; Daily News → The Morning Courier ; Le Figaro → Le Matinal ; New York Herald → New York Sentinel ; Central News Agency → l'agence Mercury\nLe surnom « Jack the Ripper » (Jack l'Éventreur) et les lieux sont gardés. Chapitre 1, version de l'auteur : le double meurtre a lieu à King's Row et à Wallace Street (lieux inventés). Victimes : une inconnue et Margaret Jenkins, couturière ; témoin : Elisabeth Coyle. L'adjoint William Stone et son neveu Tim Stone, qui signe Tim Bradford, sont inventés.",
   "prologue": [
     {
       "heading": "Londres, automne 1888",
@@ -149,6 +149,35 @@
       "name": "Jenny Doyle",
       "role": "Victime, 9 novembre 1888, Miller's Court",
       "notes": "D'après Mary Jane Kelly, environ 25 ans."
+    },
+    {
+      "id": "moorland",
+      "name": "John Moorland",
+      "role": "Directeur de l'agence Mercury, New Bridge Street",
+      "appearance": "Gros, crâne dégarni, grands favoris gris, cigare, redingote ouverte, chaîne de montre en or.",
+      "motive": "Vendre ses dépêches au plus grand nombre de journaux.",
+      "notes": "D'après John Moore, directeur de la Central News Agency. En 1913, l'inspecteur principal John Littlechild le dira « sans doute l'inventeur » de la lettre « Dear Boss »."
+    },
+    {
+      "id": "bellamy",
+      "name": "Tom Bellamy",
+      "role": "Reporter de l'agence Mercury",
+      "appearance": "Jeune, mince, visière verte, petite moustache, gilet, bras de chemise et fixe-manches.",
+      "motive": "Le scoop, et une agence que tout Londres lit.",
+      "notes": "D'après Tom Bulling, journaliste de la Central News, que Scotland Yard soupçonnait d'avoir écrit la lettre « Dear Boss ». Rien ne fut jamais prouvé."
+    },
+    {
+      "id": "pike",
+      "name": "Henry Pike",
+      "role": "Agent de Scotland Yard",
+      "appearance": "Grand, casque à étoile, un sac de lettres à la main.",
+      "notes": "Inventé. Emporte au Yard les lettres signées Jack."
+    },
+    {
+      "id": "wilkins",
+      "name": "Arthur Wilkins",
+      "role": "Inspecteur principal à Scotland Yard",
+      "notes": "D'après l'inspecteur principal Adolphus Williamson, à qui la Central News envoya la lettre le 29 septembre 1888."
     }
   ],
   "chapters": [

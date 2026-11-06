@@ -350,7 +350,7 @@ const OBJETS = {
     D.accent('M -7 0 L -14 -70 L 37 -81 L 48 -10 Z', f, '#cfc6a8');
     if (o.titre) {
       const p0 = f(-8, -61);
-      D.accents.push(`<text transform="translate(${pt(p0)}) rotate(${num((o.rot ?? -8) - 12.8)})" font-family="Georgia, serif" font-weight="bold" font-size="${num(7.6 * k)}" fill="#2a241c">${o.titre}</text>`);
+      D.accents.push(`<text transform="translate(${pt(p0)}) rotate(${num((o.rot ?? -8) - 12.8)})" font-family="Georgia, serif" font-weight="bold" font-size="${num(7.6 * k * (o.police ?? 1))}" fill="#2a241c">${o.titre}</text>`);
     } else D.trait('M -10 -60 L 34 -70', f, '#2a241c', 4);
     D.trait('M -9 -50 L 12 -54 M -8 -42 L 12 -46 M -7 -34 L 13 -38 M -6 -26 L 14 -30 M 18 -55 L 38 -59 M 19 -47 L 40 -51 M 20 -39 L 41 -43 M 21 -31 L 42 -35', f, '#6d6550', 1.4);
   },
@@ -388,6 +388,27 @@ const OBJETS = {
     const f = repereMembre(prise(b, c), b.dir + (o.rot ?? 0));
     D.membre(f(0, -6), f(0, 44), 2.8, 1.3);
     D.trait('M 0 8 L 0 42', f, ARGENT, 1.2, ' opacity="0.9"');
+  },
+  plume(D, sq, c, o) {
+    // porte-plume d'acier ; la plume est rougie par l'encre
+    const b = o.bras === 'F' ? sq.bF : sq.bN;
+    const f = repereMembre(prise(b, c), b.dir + (o.rot ?? 0));
+    D.membre(f(0, -14), f(0, 26), 2.4, 1.8);
+    D.forme('M -1.8 25 L 1.8 25 L 0 34 Z', f);
+    if (o.encre) D.accent('M -1.6 27 L 1.6 27 L 0 34 Z', f, o.encre);
+  },
+  sac(D, sq, c, o) {
+    // sac de toile plein de lettres, pendu au poing par son col
+    const b = o.bras === 'F' ? sq.bF : sq.bN;
+    const f = repere(prise(b, c), o.rot ?? 0);
+    const POCHE = 'M -15 24 C -40 34 -50 62 -46 96 C -44 116 -30 124 0 124 C 30 124 44 116 46 96 C 50 62 40 34 15 24 Z';
+    D.forme('M -8 -4 C -10 4 -12 10 -16 14 C -40 26 -50 60 -46 96 C -44 116 -30 124 0 124 C 30 124 44 116 46 96 C 50 60 40 26 16 14 C 12 10 10 4 8 -4 Z', f);
+    // la toile, plus claire que l'uniforme, et ses plis
+    D.accent(POCHE, f, '#4a4536');
+    D.trait('M -30 44 C -20 62 -18 90 -24 114 M 22 38 C 30 62 30 90 24 114 M -40 74 C -10 82 14 82 42 72', f, '#2b281e', 1.8);
+    // lettres qui dépassent du col
+    D.accent('M -14 2 L 2 -22 L 12 -16 L -4 8 Z', f, PAPIER, ' opacity="0.9"');
+    D.accent('M 2 4 L 22 -14 L 28 -6 L 8 10 Z', f, '#c9bf9e', ' opacity="0.9"');
   },
   convocation(D, sq, c, o) {
     const b = o.bras === 'F' ? sq.bF : sq.bN;
@@ -579,6 +600,13 @@ const agent = {
       jN: { h: 5, k: 0 }, jF: { h: -5, k: 0 },
       bN: { a: 26, e: 98, main: 'poing' }, bF: { a: 18, e: 108, main: 'poing' },
       objets: [{ type: 'carnet', bras: 'N', rot: -10 }, { type: 'crayon', bras: 'F', rot: 40 }],
+    },
+    sac: {
+      nom: 'emporte un sac de lettres',
+      lean: -2, tete: 2,
+      jN: { h: 6, k: 0 }, jF: { h: -4, k: 0 },
+      bN: { a: 8, e: 4, main: 'poing' }, bF: { a: -22, e: 96, main: 'cachee', ra: 0.4 },
+      objets: [{ type: 'sac', bras: 'N' }],
     },
   },
 };
@@ -1064,7 +1092,144 @@ const marchand = {
   },
 };
 
-const PERSOS = [commissaire, agent, journaliste, joueur, temoin, docteur, detective, marchand];
+const FAVORIS = '#8e918a';
+const BRAISE = '#e8743a';
+
+const directeur = {
+  id: 'directeur',
+  nom: 'Le directeur d’agence',
+  portrait: 'directeur d’agence de presse : gros, crâne dégarni, grands favoris gris, cigare, redingote ouverte sur un gilet, chaîne de montre',
+  c: { ...HOMME, cuisse: 132, tibia: 128, rCuisse: 29, rGenou: 18, rCheville: 12, rBras: 17, rCoude: 14, rPoignet: 10, cou: [12, -196], main: 1.05, pied: 1.04, tete: 1.14 },
+  dessiner(D, sq, pose, c) {
+    const T = sq.T;
+    jambes(D, sq, c);
+    // la panse, sous le gilet
+    D.forme(
+      'M -12 -192 C -26 -188 -38 -178 -40 -160 C -44 -134 -42 -104 -38 -80 C -36 -60 -40 -36 -42 -16 C -44 4 -36 18 -20 22 L 30 24 C 58 20 80 0 84 -30 C 88 -62 76 -96 56 -118 C 46 -130 42 -150 36 -166 C 30 -180 22 -188 16 -192 Z',
+      T,
+    );
+    // redingote ouverte : elle tombe derrière, jusqu'aux genoux, et laisse voir le gilet devant
+    manteau(D, sq, c, { dos: [[-40, -70], [-42, 10]], ventre: [[30, 0], [18, -60]], long: 0.98, ample: 10, fente: 0.4, basque: [-46, 20] });
+    for (const [x, y] of [[40, -128], [58, -100], [70, -72], [74, -44]]) {
+      const p = T(x, y);
+      D.accents.push(`<circle cx="${num(p.x)}" cy="${num(p.y)}" r="2.4" fill="${PLI}"/>`);
+    }
+    // chaîne de montre d'or en travers du gilet
+    D.trait('M 44 -70 C 54 -56 66 -54 78 -60', T, OR, 1.8, ' opacity="0.9"');
+    const breloque = T(62, -54);
+    D.accents.push(`<circle cx="${num(breloque.x)}" cy="${num(breloque.y)}" r="2.6" fill="${OR}"/>`);
+    // revers de la redingote
+    D.pli('M 16 -172 C 22 -130 26 -80 30 -8', T, 2);
+    brasEtMains(D, sq, c);
+    // col blanc et cravate
+    D.trait('M -6 -190 C 2 -195 12 -195 20 -189', T, CHEMISE, 3);
+    D.accent('M 14 -188 L 24 -186 L 22 -172 L 16 -174 Z', T, '#5a2620');
+    const FAV = 'M -4 -36 C -2 -22 0 -8 4 4 C 8 16 16 24 26 22 C 32 18 32 12 28 8 C 22 4 20 -6 18 -20 C 16 -28 12 -34 6 -38 Z';
+    const f = tete(D, sq, pose, c, [
+      VISAGE(4),
+      // grands favoris, des tempes jusque sous la mâchoire ; le menton rasé
+      FAV,
+      // couronne de cheveux autour d'un crâne dégarni
+      'M -31 -46 C -37 -36 -35 -20 -27 -10 C -22 -16 -21 -28 -23 -40 C -18 -44 -10 -44 -4 -40 C -10 -48 -22 -52 -31 -46 Z',
+      // le cigare
+      'M 38 -3 L 60 -8 C 63 -8 64 -3 61 -2 L 39 3 Z',
+    ]);
+    D.accent(FAV, f, FAVORIS, ' opacity="0.45"');
+    D.pli('M -23 -40 C -16 -45 -8 -45 -2 -39', f, 1.4);
+    const braise = f(62, -5);
+    D.accents.push(`<circle cx="${num(braise.x)}" cy="${num(braise.y)}" r="2.8" fill="${BRAISE}"/>`);
+    D.trait('M 64 -9 C 70 -18 64 -26 70 -36 C 74 -42 70 -50 74 -56', f, '#9fbcb7', 1.4, ' opacity="0.35"');
+    objets(D, sq, c, pose);
+  },
+  poses: {
+    brandit: {
+      nom: 'brandit The Morning Courier, le cigare aux lèvres',
+      lean: -3, tete: -4,
+      jN: { h: 11, k: 2 }, jF: { h: -8, k: 0 },
+      bN: { a: 98, e: 36, main: 'poing' }, bF: { a: -30, e: 110, main: 'cachee', ra: 0.55 },
+      objets: [{ type: 'journal', bras: 'N', titre: 'MORNING COURIER', police: 0.6, taille: 1.5, rot: -6 }],
+    },
+    debout: {
+      nom: 'les mains dans le dos, le cigare aux lèvres',
+      lean: -4, tete: -4,
+      jN: { h: 7, k: 0 }, jF: { h: -6, k: 0 },
+      bN: { a: -22, e: 96, main: 'cachee', ra: 0.4 }, bF: { a: -18, e: 90, main: 'cachee', ra: 0.4 },
+    },
+  },
+};
+
+const VISIERE = '#3e7a5a';
+const FIXE_MANCHE = '#b08a45';
+
+const reporter = {
+  id: 'reporter',
+  nom: 'Le reporter d’agence',
+  portrait: 'jeune reporter d’agence : mince, visière verte, petite moustache, gilet, bras de chemise et fixe-manches, plume',
+  c: { ...HOMME, cuisse: 136, tibia: 130, bras: 102, avant: 86, epaule: [-2, -166], cou: [6, -194], rCuisse: 21, rGenou: 14.5, rCheville: 10, rBras: 12.5, rCoude: 10.5, rPoignet: 8, main: 0.95, pied: 0.97, tete: 1.06 },
+  dessiner(D, sq, pose, c) {
+    const T = sq.T;
+    jambes(D, sq, c);
+    D.forme(
+      'M -9 -190 C -20 -186 -30 -176 -32 -160 C -35 -136 -34 -108 -31 -86 C -29 -70 -31 -50 -32 -30 C -34 -10 -29 6 -17 14 L 15 16 C 26 8 30 -12 30 -36 C 30 -58 29 -80 31 -100 C 34 -126 33 -156 24 -174 C 21 -182 18 -186 14 -188 Z',
+      T,
+    );
+    // gilet court, boutonné
+    D.pli('M 28 -170 C 24 -140 26 -110 29 -76 M -30 -76 L 29 -76', T, 1.6);
+    for (const y of [-152, -132, -112, -92]) {
+      const p = T(27, y);
+      D.accents.push(`<circle cx="${num(p.x)}" cy="${num(p.y)}" r="2" fill="${PLI}"/>`);
+    }
+    brasEtMains(D, sq, c);
+    // bras de chemise : les manches claires dans l'ombre, et les fixe-manches au-dessus du coude
+    for (const b of [sq.bF, sq.bN]) {
+      const ombre = b === sq.bF ? 0.28 : 0.5;
+      D.accents.push(`<path d="${gelule(b.epaule, b.coude, c.rBras - 2, c.rCoude - 2)}" fill="${CHEMISE}" opacity="${ombre}"/><path d="${gelule(b.coude, b.poignet, c.rCoude - 2, c.rPoignet - 1.5)}" fill="${CHEMISE}" opacity="${ombre}"/>`);
+      const u = unit(sub(b.coude, b.epaule));
+      const n = v(-u.y, u.x);
+      const m = lerp(b.epaule, b.coude, 0.62);
+      D.trait(`M${pt(add(m, mul(n, c.rBras - 1)))} L${pt(sub(m, mul(n, c.rBras - 1)))}`, null, FIXE_MANCHE, 3.2);
+    }
+    // col de chemise
+    D.trait('M -6 -188 C 2 -192 12 -192 20 -186', T, CHEMISE, 3);
+    const f = tete(D, sq, pose, c, [
+      VISAGE(0),
+      // cheveux courts, raie de côté
+      'M -30 -44 C -36 -36 -34 -22 -28 -14 C -26 -20 -24 -26 -24 -32 C -20 -44 -6 -50 12 -50 C 24 -50 32 -46 35 -44 C 34 -60 22 -72 2 -72 C -14 -72 -26 -62 -30 -44 Z',
+      // petite moustache
+      'M 36 -12 C 42 -13 46 -10 45 -5 C 41 -7 38 -7 34 -8 Z',
+      // la visière et son bandeau
+      'M -31 -50 C -14 -54 10 -55 30 -52 C 40 -50 54 -46 62 -40 C 60 -37 50 -38 40 -40 C 22 -44 -10 -45 -30 -42 Z',
+    ]);
+    D.accent('M 30 -52 C 40 -50 54 -46 62 -40 C 60 -37 50 -38 40 -40 C 36 -41 32 -42 30 -43 Z', f, VISIERE, ' opacity="0.85"');
+    D.trait('M -30 -47 C -10 -51 12 -52 30 -49', f, VISIERE, 2.2, ' opacity="0.7"');
+    objets(D, sq, c, pose);
+  },
+  poses: {
+    ecrit: {
+      nom: 'assis, écrit sa dépêche à la plume',
+      lean: 8, tete: 12, siege: true,
+      jN: { h: 84, k: 86 }, jF: { h: 88, k: 92 },
+      bN: { a: 46, e: 46, main: 'poing' }, bF: { a: 36, e: 60, main: 'ouverte' },
+      objets: [{ type: 'plume', bras: 'N', rot: -50, encre: '#a8322a' }],
+    },
+    penche: {
+      nom: 'debout, penché sur son bureau, corrige à la plume',
+      lean: 30, tete: 6,
+      jN: { h: -4, k: 2 }, jF: { h: -12, k: 0 },
+      bN: { a: 22, e: 12, main: 'poing' }, bF: { a: 14, e: 26, main: 'ouverte' },
+      objets: [{ type: 'plume', bras: 'N', rot: -34, encre: '#a8322a' }],
+    },
+    debout: {
+      nom: 'relit une dépêche, la main dans la poche',
+      lean: 3, tete: 14,
+      jN: { h: 6, k: 0 }, jF: { h: -4, k: 0 },
+      bN: { a: 26, e: 104, main: 'poing' }, bF: { a: 4, e: 24, main: 'poche' },
+      objets: [{ type: 'convocation', bras: 'N', rot: -20, taille: 1.1 }],
+    },
+  },
+};
+
+const PERSOS = [commissaire, agent, journaliste, joueur, temoin, docteur, detective, marchand, directeur, reporter];
 
 // ——— sortie ———
 

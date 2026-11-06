@@ -1,0 +1,356 @@
+{
+  "id": "agence-mercury",
+  "order": 1,
+  "chapter": "chapitre-2",
+  "title": "Cher Patron",
+  "intro": "Londres, vendredi 5 octobre 1888, à midi.\nÀ l'agence Mercury, près de Fleet Street, les nouvelles partent chaque jour vers deux cents journaux. Mais depuis trois jours, ce sont les lettres qui arrivent : la police a collé partout la copie d'une lettre à l'encre rouge, signée « Jack the Ripper », et tout Londres écrit à l'assassin… ou se prend pour lui.\n\nLa toute première lettre est arrivée ici, adressée au patron. Et si elle n'avait pas été écrite par l'assassin, mais par quelqu'un du métier ?",
+  "epilogue": "La lettre « Dear Boss » n'était pas adressée à la police, mais au patron de l'agence Mercury. Écrite à l'encre rouge, comme les corrections de Tom Bellamy, elle a attendu deux jours avant de partir pour Scotland Yard, « comme une plaisanterie ». La carte postale du « double coup », elle, a été postée quand tous les journaux avaient déjà raconté les deux crimes.\n\nRien ne fut jamais prouvé. Vingt-cinq ans plus tard, un ancien chef de Scotland Yard écrira que, pour tout le Yard, la lettre venait de Tom Bellamy, et que son patron, John Moorland, en avait sans doute eu l'idée. L'assassin ne fut jamais retrouvé. Mais le nom inventé dans une salle de rédaction, lui, est resté : Jack the Ripper.",
+  "notes": {
+    "moment": "Vendredi 5 octobre 1888, à midi, dans la salle de rédaction de l'agence Mercury, New Bridge Street, près de Fleet Street. Le directeur John Moorland brandit The Morning Courier devant la porte de son bureau ; le reporter Tom Bellamy corrige une dépêche, penché sur son bureau ; l'agent Henry Pike, de Scotland Yard, vient chercher les sacs de lettres signées Jack.",
+    "truth": "Faits réels, noms changés (voir story.json) : la lettre « Dear Boss », datée du 25 septembre 1888 et postée le 27 (cachet London E.C.), est adressée « The Boss, Central News Office, London City » (ici l'agence Mercury). La Central News la garde deux jours ; le samedi 29, son directeur John Moore (John Moorland) l'envoie à l'inspecteur principal Adolphus Williamson (Arthur Wilkins), avec un mot : il l'avait « traitée comme une plaisanterie ». Après le double meurtre de la nuit du 29 au 30 (ici à King's Row et à Wallace Street), la lettre paraît le 1er octobre dans le Daily News (The Morning Courier). Le même jour, la Central News reçoit la carte postale « Saucy Jacky », cachet London E., 1er octobre, qui annonce un « double event » pour le lendemain. Le 3 octobre, la police affiche les fac-similés des deux textes ; des centaines d'imitations suivent. En 1913, l'inspecteur principal John Littlechild écrira que Scotland Yard attribuait la lettre à Tom Bulling (Tom Bellamy), journaliste de la Central News, et que son chef Moore en était sans doute l'inventeur. Rien n'a jamais été prouvé.",
+    "falseLeads": "Distracteurs : Jack the Ripper, un docteur (le P.-S. de la lettre et les sacs), les farceurs, Liverpool et le crayon (les imitations), Arthur Wilkins et Henry Pike (la police), Scotland Yard, The Morning Courier, 29 et 30 septembre, 3 octobre.",
+    "other": "Brouillon écrit par Claude : à relire et à réécrire librement. Arrangés pour le jeu : l'encre rouge sur le bureau de Tom, son mot « Dear Boss », sa dépêche « double coup » du dimanche, le registre du courrier, le tableau des abonnés et la visite de l'agent Pike. La lettre et la carte sont traduites et coupées (les passages violents sont retirés). Scène : tools/scene-agence.mjs (npm run scene:agence). Bruits des zones : sound.ts (ZONE_SOUNDS) ; position sur la carte : menu.ts (MAP_PINS)."
+  },
+  "scene": {
+    "image": "scene.svg",
+    "width": 1600,
+    "height": 900
+  },
+  "startingWords": [
+    "mercury"
+  ],
+  "words": {
+    "mercury": {
+      "label": "l'agence Mercury",
+      "category": "place"
+    },
+    "moorland": {
+      "label": "John Moorland",
+      "category": "person"
+    },
+    "bellamy": {
+      "label": "Tom Bellamy",
+      "category": "person"
+    },
+    "pike": {
+      "label": "Henry Pike",
+      "category": "person"
+    },
+    "wilkins": {
+      "label": "Arthur Wilkins",
+      "category": "person"
+    },
+    "jack": {
+      "label": "Jack the Ripper",
+      "category": "person"
+    },
+    "docteur": {
+      "label": "un docteur",
+      "category": "person"
+    },
+    "farceurs": {
+      "label": "farceurs",
+      "category": "other"
+    },
+    "scotland-yard": {
+      "label": "Scotland Yard",
+      "category": "place"
+    },
+    "liverpool": {
+      "label": "Liverpool",
+      "category": "place"
+    },
+    "encre-rouge": {
+      "label": "encre rouge",
+      "category": "object"
+    },
+    "crayon": {
+      "label": "crayon",
+      "category": "object"
+    },
+    "carte-postale": {
+      "label": "carte postale",
+      "category": "object"
+    },
+    "dear-boss": {
+      "label": "Dear Boss",
+      "category": "other"
+    },
+    "double-coup": {
+      "label": "double coup",
+      "category": "other"
+    },
+    "plaisanterie": {
+      "label": "plaisanterie",
+      "category": "other"
+    },
+    "abonnes": {
+      "label": "abonnés",
+      "category": "other"
+    },
+    "morning-courier": {
+      "label": "The Morning Courier",
+      "category": "other"
+    },
+    "vingt-cinq-sept": {
+      "label": "25 septembre",
+      "category": "other"
+    },
+    "vingt-sept-sept": {
+      "label": "27 septembre",
+      "category": "other"
+    },
+    "vingt-neuf-sept": {
+      "label": "29 septembre",
+      "category": "other"
+    },
+    "trente-sept": {
+      "label": "30 septembre",
+      "category": "other"
+    },
+    "premier-oct": {
+      "label": "1er octobre",
+      "category": "other"
+    },
+    "trois-oct": {
+      "label": "3 octobre",
+      "category": "other"
+    }
+  },
+  "zones": [
+    {
+      "id": "porte",
+      "kind": "object",
+      "label": "La porte vitrée",
+      "rect": {
+        "x": 650,
+        "y": 180,
+        "w": 168,
+        "h": 52
+      },
+      "text": "Sur la vitre dépolie, en lettres d'or : « [[moorland|J. MOORLAND]] — DIRECTEUR ».\nDerrière, une lampe éclaire un bureau, un fauteuil vide et une boîte de cigares."
+    },
+    {
+      "id": "affiche",
+      "kind": "document",
+      "label": "L'affiche de la police",
+      "rect": {
+        "x": 852,
+        "y": 98,
+        "w": 196,
+        "h": 326
+      },
+      "text": "La même affiche que devant tous les postes de police de Londres.\n« POLICE MÉTROPOLITAINE. Toute personne qui reconnaîtrait cette écriture est priée de se présenter au poste de police le plus proche. Le [[trois-oct|3 octobre]] 1888. »\nDessous, la copie d'une lettre et d'une [[carte-postale|carte postale]], écrites à l'[[encre-rouge|encre rouge]], d'une belle écriture penchée.",
+      "details": [
+        {
+          "label": "La lettre « Dear Boss »",
+          "text": "« [[vingt-cinq-sept|25 sept.]] 1888. [[dear-boss|Dear Boss]] (Cher Patron), j'entends dire partout que la police m'a attrapé, mais elle ne me tient pas encore. […] Gardez cette lettre jusqu'à ce que j'aie fait encore un peu de travail, puis publiez-la telle quelle. […] Bien à vous, [[jack|Jack the Ripper]]. Ne m'en veuillez pas de donner mon nom de métier. P.-S. : On dit maintenant que je suis [[docteur|un docteur]]. Ha ! ha ! »\nL'enveloppe est recopiée en dessous : « To the Boss, Mercury Agency, London City » — au patron de [[mercury|l'agence Mercury]]."
+        },
+        {
+          "label": "La carte postale",
+          "text": "« Je ne blaguais pas, cher vieux Patron, quand je vous ai donné le tuyau. Vous entendrez parler demain du travail de Jacky l'Effronté : [[double-coup|double coup]], cette fois. […] Merci d'avoir gardé ma dernière lettre jusqu'à ce que je me remette au travail. Jack the Ripper. »\nLe cachet de la poste : « London E. — [[premier-oct|1er oct.]] 88 »."
+        }
+      ]
+    },
+    {
+      "id": "abonnes",
+      "kind": "document",
+      "label": "Le tableau noir",
+      "rect": {
+        "x": 1070,
+        "y": 106,
+        "w": 252,
+        "h": 170
+      },
+      "text": "À la craie : « SUBSCRIBERS » — les journaux abonnés aux dépêches de l'agence.\n« 1er septembre : 182. 1er octobre : 186. Vendredi 5 octobre : 213 ! »\nDepuis que la lettre est dans les journaux, l'agence a gagné vingt-sept [[abonnes|abonnés]]."
+    },
+    {
+      "id": "registre",
+      "kind": "document",
+      "label": "Le registre du courrier",
+      "rect": {
+        "x": 334,
+        "y": 398,
+        "w": 150,
+        "h": 44
+      },
+      "text": "Le gros registre où l'on note les lettres qui comptent.\n« Jeudi [[vingt-sept-sept|27 sept.]] — Lettre à l'encre rouge, « To the Boss ». Cachet de la poste : London E.C., 27 sept. Ouverte par T. B. »\n« Samedi [[vingt-neuf-sept|29 sept.]] — La même, envoyée à [[scotland-yard|Scotland Yard]] par le directeur. »\n« Lundi [[premier-oct|1er oct.]], courrier du soir — [[carte-postale|Carte postale]] à l'encre rouge, même écriture. Cachet : London E., 1er oct. »\n« Mercredi 3 oct. : 12 lettres signées Jack. Jeudi 4 oct. : 51 lettres signées Jack. »"
+    },
+    {
+      "id": "presse",
+      "kind": "object",
+      "label": "La presse à copier",
+      "rect": {
+        "x": 36,
+        "y": 504,
+        "w": 222,
+        "h": 214
+      },
+      "text": "Une lourde presse de fonte : chaque lettre qui part y laisse sa copie, sur le papier fin d'un gros cahier. Le copie-de-lettres du directeur est ouvert à la page du samedi.\n« [[vingt-neuf-sept|29 septembre]] 1888. Le directeur présente ses compliments à l'inspecteur principal [[wilkins|Arthur Wilkins]], de Scotland Yard, et lui envoie la lettre ci-jointe, qu'il avait d'abord prise pour une [[plaisanterie]]. — J. M. »"
+    },
+    {
+      "id": "sacs",
+      "kind": "object",
+      "label": "Les sacs de lettres",
+      "rect": {
+        "x": 290,
+        "y": 616,
+        "w": 360,
+        "h": 200
+      },
+      "text": "Trois sacs de la poste débordent de lettres, arrivées depuis l'affiche. Presque toutes sont signées « Jack ».\nUne, écrite au [[crayon]], vient de [[liverpool|Liverpool]]. Une autre jure que l'assassin est [[docteur|un docteur]]. Une autre encore réclame la récompense. Des [[farceurs]], pour la plupart."
+    },
+    {
+      "id": "moorland",
+      "kind": "person",
+      "label": "L'homme au cigare",
+      "rect": {
+        "x": 655,
+        "y": 236,
+        "w": 192,
+        "h": 582
+      },
+      "portrait": {
+        "x": 669,
+        "y": 222,
+        "w": 154,
+        "h": 205
+      },
+      "text": "Un gros homme à favoris gris, le cigare aux lèvres, brandit un journal.\n« Bienvenue à [[mercury|l'agence Mercury]], jeune homme ! Deux cents journaux reçoivent nos dépêches, de Londres à Glasgow. Cette lettre, c'est à nous que l'assassin l'a envoyée, et mon meilleur reporter, [[bellamy|Tom Bellamy]], l'a ouverte de ses mains. Aujourd'hui, tout Londres nous lit ! »",
+      "details": [
+        {
+          "label": "Le journal qu'il brandit",
+          "text": "[[morning-courier|The Morning Courier]], lundi [[premier-oct|1er octobre]] 1888, édition du matin.\n« UNE LETTRE DE L'ASSASSIN ? Après les deux crimes de la nuit de samedi à dimanche, l'agence Mercury nous communique une lettre reçue jeudi dernier, signée [[jack|Jack the Ripper]]. Nous la publions telle quelle. »"
+        }
+      ]
+    },
+    {
+      "id": "pique",
+      "kind": "document",
+      "label": "La pique à dépêches",
+      "rect": {
+        "x": 954,
+        "y": 430,
+        "w": 56,
+        "h": 110
+      },
+      "text": "Sur la pique de fer, les doubles des dépêches envoyées aux journaux. Celle du dessus date de dimanche.\n« Dimanche [[trente-sept|30 sept.]], 9 h. [[double-coup|DOUBLE COUP]] À WHITECHAPEL. Cette nuit, deux femmes ont été tuées : à King's Row, puis à Wallace Street. La police n'a aucune piste. — T. B. »"
+    },
+    {
+      "id": "bureau",
+      "kind": "object",
+      "label": "Les encriers",
+      "rect": {
+        "x": 1012,
+        "y": 470,
+        "w": 116,
+        "h": 74
+      },
+      "text": "Deux encriers sur le bureau du reporter : le noir est plein, l'encrier d'[[encre-rouge|encre rouge]] est presque vide. Les dépêches sont corrigées à l'encre rouge, à grands traits.\nAppuyé contre les encriers, un petit mot prêt à partir : « [[dear-boss|Dear Boss]] — dépêche de midi prête. Je file à Whitechapel. — Tom »"
+    },
+    {
+      "id": "bellamy",
+      "kind": "person",
+      "label": "Le reporter à la visière",
+      "rect": {
+        "x": 1130,
+        "y": 278,
+        "w": 205,
+        "h": 256
+      },
+      "portrait": {
+        "x": 1123,
+        "y": 272,
+        "w": 120,
+        "h": 160
+      },
+      "text": "Un jeune homme en bras de chemise, une visière verte sur le front, corrige une dépêche sans lever les yeux.\n« Pas maintenant, la dépêche de midi part dans dix minutes. La lettre ? Oui, c'est moi qui l'ai ouverte, jeudi. Une lettre de farceur, comme celles qui remplissent ces sacs. »"
+    },
+    {
+      "id": "agent",
+      "kind": "person",
+      "label": "Le policier au sac",
+      "rect": {
+        "x": 1391,
+        "y": 163,
+        "w": 155,
+        "h": 645
+      },
+      "portrait": {
+        "x": 1399,
+        "y": 156,
+        "w": 144,
+        "h": 192
+      },
+      "text": "Un grand policier attend près de la porte, un sac de lettres à la main.\n« Agent [[pike|Henry Pike]], de [[scotland-yard|Scotland Yard]]. L'inspecteur principal [[wilkins|Arthur Wilkins]] veut voir toutes les lettres signées Jack. Depuis l'affiche, il en arrive des sacs entiers : des [[farceurs]], presque tous. »",
+      "details": [
+        {
+          "label": "Le reçu de l'agent",
+          "text": "« Reçu de l'agence Mercury, ce vendredi 5 octobre : trois sacs de lettres signées Jack. La lettre à l'encre rouge est au Yard depuis le [[vingt-neuf-sept|29 septembre]], la carte postale depuis mardi. — H. P. »"
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "id": "qui",
+      "kind": "identities",
+      "title": "Qui est qui ?",
+      "people": [
+        {
+          "zone": "moorland",
+          "answer": "moorland"
+        },
+        {
+          "zone": "bellamy",
+          "answer": "bellamy"
+        },
+        {
+          "zone": "agent",
+          "answer": "pike"
+        }
+      ],
+      "hints": [
+        "Le policier dit son nom quand on lui parle.",
+        "Le nom du directeur est écrit en lettres d'or sur sa porte.",
+        "Le directeur parle de son meilleur reporter ; le reporter signe ses mots de son prénom."
+      ]
+    },
+    {
+      "id": "trajet",
+      "kind": "chronology",
+      "title": "Le trajet de la lettre",
+      "events": [
+        "La lettre « Dear Boss » arrive à l'agence Mercury.",
+        "M. Moorland envoie la lettre à Scotland Yard.",
+        "Deux femmes sont tuées à Whitechapel, la même nuit.",
+        "Tom Bellamy envoie aux journaux sa dépêche « Double coup ».",
+        "The Morning Courier publie la lettre.",
+        "La carte postale arrive à l'agence."
+      ],
+      "hints": [
+        "Le registre du courrier donne les jours où la lettre arrive et repart.",
+        "La dépêche sur la pique dit quand les deux femmes ont été tuées.",
+        "The Morning Courier paraît le matin ; la carte postale est arrivée avec le courrier du soir."
+      ]
+    },
+    {
+      "id": "auteur",
+      "kind": "sentences",
+      "title": "Qui a écrit la lettre ?",
+      "sentences": [
+        "Datée du {vingt-cinq-sept}, la lettre n'est postée que le {vingt-sept-sept}. Elle n'est pas adressée à la police, mais au patron de {mercury}.",
+        "Elle est écrite à l'{encre-rouge}, comme les corrections de {bellamy}, qui l'a ouverte.",
+        "« {dear-boss} » : c'est ainsi que Tom appelle son directeur, {moorland}.",
+        "La carte postale, postée le {premier-oct} après les journaux, reprend le « {double-coup} » de la dépêche de Tom.",
+        "Moorland avait pris la lettre pour une {plaisanterie} ; depuis qu'elle est publiée, l'agence a gagné des {abonnes}."
+      ],
+      "hints": [
+        "L'affiche de la police recopie la lettre, et même l'adresse de l'enveloppe.",
+        "Regardez les encriers, et le petit mot appuyé contre eux.",
+        "Comparez la carte postale et la dépêche sur la pique.",
+        "Lisez le copie-de-lettres sous la presse, puis le tableau noir."
+      ]
+    }
+  ]
+}
