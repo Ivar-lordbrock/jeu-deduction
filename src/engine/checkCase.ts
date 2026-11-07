@@ -1,5 +1,6 @@
 import { CATEGORY_ORDER, type CaseData } from '../types';
 import { wordIdsIn } from './markup';
+import { MAIN_SCENE, zoneSceneId } from './scenes';
 import { expectedSlots } from './validation';
 
 export interface CaseReport {
@@ -31,6 +32,7 @@ export function checkCase(c: CaseData): CaseReport {
   if (!scene || typeof scene.image !== 'string' || !(scene.width > 0) || !(scene.height > 0)) {
     err('« scene » doit contenir image, width et height');
   }
+  if (c.scenes !== undefined && !Array.isArray(c.scenes)) err('« scenes » doit être une liste');
   if (!c.words || typeof c.words !== 'object') err('« words » manquant');
   if (!Array.isArray(c.zones)) err('« zones » doit être une liste');
   if (!Array.isArray(c.pages) || c.pages.length === 0) err('« pages » doit contenir au moins une page');
@@ -61,6 +63,18 @@ export function checkCase(c: CaseData): CaseReport {
     obtainable.add(w);
   }
 
+  // Scènes en plus (pièces, moments) : chacune a un id, un titre et une image.
+  const sizes = new Map<string, { width: number; height: number }>([[MAIN_SCENE, scene]]);
+  for (const [i, sc] of (c.scenes ?? []).entries()) {
+    const where = `scène ${i + 2}${sc?.id ? ` « ${sc.id} »` : ''}`;
+    if (!sc?.id || typeof sc.id !== 'string') err(`${where} : id manquant`);
+    else if (sizes.has(sc.id)) err(`${where} : id en double`);
+    if (!sc?.title) err(`${where} : titre manquant`);
+    if (typeof sc?.image !== 'string' || !(sc.width > 0) || !(sc.height > 0)) err(`${where} : il faut image, width et height`);
+    else if (sc.id) sizes.set(sc.id, sc);
+  }
+  if (sizes.size > 1 && !scene.title) warn('la première scène n\'a pas de titre : son onglet dira « Première scène »');
+
   const zoneIds = new Set<string>();
   for (const z of c.zones) {
     const where = `zone « ${z.id} »`;
@@ -69,14 +83,20 @@ export function checkCase(c: CaseData): CaseReport {
     zoneIds.add(z.id);
     if (!ZONE_KINDS.includes(z.kind)) err(`${where} : kind « ${z.kind} » inconnu (${ZONE_KINDS.join(', ')})`);
     if (!z.label) err(`${where} : label manquant`);
+    const size = sizes.get(zoneSceneId(z));
+    if (!size) err(`${where} : la scène « ${z.scene} » n'existe pas`);
     const r = z.rect;
     if (!r || [r.x, r.y, r.w, r.h].some((v) => typeof v !== 'number')) {
       err(`${where} : rect doit contenir x, y, w, h`);
-    } else if (r.w <= 0 || r.h <= 0 || r.x < 0 || r.y < 0 || r.x + r.w > scene.width || r.y + r.h > scene.height) {
-      err(`${where} : rect sort de l'image (${scene.width}×${scene.height})`);
+    } else if (size && (r.w <= 0 || r.h <= 0 || r.x < 0 || r.y < 0 || r.x + r.w > size.width || r.y + r.h > size.height)) {
+      err(`${where} : rect sort de l'image (${size.width}×${size.height})`);
     }
     collectFrom(z.text, where);
     z.details?.forEach((d, i) => collectFrom(d.text, `${where}, détail ${i + 1}`));
+  }
+
+  for (const id of sizes.keys()) {
+    if (id !== MAIN_SCENE && !c.zones.some((z) => zoneSceneId(z) === id)) warn(`la scène « ${id} » n'a aucune zone`);
   }
 
   // Pages de réflexion.

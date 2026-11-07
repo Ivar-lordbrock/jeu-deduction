@@ -40,9 +40,11 @@ Tout tient sur un seul écran : le **carnet** à gauche, la **gazette** en haut,
 en dessous.
 
 1. **Observer** : cliquer les personnages, objets et documents de la scène. Leur fiche
-   s'ouvre par-dessus la scène ; les mots soulignés s'inscrivent dans le carnet.
+   s'ouvre par-dessus la scène ; les mots soulignés s'inscrivent dans le carnet. La molette
+   (ou + et −) zoome sur la scène, et on la fait glisser pour se déplacer.
 2. **Reconstituer** : chaque page de l'affaire est un article de la gazette (phrases à
-   trous, qui est qui, chronologie), à compléter avec les mots du carnet. On tire la barre
+   trous, qui est qui, chronologie), à compléter avec les mots du carnet. Les événements de
+   la chronologie se glissent à leur place (ou ▲ ▼). On tire la barre
    sous la gazette pour lui donner plus ou moins de place, ou on la replie.
 3. **Valider** : un article complet est jugé. Le jeu dit « Validé », « N erreurs ou moins »
    ou rien de plus : jamais où sont les erreurs.
@@ -91,7 +93,7 @@ jeu : rien à copier-coller, et le jeu ouvert dans un autre onglet se met à jou
 | **Personnages** | Fiches des témoins (rôle, apparence, mobile) et les affaires où ils apparaissent. |
 | **Chapitre** | Titre, résumé, ordre des affaires du chapitre. |
 | **Affaire › Récit** | Introduction, épilogue, et vos notes d'auteur (la vérité, les fausses pistes…). |
-| **Affaire › Scène** | L'image, et les zones à dessiner à la souris : témoins, objets, documents. |
+| **Affaire › Scène** | L'image, et les zones à dessiner à la souris : témoins, objets, documents. « + Ajouter une scène… » donne d'autres pièces ou d'autres moments, chacun avec ses zones. |
 | **Affaire › Mots** | La liste des mots à trouver : où on les trouve, où ils servent, fausses pistes. |
 | **Affaire › Réflexion** | Les pages à compléter : phrases à trous, qui est qui, chronologie, indices. |
 | **Affaire › Vérification** | Tout ce qui empêche l'affaire d'être jouable. |

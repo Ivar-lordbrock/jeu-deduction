@@ -2,6 +2,8 @@ import type { LoadedCase } from '../cases/registry';
 import { h } from '../dom';
 import { clearProgress, emptyProgress, isCaseSolved, loadFlags, loadProgress, saveProgress, setFlag } from '../engine/progress';
 import { currentOrder, evaluatePage, expectedSlots } from '../engine/validation';
+import { caseScenes, MAIN_SCENE, sceneById, zoneSceneId } from '../engine/scenes';
+import { FULL_VIEW, maxZoom, zoomAt, type SceneView } from '../engine/view';
 import type { Page } from '../types';
 import { icon } from './art';
 import { renderScene } from './explore';
@@ -61,6 +63,7 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
     data,
     progress: loadProgress(data),
     openZone: null,
+    sceneId: MAIN_SCENE,
     showZones: false,
     selectedSlot: null,
     armedWord: null,
@@ -68,11 +71,23 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
     justSolved: null,
     justHinted: null,
     gazetteFolded: pref.folded,
+    view: FULL_VIEW,
     showEpilogue: false,
   };
 
-  // L'image est créée une seule fois et réutilisée à chaque rendu (pas de rechargement).
-  const sceneImg = h('img', { class: 'scene-img', src: data.sceneUrl, alt: '', draggable: 'false' });
+  // Chaque image de scène est créée une seule fois et réutilisée à chaque rendu (pas de rechargement).
+  const sceneImgs = new Map(
+    caseScenes(data).map((sc) => [sc.id, h('img', { class: 'scene-img', src: data.sceneUrls[sc.id], alt: '', draggable: 'false' })]),
+  );
+  // Chaque scène garde son cadrage quand on passe à une autre.
+  const views = new Map<string, SceneView>();
+  function goToScene(id: string) {
+    if (id === s.sceneId) return;
+    views.set(s.sceneId, s.view);
+    s.sceneId = id;
+    s.view = views.get(id) ?? FULL_VIEW;
+    s.openZone = null;
+  }
 
   const pageById = (id: string): Page | undefined => data.pages.find((p) => p.id === id);
 
@@ -185,12 +200,20 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
       render();
     },
     openZone(zoneId) {
+      const target = data.zones.find((z) => z.id === zoneId);
+      if (target) goToScene(zoneSceneId(target));
       playSound(zoneSound(data.id, zoneId) ?? (data.zones.find((z) => z.id === zoneId)?.kind === 'document' ? 'paper' : 'paperSoft'));
       s.openZone = zoneId;
       if (!s.progress.seenZones.includes(zoneId)) {
         s.progress.seenZones.push(zoneId);
         save();
       }
+      render();
+    },
+    showScene(sceneId) {
+      if (sceneId === s.sceneId) return;
+      playSound('paper');
+      goToScene(sceneId);
       render();
     },
     closeZone() {
@@ -207,6 +230,10 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
       playSound('paper');
       s.gazetteFolded = !s.gazetteFolded;
       saveGazettePref(gazetteHeight, s.gazetteFolded);
+      render();
+    },
+    zoom(factor) {
+      s.view = factor === null ? FULL_VIEW : zoomAt(s.view, factor, 0.5, 0.5, maxZoom(sceneById(data, s.sceneId).width));
       render();
     },
     selectSlot(pageId, index) {
@@ -286,7 +313,8 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
       s.progress = emptyProgress(data);
       since = null;
       tick();
-      Object.assign(s, { openZone: null, selectedSlot: null, armedWord: null, showEpilogue: false });
+      Object.assign(s, { openZone: null, selectedSlot: null, armedWord: null, showEpilogue: false, view: FULL_VIEW, sceneId: MAIN_SCENE });
+      views.clear();
       render();
     },
     exit() {
@@ -306,7 +334,16 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
     next: opts.next,
   };
 
+  /** Touches de zoom : + et − rapprochent et éloignent, 0 montre toute la scène. */
+  const ZOOM_KEYS: Record<string, number | null> = { '+': 1.5, '=': 1.5, '-': 1 / 1.5, '0': null };
+
   function onKey(e: KeyboardEvent) {
+    if (e.key in ZOOM_KEYS && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      const el = e.target;
+      if ((el instanceof Element && el.closest('input, textarea, [contenteditable]')) || !s.progress.introSeen || s.showEpilogue || document.querySelector('.overlay')) return;
+      a.zoom(ZOOM_KEYS[e.key]);
+      return;
+    }
     if (e.key !== 'Escape') return;
     if (s.showEpilogue) a.closeEpilogue();
     else if (s.openZone) a.closeZone();
@@ -375,7 +412,7 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
           },
           renderGazette(s, a),
           splitter(),
-          renderScene(s, a, sceneImg),
+          renderScene(s, a, sceneImgs.get(s.sceneId) ?? (sceneImgs.get(MAIN_SCENE) as HTMLImageElement)),
         ),
       ),
       ...(overlay ? [overlay] : []),

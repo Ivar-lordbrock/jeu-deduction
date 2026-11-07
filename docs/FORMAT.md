@@ -73,7 +73,8 @@ sert d'exemple complet.
 | `title` | Titre affiché. |
 | `intro` | Texte d'ouverture. `\n` pour aller à la ligne. |
 | `epilogue` | Texte de conclusion, une fois toutes les pages validées. |
-| `scene` | `{ "image": "scene.svg", "width": 1600, "height": 900 }`, la taille en pixels de l'image. |
+| `scene` | `{ "image": "scene.svg", "width": 1600, "height": 900 }`, la taille en pixels de l'image. Avec plusieurs scènes, `"title"` nomme son onglet. |
+| `scenes` | *(facultatif)* Les autres scènes de l'affaire : voir [Plusieurs scènes](#plusieurs-scènes-scenes). |
 | `tolerance` | Seuil du message « N erreurs ou moins » (2 par défaut). |
 | `startingWords` | *(facultatif)* Mots déjà notés au départ. |
 | `words` | Le dictionnaire des mots collectables. |
@@ -125,7 +126,32 @@ Dans les textes des zones, un mot entre doubles crochets devient collectable :
 - `portrait` : *(facultatif)* rectangle de cadrage du portrait sur la page « Qui est qui ? ».
   Par défaut, le jeu cadre le haut de la zone.
 - `character` : *(facultatif)* pour un témoin, l'`id` du personnage dans `story.json`.
+- `scene` : *(facultatif)* l'`id` de la scène où se trouve la zone. Sans ce champ, la première scène.
 - `notes` : *(facultatif)* note d'auteur sur la zone, jamais affichée.
+
+## Plusieurs scènes (`scenes`)
+
+Une affaire peut montrer plusieurs scènes : d'autres pièces du même lieu, ou le même lieu à
+un autre moment. Le joueur passe de l'une à l'autre par des onglets au-dessus de l'image ;
+un point signale une scène où il n'a encore rien examiné. Le carnet et la gazette sont
+communs à toutes les scènes.
+
+```json
+"scene": { "image": "scene.svg", "width": 1600, "height": 900, "title": "La salle des dépêches" },
+"scenes": [
+  { "id": "bureau", "title": "Le bureau du directeur", "image": "bureau.png", "width": 1600, "height": 900 }
+]
+```
+
+- `scene` reste la première scène ; `title` y est facultatif (« Première scène » par défaut).
+- Chaque scène de `scenes` a un `id` unique, un `title` (le nom de son onglet) et son image.
+- Une zone dit sa scène avec `"scene": "bureau"`. Ses `rect` et `portrait` se mesurent sur
+  l'image de cette scène.
+- Le tutoriel ne guide que dans la première scène.
+
+Dans l'éditeur, l'onglet Scène montre une scène à la fois : « + Ajouter une scène… » importe
+une image, les onglets passent d'une scène à l'autre, et le champ « Scène » d'une zone la
+range ailleurs.
 
 ## Les pages de réflexion (`pages`)
 

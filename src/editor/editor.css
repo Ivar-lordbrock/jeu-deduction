@@ -349,6 +349,12 @@ select.input { padding-right: 28px; }
 .scene-tab { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 20px; align-items: start; }
 .scene-main { min-width: 0; position: sticky; top: 0; }
 .scene-toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.scene-pick { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.scene-pick-tabs { flex-wrap: wrap; }
+.scene-pick-count { font-size: 11px; font-weight: 600; padding: 0 6px; margin-left: 4px; border-radius: 999px; background: var(--line); color: var(--muted); }
+.scene-pick-meta { flex-basis: 100%; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.scene-pick-title { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 240px; max-width: 460px; }
+.scene-pick-title .input { flex: 1; }
 .sc-wrap { height: min(66vh, 760px); container-type: size; display: grid; place-items: center; background: var(--stage-bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px; }
 .sc-stage {
   position: relative;

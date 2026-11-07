@@ -1,6 +1,7 @@
 import { existsSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { checkCase } from '../src/engine/checkCase';
+import { caseScenes } from '../src/engine/scenes';
 import type { CaseData } from '../src/types';
 
 // Vérifie toutes les affaires de src/cases : lancer « npm test » après chaque modification.
@@ -19,8 +20,10 @@ describe('affaires', () => {
         expect(checkCase(data).errors).toEqual([]);
       });
 
-      it('a son image de scène', () => {
-        expect(existsSync(new URL(`../src/cases/${folder}/${data.scene.image}`, import.meta.url))).toBe(true);
+      it('a les images de ses scènes', () => {
+        for (const sc of caseScenes(data)) {
+          expect(existsSync(new URL(`../src/cases/${folder}/${sc.image}`, import.meta.url)), sc.image).toBe(true);
+        }
       });
     });
   }

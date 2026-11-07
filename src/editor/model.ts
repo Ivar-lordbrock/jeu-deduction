@@ -1,9 +1,10 @@
 /** Outils de l'éditeur sur les données d'une affaire (sans interface). */
 import { checkCase } from '../engine/checkCase';
 import { wordIdsIn } from '../engine/markup';
+import { caseScenes, MAIN_SCENE, sceneById, zoneSceneId } from '../engine/scenes';
 import { slugify, uniqueId } from '../engine/slug';
 import { expectedSlots } from '../engine/validation';
-import type { CaseData, Page, Rect, StoryData, WordCategory, Zone, ZoneKind } from '../types';
+import type { CaseData, ExtraScene, Page, Rect, StoryData, WordCategory, Zone, ZoneKind } from '../types';
 
 export const ZONE_KINDS: ZoneKind[] = ['person', 'object', 'document'];
 
@@ -110,11 +111,43 @@ export function wordStatus(u: WordUsage): WordStatus {
   return obtainable ? 'decoy' : 'unplaced';
 }
 
-export function newZone(c: CaseData, kind: ZoneKind, rect: Rect): Zone {
+export function newZone(c: CaseData, kind: ZoneKind, rect: Rect, sceneId: string = MAIN_SCENE): Zone {
   const id = uniqueId(slugify(ZONE_KIND_LABELS[kind].one), c.zones.map((z) => z.id));
   const zone: Zone = { id, kind, label: ZONE_KIND_LABELS[kind].fresh, rect, text: '' };
+  if (sceneId !== MAIN_SCENE) zone.scene = sceneId;
   c.zones.push(zone);
   return zone;
+}
+
+/** Nouvelle scène (pièce, moment) : son id sert aussi de nom à son image (scene-2.png…). */
+export function newSceneId(c: CaseData): string {
+  const ids = caseScenes(c).map((s) => s.id);
+  return uniqueId(slugify(`scene ${ids.length + 1}`), ids, 'scene');
+}
+
+export function addScene(c: CaseData, scene: ExtraScene) {
+  (c.scenes ??= []).push(scene);
+}
+
+/** Supprime une scène et ses zones (et leurs portraits de « Qui est qui ? »). */
+export function removeScene(c: CaseData, id: string) {
+  if (id === MAIN_SCENE) return;
+  for (const z of c.zones.filter((x) => zoneSceneId(x) === id)) removeZone(c, z.id);
+  c.scenes = (c.scenes ?? []).filter((s) => s.id !== id);
+  if (!c.scenes.length) delete c.scenes;
+}
+
+/** Range une zone dans une autre scène, en la gardant dans l'image. */
+export function moveZoneToScene(c: CaseData, zoneId: string, sceneId: string) {
+  const z = c.zones.find((x) => x.id === zoneId);
+  if (!z) return;
+  if (sceneId === MAIN_SCENE) delete z.scene;
+  else z.scene = sceneId;
+  delete z.portrait;
+  const { width, height } = sceneById(c, sceneId);
+  const w = Math.min(z.rect.w, width);
+  const h = Math.min(z.rect.h, height);
+  z.rect = { x: Math.min(z.rect.x, width - w), y: Math.min(z.rect.y, height - h), w, h };
 }
 
 export function removeZone(c: CaseData, id: string) {
@@ -135,8 +168,8 @@ export function newPage(c: CaseData, kind: Page['kind']): Page {
   return page;
 }
 
-/** Adapte les zones quand l'image change de taille. */
-export function scaleCase(c: CaseData, sx: number, sy: number) {
+/** Adapte les zones quand l'image change de taille (seulement celles d'une scène, si elle est donnée). */
+export function scaleCase(c: CaseData, sx: number, sy: number, sceneId?: string) {
   const scale = (r: Rect): Rect => ({
     x: Math.round(r.x * sx),
     y: Math.round(r.y * sy),
@@ -144,6 +177,7 @@ export function scaleCase(c: CaseData, sx: number, sy: number) {
     h: Math.round(r.h * sy),
   });
   for (const z of c.zones) {
+    if (sceneId !== undefined && zoneSceneId(z) !== sceneId) continue;
     z.rect = scale(z.rect);
     if (z.portrait) z.portrait = scale(z.portrait);
   }
@@ -206,7 +240,9 @@ export function caseIssues(c: CaseData, files: string[], story: StoryData): Issu
   }
   const errors = report.errors.map(strip);
   const warnings = report.warnings.map(strip);
-  if (c.scene?.image && !files.includes(c.scene.image)) errors.push(`L'image de scène « ${c.scene.image} » est introuvable.`);
+  for (const sc of c.scene ? caseScenes(c) : []) {
+    if (sc.image && !files.includes(sc.image)) errors.push(`L'image de la scène « ${sc.title} » (${sc.image}) est introuvable.`);
+  }
   if (!c.chapter) warnings.push('L\'affaire n\'est rangée dans aucun chapitre.');
   else if (!story.chapters.some((ch) => ch.id === c.chapter)) warnings.push('Le chapitre de cette affaire n\'existe plus.');
   for (const z of c.zones) {

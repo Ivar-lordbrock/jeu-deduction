@@ -1,5 +1,6 @@
 import { h } from '../dom';
 import { wordIdsIn } from '../engine/markup';
+import { MAIN_SCENE, sceneZones } from '../engine/scenes';
 import { DEFAULT_TOLERANCE, expectedSlots } from '../engine/validation';
 import type { Zone } from '../types';
 import type { Session } from './session';
@@ -67,7 +68,8 @@ export function tutorialZones(zones: Zone[], words: Record<string, unknown>): { 
 export function createGuide(root: HTMLElement, s: Session, hooks: GuideHooks): Guide {
   const data = s.data;
   const q = (sel: string) => root.querySelector(sel);
-  const { first, doc } = tutorialZones(data.zones, data.words);
+  // Le tutoriel guide dans la première scène (les zones des autres scènes ne sont pas affichées).
+  const { first, doc } = tutorialZones(sceneZones(data.zones, MAIN_SCENE), data.words);
   const zoneEl = (z: Zone) => q(`.zone[data-zone="${CSS.escape(z.id)}"]`);
   const panelOr = (z: Zone) => (s.openZone === z.id ? q('.zone-panel') : zoneEl(z));
   // La scène et la fiche ouverte par-dessus : l'anneau les entoure ensemble, sans couper la fiche.
@@ -189,7 +191,7 @@ export function createGuide(root: HTMLElement, s: Session, hooks: GuideHooks): G
     ...maybe(has('chronology'), {
       title: 'Dans quel ordre ?',
       text: 'Remettez les événements dans l\'ordre où ils se sont produits. Les dates et les heures des documents vous aideront.',
-      task: () => 'Déplacez un événement avec ▲ ou ▼.',
+      task: () => 'Glissez un événement à sa place (ou utilisez ▲ ▼).',
       done: (_, base) => JSON.stringify(s.progress.orders) !== base.orders,
       target: () => article('chronology'),
       enter: () => hooks.showGazette(),

@@ -1,9 +1,10 @@
-import { useRef, useState } from 'preact/hooks';
+import { useEffect, useRef, useState } from 'preact/hooks';
+import { caseScenes, MAIN_SCENE, sceneById, zoneSceneId, type SceneInfo } from '../../../engine/scenes';
 import type { Rect, Zone, ZoneKind } from '../../../types';
 import { Segmented, Select, TextArea, TextField } from '../../components/fields';
 import { RichField } from '../../components/RichField';
-import { newZone, removeZone, ZONE_KIND_LABELS, ZONE_KINDS } from '../../model';
-import { navigate, updateCase, uploadSceneImage, useEditor, type CaseEntry } from '../../store';
+import { moveZoneToScene, newZone, removeScene, removeZone, ZONE_KIND_LABELS, ZONE_KINDS } from '../../model';
+import { addSceneFromFile, navigate, updateCase, uploadSceneImage, useEditor, type CaseEntry } from '../../store';
 
 type Corner = 'nw' | 'ne' | 'sw' | 'se';
 interface Pt {
@@ -27,9 +28,21 @@ export function SceneTab({ entry, zoneId }: { entry: CaseEntry; zoneId: string |
   const [tool, setTool] = useState<ZoneKind>('person');
   const [showLabels, setShowLabels] = useState(true);
   const [uploading, setUploading] = useState(false);
+  const [chosen, setChosen] = useState(MAIN_SCENE);
   const fileRef = useRef<HTMLInputElement>(null);
   const zone = data.zones.find((z) => z.id === zoneId) ?? null;
   const select = (id: string | null) => navigate({ view: 'case', folder, tab: 'scene', zone: id }, true);
+  const scenes = caseScenes(data);
+  // La scène affichée : celle de la zone sélectionnée, sinon celle de l'onglet choisi.
+  const zoneScene = zone ? zoneSceneId(zone) : null;
+  const scene = sceneById(data, zoneScene ?? chosen);
+  useEffect(() => {
+    if (zoneScene !== null) setChosen(zoneScene);
+  }, [zoneScene]);
+  const pickScene = (id: string) => {
+    setChosen(id);
+    if (zoneScene !== null && zoneScene !== id) select(null);
+  };
 
   async function onFile(e: Event) {
     const input = e.currentTarget as HTMLInputElement;
@@ -38,7 +51,7 @@ export function SceneTab({ entry, zoneId }: { entry: CaseEntry; zoneId: string |
     if (!file) return;
     setUploading(true);
     try {
-      await uploadSceneImage(folder, file);
+      await uploadSceneImage(folder, file, scene.id);
     } catch (err) {
       alert(`Import impossible : ${(err as Error).message}`);
     } finally {
@@ -49,6 +62,7 @@ export function SceneTab({ entry, zoneId }: { entry: CaseEntry; zoneId: string |
   return (
     <div class="scene-tab">
       <div class="scene-main">
+        <ScenesBar entry={entry} scenes={scenes} current={scene} onPick={pickScene} />
         <div class="scene-toolbar">
           <span class="muted small">Tracer un</span>
           <Segmented value={tool} options={kindOptions} onChange={setTool} />
@@ -58,21 +72,21 @@ export function SceneTab({ entry, zoneId }: { entry: CaseEntry; zoneId: string |
           </label>
           <span class="spacer" />
           <span class="muted small">
-            {data.scene.image} · {data.scene.width}×{data.scene.height}
+            {scene.image} · {scene.width}×{scene.height}
           </span>
           <button class="btn" disabled={uploading} onClick={() => fileRef.current?.click()}>
             {uploading ? 'Import…' : 'Changer l\'image…'}
           </button>
           <input ref={fileRef} type="file" accept=".svg,.png,.jpg,.jpeg,.webp" hidden onChange={onFile} />
         </div>
-        <SceneCanvas entry={entry} selected={zoneId} onSelect={select} tool={tool} showLabels={showLabels} />
+        <SceneCanvas key={scene.id} entry={entry} scene={scene} selected={zoneId} onSelect={select} tool={tool} showLabels={showLabels} />
         <p class="field-hint">
           Tracez un rectangle sur l'image pour ajouter un {ZONE_KIND_LABELS[tool].one.toLowerCase()}. Cliquez une zone pour
           la modifier, faites-la glisser pour la déplacer, tirez un coin pour la redimensionner.
         </p>
       </div>
       <aside class="scene-side">
-        <ZoneList entry={entry} selected={zoneId} onSelect={select} />
+        <ZoneList entry={entry} scene={scene} selected={zoneId} onSelect={select} />
         {zone ? (
           <ZoneForm key={zone.id} entry={entry} zone={zone} onDeleted={() => select(null)} />
         ) : (
@@ -83,19 +97,112 @@ export function SceneTab({ entry, zoneId }: { entry: CaseEntry; zoneId: string |
   );
 }
 
+/**
+ * Les scènes de l'affaire : la première, puis d'autres pièces ou d'autres moments.
+ * Onglets pour passer de l'une à l'autre, nom de l'onglet, ajout et suppression.
+ */
+function ScenesBar(p: { entry: CaseEntry; scenes: SceneInfo[]; current: SceneInfo; onPick: (id: string) => void }) {
+  const { data, folder } = p.entry;
+  const [busy, setBusy] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const multi = p.scenes.length > 1;
+  const isMain = p.current.id === MAIN_SCENE;
+  const count = (id: string) => data.zones.filter((z) => zoneSceneId(z) === id).length;
+  const title = isMain ? (data.scene.title ?? '') : p.current.title;
+
+  async function onFile(e: Event) {
+    const input = e.currentTarget as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file) return;
+    setBusy(true);
+    try {
+      const id = await addSceneFromFile(folder, file);
+      if (id) p.onPick(id);
+    } catch (err) {
+      alert(`Import impossible : ${(err as Error).message}`);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function setTitle(v: string) {
+    updateCase(folder, (c) => {
+      if (isMain) {
+        if (v.trim()) c.scene.title = v;
+        else delete c.scene.title;
+      } else {
+        const sc = c.scenes?.find((x) => x.id === p.current.id);
+        if (sc) sc.title = v;
+      }
+    });
+  }
+
+  function remove() {
+    const n = count(p.current.id);
+    const zones = n === 0 ? '' : n === 1 ? '\nSa zone sera supprimée aussi.' : `\nSes ${n} zones seront supprimées aussi.`;
+    if (!confirm(`Supprimer la scène « ${p.current.title} » ?${zones}\nSon image reste dans le dossier de l'affaire.`)) return;
+    updateCase(folder, (c) => removeScene(c, p.current.id));
+    p.onPick(MAIN_SCENE);
+  }
+
+  return (
+    <div class="scene-pick">
+      {multi && (
+        <div class="segmented scene-pick-tabs">
+          {p.scenes.map((sc, i) => (
+            <button key={sc.id} class={sc.id === p.current.id ? 'active' : ''} onClick={() => p.onPick(sc.id)}>
+              {i + 1}. {sc.title || 'Sans nom'} <span class="scene-pick-count">{count(sc.id)}</span>
+            </button>
+          ))}
+        </div>
+      )}
+      <button
+        class="btn small"
+        disabled={busy}
+        title="Une autre pièce, ou le même lieu à un autre moment : le joueur passe de l'une à l'autre par des onglets."
+        onClick={() => fileRef.current?.click()}
+      >
+        {busy ? 'Import…' : '+ Ajouter une scène…'}
+      </button>
+      <input ref={fileRef} type="file" accept=".svg,.png,.jpg,.jpeg,.webp" hidden onChange={onFile} />
+      {multi && (
+        <div class="scene-pick-meta">
+          <label class="scene-pick-title">
+            <span class="muted small">Nom de l'onglet</span>
+            <input
+              class="input"
+              value={title}
+              placeholder={isMain ? 'Première scène' : 'Le bureau du directeur'}
+              onInput={(e) => setTitle(e.currentTarget.value)}
+            />
+          </label>
+          {!isMain && (
+            <button class="btn danger small" onClick={remove}>
+              Supprimer cette scène
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function SceneCanvas(p: {
   entry: CaseEntry;
+  scene: SceneInfo;
   selected: string | null;
   onSelect: (id: string | null) => void;
   tool: ZoneKind;
   showLabels: boolean;
 }) {
   const { data, folder } = p.entry;
-  const W = data.scene.width;
-  const H = data.scene.height;
+  const W = p.scene.width;
+  const H = p.scene.height;
   const stage = useRef<HTMLDivElement>(null);
   const [drag, setDrag] = useState<Drag | null>(null);
-  const hasImage = p.entry.files.includes(data.scene.image);
+  const hasImage = p.entry.files.includes(p.scene.image);
+  const zones = data.zones.filter((z) => zoneSceneId(z) === p.scene.id);
 
   const toScene = (e: PointerEvent): Pt => {
     const r = (stage.current as HTMLDivElement).getBoundingClientRect();
@@ -110,7 +217,7 @@ function SceneCanvas(p: {
     const target = e.target as HTMLElement;
     const zoneEl = target.closest<HTMLElement>('[data-zone]');
     const cornerEl = target.closest<HTMLElement>('[data-corner]');
-    const z = zoneEl ? data.zones.find((x) => x.id === zoneEl.dataset.zone) : undefined;
+    const z = zoneEl ? zones.find((x) => x.id === zoneEl.dataset.zone) : undefined;
     const start = toScene(e);
     (stage.current as HTMLDivElement).setPointerCapture(e.pointerId);
     e.preventDefault();
@@ -151,7 +258,7 @@ function SceneCanvas(p: {
       const r = drag.rect;
       if (r.w >= MIN_SIZE && r.h >= MIN_SIZE) {
         let id = '';
-        updateCase(folder, (c) => (id = newZone(c, p.tool, r).id));
+        updateCase(folder, (c) => (id = newZone(c, p.tool, r, p.scene.id).id));
         p.onSelect(id);
       } else p.onSelect(null);
     }
@@ -170,11 +277,11 @@ function SceneCanvas(p: {
         onPointerCancel={onUp}
       >
         {hasImage ? (
-          <img class="sc-img" src={`/src/cases/${folder}/${data.scene.image}?rev=${p.entry.imageRev}`} alt="" draggable={false} />
+          <img class="sc-img" src={`/src/cases/${folder}/${p.scene.image}?rev=${p.entry.imageRev}`} alt="" draggable={false} />
         ) : (
-          <div class="sc-missing">Image introuvable : {data.scene.image}</div>
+          <div class="sc-missing">Image introuvable : {p.scene.image}</div>
         )}
-        {data.zones.map((z) => {
+        {zones.map((z) => {
           const sel = z.id === p.selected;
           return (
             <div
@@ -212,23 +319,24 @@ function resize(o: Rect, corner: Corner, dx: number, dy: number, W: number, H: n
   return { x: x1, y: y1, w: x2 - x1, h: y2 - y1 };
 }
 
-function ZoneList(p: { entry: CaseEntry; selected: string | null; onSelect: (id: string) => void }) {
+function ZoneList(p: { entry: CaseEntry; scene: SceneInfo; selected: string | null; onSelect: (id: string) => void }) {
   const { data, folder } = p.entry;
+  const sceneZones = data.zones.filter((z) => zoneSceneId(z) === p.scene.id);
 
   function add(kind: ZoneKind) {
-    const W = data.scene.width;
-    const H = data.scene.height;
+    const W = p.scene.width;
+    const H = p.scene.height;
     const w = Math.round(W * 0.12);
     const h = Math.round(kind === 'person' ? H * 0.45 : H * 0.12);
     let id = '';
-    updateCase(folder, (c) => (id = newZone(c, kind, { x: Math.round((W - w) / 2), y: Math.round((H - h) / 2), w, h }).id));
+    updateCase(folder, (c) => (id = newZone(c, kind, { x: Math.round((W - w) / 2), y: Math.round((H - h) / 2), w, h }, p.scene.id).id));
     p.onSelect(id);
   }
 
   return (
     <div class="zone-list">
       {ZONE_KINDS.map((kind) => {
-        const zones = data.zones.filter((z) => z.kind === kind);
+        const zones = sceneZones.filter((z) => z.kind === kind);
         return (
           <div class="zone-group" key={kind}>
             <div class="zone-group-head">
@@ -268,6 +376,8 @@ function ZoneForm({ entry, zone, onDeleted }: { entry: CaseEntry; zone: Zone; on
   const character = s.story.characters.find((c) => c.id === zone.character);
   const isPerson = zone.kind === 'person';
   const usedInIdentities = data.pages.some((pg) => pg.kind === 'identities' && pg.people.some((x) => x.zone === zone.id));
+  const scenes = caseScenes(data);
+  const scene = sceneById(data, zoneSceneId(zone));
 
   function remove() {
     const extra = usedInIdentities ? '\nElle sera aussi retirée de la page « Qui est qui ? ».' : '';
@@ -281,10 +391,10 @@ function ZoneForm({ entry, zone, onDeleted }: { entry: CaseEntry; zone: Zone; on
     if (!Number.isFinite(n)) return;
     upd((z) => {
       const r = { ...z.rect, [k]: n };
-      r.w = clamp(r.w, MIN_SIZE, data.scene.width);
-      r.h = clamp(r.h, MIN_SIZE, data.scene.height);
-      r.x = clamp(r.x, 0, data.scene.width - r.w);
-      r.y = clamp(r.y, 0, data.scene.height - r.h);
+      r.w = clamp(r.w, MIN_SIZE, scene.width);
+      r.h = clamp(r.h, MIN_SIZE, scene.height);
+      r.x = clamp(r.x, 0, scene.width - r.w);
+      r.y = clamp(r.y, 0, scene.height - r.h);
       z.rect = r;
     });
   };
@@ -316,6 +426,15 @@ function ZoneForm({ entry, zone, onDeleted }: { entry: CaseEntry; zone: Zone; on
           })
         }
       />
+      {scenes.length > 1 && (
+        <Select
+          label="Scène"
+          value={scene.id}
+          options={scenes.map((sc, i) => ({ value: sc.id, label: `${i + 1}. ${sc.title}` }))}
+          onChange={(v) => updateCase(folder, (c) => moveZoneToScene(c, zone.id, v))}
+          hint="La pièce (ou le moment) où se trouve cette zone. Elle garde sa place, à recaler sur la nouvelle image."
+        />
+      )}
       {isPerson && (
         <Select
           label="Personnage de l'histoire"

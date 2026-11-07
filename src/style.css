@@ -679,6 +679,27 @@ h1, h2, h3 { font-family: var(--serif); font-weight: normal; margin: 0; }
 .chrono-pos { width: 22px; height: 22px; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--ink); color: var(--paper); font-size: 12px; font-weight: 700; }
 .chrono-text { flex: 1; font-family: var(--serif); font-size: 15px; line-height: 1.3; }
 .chrono-move { display: flex; }
+/* Glisser-déposer : on saisit l'événement (au doigt, par sa poignée), les autres s'écartent. */
+.chronology.sortable li { cursor: grab; user-select: none; -webkit-user-select: none; }
+.chronology.sortable li .icon-btn { cursor: pointer; }
+.chrono-grip {
+  width: 10px;
+  height: 20px;
+  flex: none;
+  margin-right: -2px;
+  background: radial-gradient(circle, rgb(42 33 27 / 0.45) 1.3px, transparent 1.7px) 0 1px / 5px 6px;
+  touch-action: none;
+}
+.chronology.reordering li { transition: transform 0.15s ease; }
+.chronology.reordering li.dragging {
+  position: relative;
+  z-index: 2;
+  transition: none;
+  cursor: grabbing;
+  background: var(--paper);
+  border-color: rgb(176 121 28 / 0.7);
+  box-shadow: 0 6px 18px rgb(42 33 27 / 0.35);
+}
 .gazette .icon-btn { width: 28px; height: 28px; font-size: 13px; color: #6b5d4c; }
 .gazette .icon-btn:hover:not(:disabled) { background: rgb(42 33 27 / 0.1); color: var(--ink); }
 .gz-article.solved .chronology li { border-color: rgb(47 107 42 / 0.45); }
@@ -695,10 +716,11 @@ h1, h2, h3 { font-family: var(--serif); font-weight: normal; margin: 0; }
 .case-main.folded .gz-splitter { cursor: pointer; }
 
 /* ---------- Scène ---------- */
-.scene-area { position: relative; min-height: 0; display: flex; }
+.scene-area { position: relative; min-height: 0; display: flex; flex-direction: column; }
 .scene-wrap {
   flex: 1;
   min-width: 0;
+  min-height: 0;
   container-type: size;
   display: grid;
   place-items: center;
@@ -712,12 +734,18 @@ h1, h2, h3 { font-family: var(--serif); font-weight: normal; margin: 0; }
   overflow: hidden;
   box-shadow: 0 10px 40px rgb(0 0 0 / 0.5);
 }
+/* Cadre de la scène (--k : zoom). Le calque porte l'image et les zones, et c'est lui qui bouge. */
+.scene { touch-action: none; }
+.scene.zoomed { cursor: grab; }
+.scene.panning, .scene.panning .zone { cursor: grabbing; }
+.scene-layer { position: absolute; inset: 0; transform-origin: 0 0; }
 .scene-img { display: block; width: 100%; height: 100%; user-select: none; -webkit-user-drag: none; }
 .zone {
   position: absolute;
   padding: 0;
-  border: 2px solid transparent;
-  border-radius: 8px;
+  /* Bordure et étiquette gardent leur taille à l'écran quand on zoome. */
+  border: calc(2px / var(--k, 1)) solid transparent;
+  border-radius: calc(8px / var(--k, 1));
   background: transparent;
   cursor: zoom-in;
   transition: border-color 0.15s, background-color 0.15s;
@@ -734,8 +762,9 @@ h1, h2, h3 { font-family: var(--serif); font-weight: normal; margin: 0; }
 .zone-label {
   position: absolute;
   left: 50%;
-  bottom: calc(100% + 6px);
-  transform: translateX(-50%);
+  bottom: calc(100% + 6px / var(--k, 1));
+  transform: translateX(-50%) scale(calc(1 / var(--k, 1)));
+  transform-origin: 50% 100%;
   white-space: nowrap;
   background: rgb(0 0 0 / 0.8);
   color: var(--text);
@@ -748,6 +777,80 @@ h1, h2, h3 { font-family: var(--serif); font-weight: normal; margin: 0; }
 }
 .zone:hover .zone-label,
 .zone:focus-visible .zone-label { opacity: 1; }
+
+/* Onglets des scènes (pièces, moments), quand l'affaire en a plusieurs */
+.scene-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; padding: 0 14px 8px; }
+.scene-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  position: relative;
+  padding: 4px 13px 4px 5px;
+  border: 1px solid rgb(255 228 170 / 0.18);
+  border-radius: 999px;
+  background: rgb(8 14 13 / 0.55);
+  color: var(--muted);
+  font: 600 13.5px/1.2 var(--sans);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background-color 0.15s;
+}
+.scene-tab:hover { color: var(--text); border-color: rgb(255 228 170 / 0.4); }
+.scene-tab.current { color: var(--text); border-color: var(--accent); background: rgb(212 169 79 / 0.14); cursor: default; }
+.scene-tab-num {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgb(255 228 170 / 0.12);
+  font-size: 11.5px;
+}
+.scene-tab.current .scene-tab-num { background: var(--accent); color: #1a1208; }
+.scene-tab.untouched:not(.current)::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  right: 3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px rgb(212 169 79 / 0.8);
+}
+
+/* Boutons de zoom, en bas au milieu de la scène (la fiche s'ouvre sur un côté) */
+.scene-zoom {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  background: rgb(8 14 13 / 0.72);
+  border: 1px solid rgb(255 228 170 / 0.18);
+  box-shadow: 0 4px 14px rgb(0 0 0 / 0.4);
+  opacity: 0.55;
+  transition: opacity 0.15s;
+}
+.scene:hover .scene-zoom, .scene.zoomed .scene-zoom, .scene-zoom:focus-within { opacity: 1; }
+.scene-zoom button {
+  min-width: 30px;
+  height: 30px;
+  padding: 0 8px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  font: 600 16px/1 var(--sans);
+  cursor: pointer;
+}
+.scene-zoom .zoom-level { min-width: 46px; font-size: 13px; font-variant-numeric: tabular-nums; }
+.scene-zoom button:hover:not(:disabled) { background: rgb(255 228 170 / 0.14); }
+.scene-zoom button:disabled { opacity: 0.4; cursor: default; }
 
 /* Fiche de la zone ouverte, posée sur la scène du côté opposé à la zone */
 .zone-panel {

@@ -55,7 +55,7 @@ export function openRules(opts: RulesOptions = {}): void {
         rule(
           '1',
           'Observer',
-          'Chaque affaire est une scène figée. Cliquez ce qui s\'éclaire au survol : personnages, objets, documents. « Montrer les zones » entoure tout ce qui peut être examiné.',
+          'Chaque affaire est une scène figée. Cliquez ce qui s\'éclaire au survol : personnages, objets, documents. « Montrer les zones » entoure tout ce qui peut être examiné. Molette (ou + et −) pour zoomer, glisser pour se déplacer.',
         ),
         rule(
           '2',
@@ -65,7 +65,7 @@ export function openRules(opts: RulesOptions = {}): void {
         rule(
           '3',
           'Reconstituer',
-          'Dans la gazette, au-dessus de la scène : cliquez une case puis un mot du carnet, ou glissez le mot dans la case. Clic droit pour vider une case. ▲ ▼ pour remettre les événements dans l\'ordre.',
+          'Dans la gazette, au-dessus de la scène : cliquez une case puis un mot du carnet, ou glissez le mot dans la case. Clic droit pour vider une case. Glissez les événements (ou ▲ ▼) pour les remettre dans l\'ordre.',
         ),
         rule(
           '4',

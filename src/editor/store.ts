@@ -3,10 +3,11 @@
  * la navigation, et la sauvegarde automatique vers le disque.
  */
 import { useLayoutEffect, useState } from 'preact/hooks';
+import { MAIN_SCENE, sceneById, zoneSceneId } from '../engine/scenes';
 import { slugify, uniqueId } from '../engine/slug';
 import type { CaseData, StoryData } from '../types';
 import * as api from './api';
-import { imageSize, scaleCase } from './model';
+import { addScene, imageSize, newSceneId, scaleCase } from './model';
 
 export type CaseTab = 'recit' | 'scene' | 'mots' | 'reflexion' | 'verif';
 export const CASE_TABS: CaseTab[] = ['recit', 'scene', 'mots', 'reflexion', 'verif'];
@@ -302,32 +303,57 @@ export function setCaseChapter(folder: string, chapterId: string) {
 
 const IMAGE_EXT = /\.(svg|png|jpe?g|webp)$/i;
 
-/** Importe une nouvelle image de scène dans le dossier de l'affaire. */
-export async function uploadSceneImage(folder: string, file: File) {
-  const entry = getCase(folder);
-  if (!entry) return;
+function imageExt(file: File): string {
   const match = file.name.match(IMAGE_EXT);
   if (!match) throw new Error('Format non pris en charge : utilisez svg, png, jpg ou webp.');
-  const ext = match[1].toLowerCase().replace('jpeg', 'jpg');
-  const name = `scene.${ext}`;
-  const size = await imageSize(file);
-  await api.uploadFile(folder, name, file);
+  return match[1].toLowerCase().replace('jpeg', 'jpg');
+}
+
+async function sendImage(entry: CaseEntry, name: string, file: File) {
+  await api.uploadFile(entry.folder, name, file);
   if (!entry.files.includes(name)) entry.files.push(name);
   entry.imageRev++;
+}
 
-  const old = entry.data.scene;
+/**
+ * Importe une nouvelle image pour une scène de l'affaire : scene.png pour la première,
+ * <id de la scène>.png pour les autres.
+ */
+export async function uploadSceneImage(folder: string, file: File, sceneId: string = MAIN_SCENE) {
+  const entry = getCase(folder);
+  if (!entry) return;
+  const name = `${sceneId === MAIN_SCENE ? 'scene' : sceneId}.${imageExt(file)}`;
+  const size = await imageSize(file);
+  await sendImage(entry, name, file);
+
+  const old = sceneById(entry.data, sceneId);
   const resized = size.width !== old.width || size.height !== old.height;
   const rescale =
     resized &&
-    entry.data.zones.length > 0 &&
+    entry.data.zones.some((z) => zoneSceneId(z) === sceneId) &&
     confirm(
       `La nouvelle image fait ${size.width}×${size.height} au lieu de ${old.width}×${old.height}.\n` +
         'Adapter la position des zones à la nouvelle taille ?',
     );
   updateCase(folder, (c) => {
-    if (rescale) scaleCase(c, size.width / old.width, size.height / old.height);
-    c.scene = { image: name, width: size.width, height: size.height };
+    if (rescale) scaleCase(c, size.width / old.width, size.height / old.height, sceneId);
+    const target = sceneId === MAIN_SCENE ? c.scene : c.scenes?.find((sc) => sc.id === sceneId);
+    if (target) Object.assign(target, { image: name, width: size.width, height: size.height });
   });
+}
+
+/** Ajoute une scène (une autre pièce, un autre moment) à partir d'une image. Renvoie son id. */
+export async function addSceneFromFile(folder: string, file: File): Promise<string | null> {
+  const entry = getCase(folder);
+  if (!entry) return null;
+  const ext = imageExt(file);
+  const id = newSceneId(entry.data);
+  const size = await imageSize(file);
+  const name = `${id}.${ext}`;
+  await sendImage(entry, name, file);
+  const n = (entry.data.scenes?.length ?? 0) + 2;
+  updateCase(folder, (c) => addScene(c, { id, title: `Scène ${n}`, image: name, width: size.width, height: size.height }));
+  return id;
 }
 
 // ---------- Chapitres et personnages ----------

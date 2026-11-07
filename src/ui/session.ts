@@ -1,5 +1,6 @@
 import type { LoadedCase } from '../cases/registry';
 import type { CaseProgress } from '../engine/progress';
+import type { SceneView } from '../engine/view';
 
 /**
  * État d'une affaire en cours : la progression sauvegardée + l'état de l'interface.
@@ -10,6 +11,8 @@ export interface Session {
   data: LoadedCase;
   progress: CaseProgress;
   openZone: string | null;
+  /** Scène affichée, quand l'affaire en a plusieurs (pièces, moments). '' pour la première. */
+  sceneId: string;
   showZones: boolean;
   /** Case sélectionnée, en attente d'un mot. */
   selectedSlot: { page: string; index: number } | null;
@@ -23,15 +26,21 @@ export interface Session {
   justHinted: string | null;
   /** Gazette repliée : seul son bandeau reste visible, la scène prend la place. */
   gazetteFolded: boolean;
+  /** Cadrage de la scène (zoom, déplacement). La molette et le glisser le changent sans redessiner l'écran. */
+  view: SceneView;
   showEpilogue: boolean;
 }
 
 export interface Actions {
   collect(wordId: string): void;
   openZone(zoneId: string): void;
+  /** Passe à une autre scène de l'affaire (onglets au-dessus de la scène). */
+  showScene(sceneId: string): void;
   closeZone(): void;
   toggleZones(): void;
   toggleGazette(): void;
+  /** Zoom par les boutons ou le clavier : facteur (>1 rapproche), ou null pour revoir toute la scène. */
+  zoom(factor: number | null): void;
   selectSlot(pageId: string, index: number): void;
   pickWord(wordId: string): void;
   dropWord(pageId: string, index: number, wordId: string): void;

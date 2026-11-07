@@ -4,6 +4,7 @@ import { GAME_TITLE, SEQUENTIAL_CASES, story } from './config';
 import { h } from './dom';
 import { campaignStatus, nextCase } from './engine/campaign';
 import { checkCase } from './engine/checkCase';
+import { caseScenes } from './engine/scenes';
 import { clearAllProgress, loadFlags, loadProgress, setFlag } from './engine/progress';
 import { openCase } from './ui/caseScreen';
 import { introSeen, openIntro } from './ui/intro';
@@ -36,7 +37,9 @@ if (import.meta.env.DEV) {
     const report = checkCase(c);
     report.warnings.forEach((w) => console.warn(w));
     problems.push(...report.errors);
-    if (!c.sceneUrl) problems.push(`[${c.id}] image de scène « ${c.scene?.image} » introuvable dans le dossier ${c.folder}`);
+    for (const sc of c.scene ? caseScenes(c) : []) {
+      if (!c.sceneUrls[sc.id]) problems.push(`[${c.id}] image de scène « ${sc.image} » introuvable dans le dossier ${c.folder}`);
+    }
   }
   if (problems.length) {
     problems.forEach((p) => console.error(p));

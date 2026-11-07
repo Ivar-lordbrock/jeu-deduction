@@ -51,6 +51,8 @@ export interface Zone {
   portrait?: Rect;
   /** Personnage de l'histoire représenté par ce témoin (id dans story.json). */
   character?: string;
+  /** Scène où se trouve la zone (id d'une scène de « scenes ») ; sans ce champ, la première scène. */
+  scene?: string;
   /** Note de l'auteur, invisible en jeu (ce que cette zone prouve…). */
   notes?: string;
 }
@@ -82,6 +84,27 @@ export interface ChronologyPage extends PageBase {
 
 export type Page = SentencesPage | IdentitiesPage | ChronologyPage;
 
+/** Image d'une scène, en pixels. */
+export interface SceneImage {
+  image: string;
+  width: number;
+  height: number;
+}
+
+/** Première scène de l'affaire (champ « scene »). */
+export interface MainScene extends SceneImage {
+  /** Nom de la scène sur son onglet, quand l'affaire en a plusieurs (« La salle des dépêches »). */
+  title?: string;
+}
+
+/** Scène de plus : une autre pièce, ou le même lieu à un autre moment. */
+export interface ExtraScene extends SceneImage {
+  /** Identifiant, repris par le champ « scene » des zones qui s'y trouvent. */
+  id: string;
+  /** Nom sur son onglet (« Le bureau du directeur », « Le lendemain matin »). */
+  title: string;
+}
+
 /** Notes d'écriture d'une affaire, invisibles en jeu. */
 export interface CaseNotes {
   /** L'instant figé que montre la scène. */
@@ -112,7 +135,9 @@ export interface CaseData {
   intro: string;
   /** Texte de conclusion, affiché quand toutes les pages sont validées. */
   epilogue: string;
-  scene: { image: string; width: number; height: number };
+  scene: MainScene;
+  /** Autres scènes de l'affaire (pièces, moments), après la première. Facultatif. */
+  scenes?: ExtraScene[];
   /** Nombre d'erreurs sous lequel le jeu dit « N erreurs ou moins ». 2 par défaut. */
   tolerance?: number;
   /** Mots déjà dans la banque au début de l'affaire. */

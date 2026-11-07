@@ -1,5 +1,6 @@
 import { h } from '../dom';
 import { parseSentence } from '../engine/markup';
+import { zoneScene } from '../engine/scenes';
 import { currentOrder, DEFAULT_TOLERANCE, evaluatePage, type Evaluation } from '../engine/validation';
 import type { ChronologyPage, IdentitiesPage, Page, Rect, SentencesPage, Zone } from '../types';
 import { icon } from './art';
@@ -166,7 +167,8 @@ export function portraitRect(zone: Zone): Rect {
 function portrait(zone: Zone, s: Session): HTMLElement {
   const W = PORTRAIT_W;
   const H = PORTRAIT_H;
-  const { width, height } = s.data.scene;
+  const scene = zoneScene(s.data, zone);
+  const { width, height } = scene;
   const r = portraitRect(zone);
   const scale = Math.min(W / r.w, H / r.h);
   const x = r.x * scale - (W - r.w * scale) / 2;
@@ -178,7 +180,7 @@ function portrait(zone: Zone, s: Session): HTMLElement {
     style: {
       width: `${W}px`,
       height: `${H}px`,
-      backgroundImage: `url("${s.data.sceneUrl}")`,
+      backgroundImage: `url("${s.data.sceneUrls[scene.id] ?? s.data.sceneUrl}")`,
       backgroundSize: `${width * scale}px ${height * scale}px`,
       backgroundPosition: `${-x}px ${-y}px`,
     },
@@ -203,40 +205,135 @@ function renderIdentities(page: IdentitiesPage, s: Session, a: Actions, locked: 
 
 function renderChronology(page: ChronologyPage, s: Session, a: Actions, locked: boolean): HTMLElement {
   const order = currentOrder(page, s.progress);
-  return h(
-    'ol',
-    { class: 'chronology' },
-    order.map((eventIndex, pos) =>
-      h(
-        'li',
-        {},
-        h('span', { class: 'chrono-pos' }, String(pos + 1)),
-        h('span', { class: 'chrono-text' }, page.events[eventIndex]),
-        locked
-          ? null
-          : h(
-              'span',
-              { class: 'chrono-move' },
-              h(
-                'button',
-                { class: 'icon-btn', 'aria-label': 'Monter', title: 'Monter', disabled: pos === 0, onClick: () => a.moveEvent(page.id, pos, pos - 1) },
-                '▲',
-              ),
-              h(
-                'button',
-                {
-                  class: 'icon-btn',
-                  'aria-label': 'Descendre',
-                  title: 'Descendre',
-                  disabled: pos === order.length - 1,
-                  onClick: () => a.moveEvent(page.id, pos, pos + 1),
-                },
-                '▼',
-              ),
+  const list = h('ol', { class: `chronology${locked ? '' : ' sortable'}` });
+  order.forEach((eventIndex, pos) => {
+    const li = h(
+      'li',
+      { title: locked ? undefined : 'Glissez pour déplacer' },
+      locked ? null : h('span', { class: 'chrono-grip', 'aria-hidden': 'true' }),
+      h('span', { class: 'chrono-pos' }, String(pos + 1)),
+      h('span', { class: 'chrono-text' }, page.events[eventIndex]),
+      locked
+        ? null
+        : h(
+            'span',
+            { class: 'chrono-move' },
+            h(
+              'button',
+              { class: 'icon-btn', 'aria-label': 'Monter', title: 'Monter', disabled: pos === 0, onClick: () => a.moveEvent(page.id, pos, pos - 1) },
+              '▲',
             ),
-      ),
-    ),
-  );
+            h(
+              'button',
+              {
+                class: 'icon-btn',
+                'aria-label': 'Descendre',
+                title: 'Descendre',
+                disabled: pos === order.length - 1,
+                onClick: () => a.moveEvent(page.id, pos, pos + 1),
+              },
+              '▼',
+            ),
+          ),
+    );
+    if (!locked) li.addEventListener('pointerdown', (e) => dragEvent(e, list, li, pos, (to) => a.moveEvent(page.id, pos, to)));
+    list.append(li);
+  });
+  return list;
+}
+
+/** Près du bord de l'article (px), la liste défile toute seule pendant qu'on glisse. */
+const AUTO_SCROLL_EDGE = 32;
+
+/**
+ * Glisser un événement de la chronologie : il suit le pointeur, les autres s'écartent
+ * pour lui faire place, et il prend sa nouvelle place quand on le lâche.
+ * À la souris, on le saisit n'importe où ; au doigt, par sa poignée (le reste fait défiler).
+ */
+function dragEvent(e: PointerEvent, list: HTMLElement, li: HTMLElement, from: number, drop: (to: number) => void) {
+  const target = e.target as Element;
+  if (e.button !== 0 || target.closest('button')) return;
+  if (e.pointerType !== 'mouse' && !target.closest('.chrono-grip')) return;
+  e.preventDefault();
+
+  const items = [...list.children] as HTMLElement[];
+  const rects = items.map((el) => el.getBoundingClientRect());
+  const mids = rects.map((r) => r.top + r.height / 2);
+  const gap = items.length > 1 ? rects[1].top - rects[0].bottom : 0;
+  const room = rects[from].height + gap;
+  const scroller = list.closest<HTMLElement>('.gz-body');
+  const startY = e.clientY;
+  const startScroll = scroller?.scrollTop ?? 0;
+  let pointerY = startY;
+  let to = from;
+  let active = false;
+  let frame = 0;
+
+  const layout = () => {
+    // décalage dans la liste, défilement de l'article compris
+    const dy = pointerY - startY + (scroller?.scrollTop ?? 0) - startScroll;
+    const center = mids[from] + dy;
+    li.style.transform = `translateY(${dy}px)`;
+    to = from;
+    items.forEach((el, i) => {
+      let shift = 0;
+      if (i < from && center < mids[i]) {
+        shift = room;
+        to--;
+      } else if (i > from && center > mids[i]) {
+        shift = -room;
+        to++;
+      }
+      if (i !== from) el.style.transform = shift ? `translateY(${shift}px)` : '';
+    });
+  };
+
+  const autoScroll = () => {
+    frame = 0;
+    if (!active || !scroller) return;
+    const r = scroller.getBoundingClientRect();
+    const speed =
+      pointerY < r.top + AUTO_SCROLL_EDGE
+        ? -Math.ceil((r.top + AUTO_SCROLL_EDGE - pointerY) / 3)
+        : pointerY > r.bottom - AUTO_SCROLL_EDGE
+          ? Math.ceil((pointerY - r.bottom + AUTO_SCROLL_EDGE) / 3)
+          : 0;
+    if (!speed) return;
+    const before = scroller.scrollTop;
+    scroller.scrollTop += speed;
+    if (scroller.scrollTop !== before) layout();
+    frame = requestAnimationFrame(autoScroll);
+  };
+
+  const move = (ev: PointerEvent) => {
+    pointerY = ev.clientY;
+    if (!active) {
+      if (Math.abs(pointerY - startY) < 4) return;
+      active = true;
+      li.classList.add('dragging');
+      list.classList.add('reordering');
+    }
+    layout();
+    if (!frame) frame = requestAnimationFrame(autoScroll);
+  };
+
+  const end = (ev: PointerEvent) => {
+    li.removeEventListener('pointermove', move);
+    li.removeEventListener('pointerup', end);
+    li.removeEventListener('pointercancel', end);
+    cancelAnimationFrame(frame);
+    const wasActive = active;
+    active = false;
+    if (wasActive && ev.type === 'pointerup' && to !== from) return drop(to);
+    list.classList.remove('reordering');
+    li.classList.remove('dragging');
+    items.forEach((el) => (el.style.transform = ''));
+  };
+
+  li.setPointerCapture(e.pointerId);
+  li.addEventListener('pointermove', move);
+  li.addEventListener('pointerup', end);
+  li.addEventListener('pointercancel', end);
 }
 
 function renderVerdict(ev: Evaluation, tolerance: number, page: Page): HTMLElement {
