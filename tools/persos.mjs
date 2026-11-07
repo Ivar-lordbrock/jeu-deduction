@@ -416,6 +416,15 @@ const OBJETS = {
     D.accent('M -6 -10 L 40 -10 L 40 20 L -6 20 Z', f, PAPIER);
     D.trait('M 0 -2 L 30 -2 M 0 5 L 34 5 M 0 12 L 22 12', f, '#8d8468', 1.2);
   },
+  registre(D, sq, c, o) {
+    // gros livre de comptes, serré contre la poitrine : toile verte, étiquette de papier
+    const b = o.bras === 'F' ? sq.bF : sq.bN;
+    const f = repere(prise(b, c), o.rot ?? 0, o.taille ?? 1);
+    D.forme('M -10 -58 L 34 -58 L 34 12 L -10 12 Z', f);
+    D.accent('M -7 -55 L 31 -55 L 31 9 L -7 9 Z', f, o.couleur ?? '#2f4c3e');
+    D.accent('M 4 -42 L 24 -42 L 24 -30 L 4 -30 Z', f, PAPIER, ' opacity="0.9"');
+    D.trait('M -4 -55 L -4 9', f, '#1a2a22', 2.4);
+  },
 };
 
 function objets(D, sq, c, pose) {
@@ -1229,7 +1238,235 @@ const reporter = {
   },
 };
 
-const PERSOS = [commissaire, agent, journaliste, joueur, temoin, docteur, detective, marchand, directeur, reporter];
+// ——— affaire 5 : le colis de Mile End ———
+
+const ROSETTE = '#a8322a';
+
+const president = {
+  id: 'president',
+  nom: 'Le président du comité',
+  portrait: 'entrepreneur de bâtiment, président du comité de vigilance : carrure lourde, cheveux drus, grosse moustache tombante et favoris, veston court sur gilet, rosette rouge du comité',
+  c: { ...HOMME, cuisse: 134, tibia: 130, rCuisse: 27, rGenou: 17.5, rCheville: 11.5, rBras: 16, rCoude: 13.5, rPoignet: 10, epaule: [-2, -170], cou: [10, -198], main: 1.04, tete: 1.12 },
+  dessiner(D, sq, pose, c) {
+    const T = sq.T;
+    jambes(D, sq, c);
+    D.forme(
+      'M -12 -196 C -28 -192 -40 -180 -42 -162 C -46 -136 -44 -108 -40 -86 C -38 -68 -40 -48 -42 -28 C -44 -8 -38 10 -20 16 L 22 18 C 40 10 48 -12 48 -38 C 48 -62 44 -84 44 -104 C 46 -130 42 -160 30 -178 C 26 -186 20 -192 16 -196 Z',
+      T,
+    );
+    // veston court : il s'arrête sous les hanches
+    manteau(D, sq, c, { dos: [[-44, -80], [-46, -10]], ventre: [[46, -10], [46, -80]], long: 0.3, ample: 8 });
+    D.pli('M 22 -176 C 30 -140 40 -100 44 -40', T, 2);
+    for (const y of [-120, -96, -72]) {
+      const p = T(40, y);
+      D.accents.push(`<circle cx="${num(p.x)}" cy="${num(p.y)}" r="2.4" fill="${PLI}"/>`);
+    }
+    brasEtMains(D, sq, c);
+    D.trait('M -6 -192 C 2 -197 12 -197 20 -191', T, CHEMISE, 3);
+    // la rosette du comité de vigilance, au revers
+    const r = T(26, -158);
+    D.accents.push(`<circle cx="${num(r.x)}" cy="${num(r.y)}" r="5.5" fill="${ROSETTE}"/><circle cx="${num(r.x)}" cy="${num(r.y)}" r="2" fill="#e8d9b0" opacity="0.8"/>`);
+    D.accent('M 24 -154 L 21 -140 L 25 -143 L 28 -139 L 28 -154 Z', T, ROSETTE);
+    const f = tete(D, sq, pose, c, [
+      VISAGE(2),
+      // cheveux drus, coiffés en arrière
+      'M -33 -40 C -39 -30 -37 -18 -31 -10 C -28 -18 -27 -26 -27 -34 C -23 -48 -6 -57 15 -57 C 27 -57 35 -53 38 -49 C 37 -68 22 -80 2 -80 C -17 -80 -29 -67 -33 -40 Z',
+      // favoris
+      'M 2 -36 C 4 -26 6 -16 9 -8 L 18 -8 C 16 -18 15 -28 15 -36 Z',
+      // grosse moustache tombante, qui déborde du profil
+      'M 19 -15 C 28 -22 44 -21 51 -12 C 54 -6 52 2 47 1 C 43 -3 37 -5 30 -3 C 24 -3 18 -8 19 -15 Z',
+    ]);
+    D.pli('M -27 -42 C -12 -50 10 -52 30 -50', f, 1.5);
+    objets(D, sq, c, pose);
+  },
+  poses: {
+    montre: {
+      nom: 'montre la fenêtre du doigt, l’autre poing serré',
+      lean: 2, tete: -4,
+      jN: { h: 10, k: 2 }, jF: { h: -7, k: 0 },
+      bN: { a: 98, e: 6, main: 'doigt' }, bF: { a: -8, e: 26, main: 'poing' },
+    },
+    debout: {
+      nom: 'debout, les mains dans le dos',
+      lean: 0, tete: 2,
+      jN: { h: 6, k: 0 }, jF: { h: -5, k: 0 },
+      bN: { a: -22, e: 96, main: 'cachee', ra: 0.4 }, bF: { a: -18, e: 90, main: 'cachee', ra: 0.4 },
+    },
+  },
+};
+
+const tresorier = {
+  id: 'tresorier',
+  nom: 'Le trésorier du comité',
+  portrait: 'trésorier du comité : grand et maigre, haut-de-forme, nez busqué, courts favoris, long pardessus, le livre de comptes vert serré contre lui',
+  c: { ...HOMME, cuisse: 144, tibia: 140, bras: 106, avant: 90, rCuisse: 21, rGenou: 14.5, rCheville: 10, rBras: 12.5, rCoude: 10.5, rPoignet: 8, epaule: [-2, -172], cou: [6, -202], tete: 1.06 },
+  dessiner(D, sq, pose, c) {
+    jambes(D, sq, c);
+    D.forme(
+      'M -9 -198 C -20 -194 -30 -184 -32 -168 C -35 -142 -34 -114 -31 -90 C -29 -72 -31 -50 -33 -30 C -35 -10 -30 8 -17 16 L 15 18 C 26 10 30 -12 30 -38 C 30 -62 29 -84 31 -106 C 34 -132 33 -162 24 -180 C 21 -188 18 -194 14 -196 Z',
+      sq.T,
+    );
+    manteau(D, sq, c, { dos: [[-34, -96], [-37, -20]], ventre: [[32, -20], [31, -96]], long: 1.26, ample: 13, fente: 0.5 });
+    D.forme('M -12 -204 C -22 -200 -28 -190 -30 -178 L -8 -182 Z', sq.T);
+    D.pli('M 28 -176 C 24 -140 26 -104 29 -60', sq.T, 1.6);
+    brasEtMains(D, sq, c);
+    D.trait('M -5 -198 C 2 -202 11 -202 18 -196', sq.T, CHEMISE, 2.6);
+    const f = tete(D, sq, pose, c, [
+      VISAGE(6),
+      // courts favoris
+      'M 2 -32 C 4 -24 6 -16 8 -10 L 15 -10 C 13 -18 13 -26 13 -32 Z',
+      // haut-de-forme : la calotte, un peu évasée, puis le bord
+      'M -25 -62 L -22 -124 C -22 -129 28 -129 28 -124 L 31 -62 Z',
+      'M -40 -60 C -36 -66 -18 -64 2 -64 C 22 -64 40 -66 46 -60 C 46 -56 40 -56 34 -57 C 16 -58 -16 -58 -34 -56 C -38 -55 -41 -57 -40 -60 Z',
+    ]);
+    D.pli('M -24 -74 C -4 -77 16 -77 30 -74', f, 3);
+    objets(D, sq, c, pose);
+  },
+  poses: {
+    registre: {
+      nom: 'serre le livre de comptes contre sa poitrine',
+      lean: 0, tete: 6,
+      jN: { h: 5, k: 0 }, jF: { h: -5, k: 0 },
+      bN: { a: 18, e: 118, main: 'poing' }, bF: { a: 4, e: 16, main: 'ouverte' },
+      objets: [{ type: 'registre', bras: 'N', rot: -4 }],
+    },
+  },
+};
+
+const LUNETTES = '#a3b4b1';
+
+const secretaire = {
+  id: 'secretaire',
+  nom: 'Le secrétaire du comité',
+  portrait: 'secrétaire du comité : jeune, mince, lunettes rondes cerclées d’argent, cheveux séparés par une raie au milieu, veston court, le registre des séances ouvert',
+  c: { ...HOMME, cuisse: 132, tibia: 128, bras: 100, avant: 84, rCuisse: 21, rGenou: 14.5, rCheville: 10, rBras: 12.5, rCoude: 10.5, rPoignet: 8, epaule: [-2, -164], cou: [6, -192], main: 0.95, pied: 0.96, tete: 1.05 },
+  dessiner(D, sq, pose, c) {
+    const T = sq.T;
+    jambes(D, sq, c);
+    D.forme(
+      'M -9 -188 C -20 -184 -30 -174 -32 -158 C -35 -134 -34 -106 -31 -84 C -29 -68 -31 -48 -32 -28 C -34 -8 -29 8 -17 14 L 15 16 C 26 8 30 -12 30 -36 C 30 -58 29 -80 31 -100 C 34 -126 33 -154 24 -172 C 21 -180 18 -184 14 -186 Z',
+      T,
+    );
+    manteau(D, sq, c, { dos: [[-33, -80], [-35, -10]], ventre: [[31, -10], [31, -80]], long: 0.28, ample: 6 });
+    D.pli('M 18 -168 C 24 -130 28 -90 30 -30', T, 1.6);
+    brasEtMains(D, sq, c);
+    D.trait('M -6 -186 C 2 -190 12 -190 20 -184', T, CHEMISE, 3);
+    // nœud papillon
+    D.accent('M 12 -184 L 22 -188 L 22 -178 Z M 12 -184 L 4 -188 L 4 -178 Z', T, '#2a3a4a');
+    const f = tete(D, sq, pose, c, [
+      VISAGE(1),
+      // cheveux plaqués, raie au milieu
+      'M -31 -42 C -37 -32 -35 -20 -29 -12 C -26 -20 -25 -28 -25 -36 C -20 -48 -4 -54 14 -54 C 26 -54 33 -50 36 -46 C 35 -62 22 -74 2 -74 C -16 -74 -27 -62 -31 -42 Z',
+    ]);
+    D.pli('M 2 -74 C 0 -66 -2 -60 -4 -54', f, 1.4);
+    // lunettes rondes : un verre de profil et la branche jusqu'à l'oreille
+    const verre = f(35, -36);
+    D.accents.push(`<circle cx="${num(verre.x)}" cy="${num(verre.y)}" r="6.4" fill="#bfe0d8" fill-opacity="0.22" stroke="${LUNETTES}" stroke-width="1.6"/>`);
+    D.trait('M 29 -37 L -4 -40', f, LUNETTES, 1.3, ' opacity="0.85"');
+    objets(D, sq, c, pose);
+  },
+  poses: {
+    note: {
+      nom: 'écrit le procès-verbal de la séance',
+      lean: 4, tete: 16,
+      jN: { h: 5, k: 0 }, jF: { h: -5, k: 0 },
+      bN: { a: 26, e: 98, main: 'poing' }, bF: { a: 18, e: 108, main: 'poing' },
+      objets: [{ type: 'carnet', bras: 'N', rot: -10 }, { type: 'crayon', bras: 'F', rot: 40 }],
+    },
+  },
+};
+
+const conservateur = {
+  id: 'conservateur',
+  nom: 'Le conservateur du musée',
+  portrait: 'jeune médecin, conservateur du musée de pathologie : mince, cheveux sombres coiffés en arrière, fine moustache, redingote noire, plastron et manchettes blancs, une loupe',
+  c: { ...HOMME, cuisse: 138, tibia: 134, bras: 104, avant: 88, rCuisse: 22, rGenou: 15, rCheville: 10.5, rBras: 13, rCoude: 11, rPoignet: 8.5, tete: 1.07 },
+  dessiner(D, sq, pose, c) {
+    const T = sq.T;
+    jambes(D, sq, c);
+    D.forme(
+      'M -10 -194 C -22 -190 -32 -180 -34 -164 C -38 -138 -37 -110 -33 -86 C -31 -70 -33 -50 -35 -30 C -37 -10 -32 8 -18 16 L 16 18 C 28 10 32 -12 32 -38 C 32 -62 30 -82 32 -104 C 36 -130 36 -160 26 -178 C 23 -184 20 -188 16 -192 Z',
+      T,
+    );
+    // redingote : les pans tombent jusqu'aux genoux
+    manteau(D, sq, c, { dos: [[-36, -70], [-38, 10]], ventre: [[30, 0], [26, -60]], long: 0.98, ample: 9, fente: 0.4, basque: [-42, 18] });
+    // le plastron blanc, entre les revers
+    D.accent('M 14 -186 C 20 -170 24 -150 26 -128 L 32 -130 C 32 -150 30 -170 24 -186 Z', T, CHEMISE, ' opacity="0.8"');
+    D.pli('M 12 -184 C 18 -150 22 -110 26 -60', T, 2);
+    brasEtMains(D, sq, c);
+    // manchettes blanches
+    for (const b of [sq.bF, sq.bN]) {
+      if (b.main === 'cachee') continue;
+      const u = unit(sub(b.poignet, b.coude));
+      const n = v(-u.y, u.x);
+      const m = sub(b.poignet, mul(u, 4));
+      D.trait(`M${pt(add(m, mul(n, c.rPoignet + 1)))} L${pt(sub(m, mul(n, c.rPoignet + 1)))}`, null, CHEMISE, 4, ` opacity="${b === sq.bN ? 0.85 : 0.5}"`);
+    }
+    D.trait('M -6 -190 C 2 -194 12 -194 20 -188', T, CHEMISE, 3);
+    const f = tete(D, sq, pose, c, [
+      VISAGE(2),
+      // cheveux sombres coiffés en arrière
+      'M -32 -44 C -38 -34 -36 -20 -30 -12 C -27 -20 -26 -28 -26 -36 C -20 -50 -4 -58 18 -58 C 28 -58 34 -54 36 -50 C 34 -66 20 -78 0 -78 C -18 -78 -30 -64 -32 -44 Z',
+      // fine moustache
+      'M 34 -13 C 40 -16 47 -14 48 -9 C 44 -10 40 -9 36 -8 Z',
+    ]);
+    D.pli('M -26 -46 C -10 -54 10 -56 30 -54', f, 1.4);
+    objets(D, sq, c, pose);
+  },
+  poses: {
+    loupe: {
+      nom: 'penché sur la table, examine à la loupe',
+      lean: 26, tete: 22,
+      jN: { h: 8, k: 0 }, jF: { h: -6, k: 0 },
+      bN: { a: 62, e: 28, main: 'poing' }, bF: { a: 40, e: 30, main: 'ouverte' },
+      objets: [{ type: 'loupe', bras: 'N', rot: -46 }],
+    },
+    debout: {
+      nom: 'debout, une main dans la poche',
+      lean: 2, tete: 6,
+      jN: { h: 6, k: 0 }, jF: { h: -4, k: 0 },
+      bN: { a: 20, e: 60, main: 'ouverte' }, bF: { a: 4, e: 24, main: 'poche' },
+    },
+  },
+};
+
+const barbu = {
+  id: 'barbu',
+  nom: 'L’homme barbu',
+  portrait: 'inconnu : chapeau mou à larges bords, épaisse barbe, long pardessus, les mains dans les poches ; il guette',
+  c: { ...HOMME, cuisse: 140, tibia: 136, rCuisse: 24, rGenou: 16, tete: 1.1 },
+  dessiner(D, sq, pose, c) {
+    jambes(D, sq, c, BOTTINE);
+    D.forme(
+      'M -10 -196 C -24 -192 -34 -182 -36 -166 C -40 -140 -39 -112 -35 -88 C -33 -72 -35 -52 -37 -32 C -39 -12 -34 6 -20 14 L 18 16 C 30 8 34 -14 34 -40 C 34 -64 32 -84 34 -106 C 38 -132 38 -162 28 -180 C 24 -186 21 -190 16 -194 Z',
+      sq.T,
+    );
+    manteau(D, sq, c, { dos: [[-38, -96], [-41, -20]], ventre: [[36, -20], [35, -96]], long: 1.32, ample: 15, fente: 0.4 });
+    // col relevé
+    D.forme('M -14 -204 C -26 -200 -32 -188 -34 -174 L -8 -180 Z M 18 -200 C 26 -196 30 -186 30 -176 L 14 -182 Z', sq.T);
+    brasEtMains(D, sq, c);
+    const f = tete(D, sq, pose, c, [
+      VISAGE(3),
+      // barbe épaisse, de l'oreille au menton
+      'M 0 -32 C 2 -14 4 2 10 14 C 18 28 34 32 46 24 C 52 18 50 6 46 0 C 44 -6 42 -10 40 -12 C 34 -8 24 -8 18 -12 C 14 -18 14 -26 12 -32 Z',
+      // chapeau mou à larges bords, rabattu sur les yeux
+      'M -30 -50 C -32 -66 -24 -84 2 -86 C 26 -86 34 -70 32 -52 Z',
+      'M -50 -46 C -42 -54 -16 -55 4 -55 C 26 -55 48 -54 58 -44 C 60 -40 54 -38 46 -40 C 26 -45 -14 -45 -40 -39 C -48 -37 -54 -41 -50 -46 Z',
+    ]);
+    D.pli('M -30 -58 C -8 -61 14 -61 32 -58', f, 2);
+    objets(D, sq, c, pose);
+  },
+  poses: {
+    guette: {
+      nom: 'guette, les mains dans les poches, la tête levée',
+      lean: 3, tete: -10,
+      jN: { h: 4, k: 0 }, jF: { h: -4, k: 0 },
+      bN: { a: -4, e: 14, main: 'poche' }, bF: { a: -8, e: 16, main: 'poche' },
+    },
+  },
+};
+
+const PERSOS = [commissaire, agent, journaliste, joueur, temoin, docteur, detective, marchand, directeur, reporter, president, tresorier, secretaire, conservateur, barbu];
 
 // ——— sortie ———
 

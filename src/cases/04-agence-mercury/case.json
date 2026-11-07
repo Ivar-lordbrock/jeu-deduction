@@ -3,13 +3,13 @@
   "order": 1,
   "chapter": "chapitre-2",
   "title": "Cher Patron",
-  "intro": "Londres, vendredi 5 octobre 1888, à midi.\nÀ l'agence Mercury, près de Fleet Street, les nouvelles partent chaque jour vers deux cents journaux. Mais depuis trois jours, ce sont les lettres qui arrivent : la police a collé partout la copie d'une lettre à l'encre rouge, signée « Jack the Ripper », et tout Londres écrit à l'assassin… ou se prend pour lui.\n\nLa toute première lettre est arrivée ici, adressée au patron. Et si elle n'avait pas été écrite par l'assassin, mais par quelqu'un du métier ?",
+  "intro": "Londres, vendredi 5 octobre 1888, à midi.\nHier, à King's Row, Tim Bradford recopiait l'affiche de la police : une lettre à l'encre rouge, signée « Jack the Ripper », adressée au patron de l'agence Mercury. Le reporter du Comet vous a déjà doublé une fois, le 30 septembre. Pas deux.\nVous voici près de Fleet Street, dans la salle d'où les nouvelles partent chaque jour vers deux cents journaux… et Tim est déjà là.\n\nDepuis l'affiche, tout Londres écrit à l'assassin, ou se prend pour lui. Et si la toute première lettre n'avait pas été écrite par l'assassin, mais par quelqu'un du métier ?",
   "epilogue": "La lettre « Dear Boss » n'était pas adressée à la police, mais au patron de l'agence Mercury. Écrite à l'encre rouge, comme les corrections de Tom Bellamy, elle a attendu deux jours avant de partir pour Scotland Yard, « comme une plaisanterie ». La carte postale du « double coup », elle, a été postée quand tous les journaux avaient déjà raconté les deux crimes.\n\nRien ne fut jamais prouvé. Vingt-cinq ans plus tard, un ancien chef de Scotland Yard écrira que, pour tout le Yard, la lettre venait de Tom Bellamy, et que son patron, John Moorland, en avait sans doute eu l'idée. L'assassin ne fut jamais retrouvé. Mais le nom inventé dans une salle de rédaction, lui, est resté : Jack the Ripper.",
   "notes": {
-    "moment": "Vendredi 5 octobre 1888, à midi, dans la salle de rédaction de l'agence Mercury, New Bridge Street, près de Fleet Street. Le directeur John Moorland brandit The Morning Courier devant la porte de son bureau ; le reporter Tom Bellamy corrige une dépêche, penché sur son bureau ; l'agent Henry Pike, de Scotland Yard, vient chercher les sacs de lettres signées Jack.",
+    "moment": "Vendredi 5 octobre 1888, à midi, dans la salle de rédaction de l'agence Mercury, New Bridge Street, près de Fleet Street. Le directeur John Moorland brandit The Morning Courier devant la porte de son bureau ; le reporter Tom Bellamy corrige une dépêche, penché sur son bureau ; l'agent Henry Pike, de Scotland Yard, vient chercher les sacs de lettres signées Jack ; Tim Bradford, du Comet, lit le registre du courrier par-dessus le comptoir.",
     "truth": "Faits réels, noms changés (voir story.json) : la lettre « Dear Boss », datée du 25 septembre 1888 et postée le 27 (cachet London E.C.), est adressée « The Boss, Central News Office, London City » (ici l'agence Mercury). La Central News la garde deux jours ; le samedi 29, son directeur John Moore (John Moorland) l'envoie à l'inspecteur principal Adolphus Williamson (Arthur Wilkins), avec un mot : il l'avait « traitée comme une plaisanterie ». Après le double meurtre de la nuit du 29 au 30 (ici à King's Row et à Wallace Street), la lettre paraît le 1er octobre dans le Daily News (The Morning Courier). Le même jour, la Central News reçoit la carte postale « Saucy Jacky », cachet London E., 1er octobre, qui annonce un « double event » pour le lendemain. Le 3 octobre, la police affiche les fac-similés des deux textes ; des centaines d'imitations suivent. En 1913, l'inspecteur principal John Littlechild écrira que Scotland Yard attribuait la lettre à Tom Bulling (Tom Bellamy), journaliste de la Central News, et que son chef Moore en était sans doute l'inventeur. Rien n'a jamais été prouvé.",
     "falseLeads": "Distracteurs : Jack the Ripper, un docteur (le P.-S. de la lettre et les sacs), les farceurs, Liverpool et le crayon (les imitations), Arthur Wilkins et Henry Pike (la police), Scotland Yard, The Morning Courier, 29 et 30 septembre, 3 octobre.",
-    "other": "Brouillon écrit par Claude : à relire et à réécrire librement. Arrangés pour le jeu : l'encre rouge sur le bureau de Tom, son mot « Dear Boss », sa dépêche « double coup » du dimanche, le registre du courrier, le tableau des abonnés et la visite de l'agent Pike. La lettre et la carte sont traduites et coupées (les passages violents sont retirés). Scène : tools/scene-agence.mjs (npm run scene:agence). Bruits des zones : sound.ts (ZONE_SOUNDS) ; position sur la carte : menu.ts (MAP_PINS)."
+    "other": "Brouillon écrit par Claude : à relire et à réécrire librement. Arrangés pour le jeu : l'encre rouge sur le bureau de Tom, son mot « Dear Boss », sa dépêche « double coup » du dimanche, le registre du courrier, le tableau des abonnés et la visite de l'agent Pike. La lettre et la carte sont traduites et coupées (les passages violents sont retirés). Scène : tools/scene-agence.mjs (npm run scene:agence). Bruits des zones : sound.ts (ZONE_SOUNDS) ; position sur la carte : menu.ts (MAP_PINS). Tim Bradford (affaire 1) ajouté pour relier le chapitre 1 au chapitre 2 : il suit l'affiche depuis King's Row (fin de l'affaire 3) jusqu'à l'agence ; il écrit au crayon, jamais à l'encre rouge."
   },
   "scene": {
     "image": "scene.svg",
@@ -115,9 +115,42 @@
     "trois-oct": {
       "label": "3 octobre",
       "category": "other"
+    },
+    "bradford": {
+      "label": "Tim Bradford",
+      "category": "person"
+    },
+    "comet": {
+      "label": "The Comet",
+      "category": "other"
     }
   },
   "zones": [
+    {
+      "id": "tim",
+      "kind": "person",
+      "label": "Homme au manteau à carreaux",
+      "character": "tim",
+      "rect": {
+        "x": 155,
+        "y": 243,
+        "w": 279,
+        "h": 458
+      },
+      "portrait": {
+        "x": 223,
+        "y": 240,
+        "w": 98,
+        "h": 131
+      },
+      "text": "Un homme en manteau à carreaux, un crayon derrière l'oreille, s'est penché par-dessus le comptoir pour lire le registre du courrier. Il se redresse en vous voyant, sans se presser.\n« Tiens, le petit de Leman Street ! Toujours un train de retard. Moi, [[comet|The Comet]] m'envoie acheter la lettre, mais Moorland ne la lâche pour rien au monde : depuis qu'elle est dans les journaux, c'est sa poule aux œufs d'or. Si l'assassin écrit encore à la presse, je veux être le premier à lire sa lettre. »",
+      "details": [
+        {
+          "label": "Sa carte",
+          "text": "Une carte de visite cornée : « [[bradford|Tim Bradford]] — reporter, The Comet ».\nAu dos, au [[crayon]], d'une écriture pressée : « Mercury, vendredi midi. Qui a ouvert la lettre ? Voir le registre. »"
+        }
+      ]
+    },
     {
       "id": "porte",
       "kind": "object",
@@ -308,12 +341,17 @@
         {
           "zone": "agent",
           "answer": "pike"
+        },
+        {
+          "zone": "tim",
+          "answer": "bradford"
         }
       ],
       "hints": [
         "Le policier dit son nom quand on lui parle.",
         "Le nom du directeur est écrit en lettres d'or sur sa porte.",
-        "Le directeur parle de son meilleur reporter ; le reporter signe ses mots de son prénom."
+        "Le directeur parle de son meilleur reporter ; le reporter signe ses mots de son prénom.",
+        "L'homme au manteau à carreaux, vous l'avez déjà croisé au poste de Leman Street ; sa carte de visite le confirme."
       ]
     },
     {

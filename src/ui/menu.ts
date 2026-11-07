@@ -31,6 +31,8 @@ export const MAP_PINS: Record<string, { x: number; y: number; place: string }> =
   fruiterie: { x: 602, y: 1037, place: "King's Row, la boutique du marchand de fruits" },
   // hors du plan : l'agence est à l'ouest, près de Fleet Street ; l'épingle est au bord, sur la route d'Aldgate
   'agence-mercury': { x: 36, y: 958, place: 'Agence Mercury, New Bridge Street, près de Fleet Street' },
+  // Alderney Road est au nord de Mile End Road, un peu à l'est du bord du plan : l'épingle est au bord, sur Mile End Road
+  'colis-mile-end': { x: 1560, y: 330, place: 'Chez Joseph Larkin, Alderney Road, Mile End' },
 };
 
 /** Les couleurs de Booth, de la misère à l'aisance. */

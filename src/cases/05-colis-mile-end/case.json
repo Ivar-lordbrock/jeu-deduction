@@ -1,0 +1,579 @@
+{
+  "id": "colis-mile-end",
+  "order": 2,
+  "chapter": "chapitre-2",
+  "title": "De l'enfer",
+  "intro": "Mile End, jeudi 18 octobre 1888, sept heures du soir.\nDans un salon d'Alderney Road, le comité de vigilance de Whitechapel s'est réuni à huis clos. Le feu est allumé, mais personne n'a ôté son manteau. Une odeur d'alcool et de chose morte flotte dans la pièce.\n\nSur le guéridon, un petit carton ouvert, arrivé mardi soir par la poste. Avec lui, une lettre qui dit venir de l'enfer. Qui l'a envoyée, et que contient vraiment ce carton ? Cette fois, personne ne vous donnera son nom : à vous de le trouver.",
+  "epilogue": "Le docteur Oldfield n'a jamais dit plus que ceci : un rein humain, un rein gauche, conservé dans l'esprit-de-vin. « Une femme », « quarante-cinq ans », « une buveuse de gin » : The Comet l'avait inventé, et tous les journaux l'ont répété.\n\nDes années plus tard, un commissaire de la police de la City écrira que le rein était bien celui de Margaret Jenkins. La plupart des policiers, eux, penchaient pour la farce d'un journaliste, ou d'un étudiant en médecine qui avait accès aux bocaux de l'hôpital. Personne n'a jamais su. La lettre « From hell » est la seule que beaucoup croient encore écrite par l'assassin. Son auteur ne fut jamais retrouvé.",
+  "notes": {
+    "moment": "Deux scènes. Le salon : jeudi 18 octobre 1888, 19 h, chez Joseph Larkin, Alderney Road, Mile End. Le président Larkin montre par la fenêtre l'homme barbu qui guette sous le réverbère ; le secrétaire William Harker écrit le compte rendu ; le trésorier Joseph Adler, son livre de comptes sous le bras, attend devant la porte du vestibule. Le musée : vendredi 19 octobre, 21 h, musée d'anatomie pathologique du London Hospital. Le docteur Thomas Oldfield examine le rein à la loupe ; Tim Bradford, du Comet, vient de publier son article.",
+    "truth": "Faits réels, noms changés (voir story.json) : le 16 octobre 1888 au soir, George Lusk (Joseph Larkin), président du Whitechapel Vigilance Committee, reçoit par la poste une petite boîte en carton contenant la moitié d'un rein dans l'esprit-de-vin, avec la lettre « From hell » (cachet London E., partiellement lisible). Il croit d'abord à une farce (un rein de chien). Le 18 octobre, il la montre au comité ; le trésorier Joseph Aarons (Joseph Adler) et le secrétaire (William Harker) sont présents. On la porte au docteur Frederick Wiles (Frederick Wylie), Mile End Road, dont l'assistant F. S. Reed (Frank Redding) la porte au docteur Thomas Openshaw (Thomas Oldfield), conservateur du musée pathologique du London Hospital : un rein humain, gauche, rien de plus. Le 19 octobre, la presse (ici The Comet) lui fait dire « rein de femme, 45 ans, buveuse de gin », ce qu'il dément. Lusk avait signalé qu'un homme barbu lui avait demandé son adresse dans une taverne peu avant. À l'enquête sur Catherine Eddowes (Margaret Jenkins), le 4 octobre, le docteur Frederick Gordon Brown (ici Albert Jefferson) avait dit que le rein gauche manquait. Le major Henry Smith, de la police de la City, prétendra en 1910 que le rein correspondait ; la plupart des policiers croyaient à un canular de journaliste ou d'étudiant en médecine.",
+    "falseLeads": "Distracteurs : l'homme barbu, le Crown, Mile End ; le rein droit, le chien, la farce ; Frank Redding et Frederick Wylie (ils ont porté le rein, pas examiné), Albert Jefferson ; l'encre rouge, Dear Boss, le couteau ; 45 ans ; la salle de dissection, Wallace Street ; les dates proches (13, 16, 18, 19 octobre, 30 septembre).",
+    "other": "Brouillon écrit par Claude : à relire et à réécrire librement. Affaire plus difficile : aucun mot de départ, personne ne dit son nom, les identités se croisent (compte rendu + objet de chaque fonction), 16 trous, 8 événements dont deux le même jour. Arrangés pour le jeu : la séance du comité chez Larkin, l'agenda du tiroir, le bocal vide et le règlement de la salle de dissection, le carnet de Tim Bradford. La lettre est traduite avec ses fautes, presque entière ; la phrase « je lai fai frire et je lai mangé » peut se couper dans l'éditeur. Scènes : tools/scene-colis.mjs (npm run scene:colis). Bruits des zones : sound.ts (ZONE_SOUNDS) ; position sur la carte : menu.ts (MAP_PINS)."
+  },
+  "scene": {
+    "image": "scene-ia.png",
+    "width": 1600,
+    "height": 900,
+    "title": "Le salon d'Alderney Road"
+  },
+  "scenes": [
+    {
+      "id": "musee",
+      "title": "Le musée de l'hôpital",
+      "image": "musee-ia.png",
+      "width": 1600,
+      "height": 900
+    }
+  ],
+  "words": {
+    "larkin": {
+      "label": "Joseph Larkin",
+      "category": "person"
+    },
+    "adler": {
+      "label": "Joseph Adler",
+      "category": "person"
+    },
+    "harker": {
+      "label": "William Harker",
+      "category": "person"
+    },
+    "oldfield": {
+      "label": "Thomas Oldfield",
+      "category": "person"
+    },
+    "bradford": {
+      "label": "Tim Bradford",
+      "category": "person"
+    },
+    "jenkins": {
+      "label": "Margaret Jenkins",
+      "category": "person"
+    },
+    "jefferson": {
+      "label": "Albert Jefferson",
+      "category": "person"
+    },
+    "redding": {
+      "label": "Frank Redding",
+      "category": "person"
+    },
+    "wylie": {
+      "label": "Frederick Wylie",
+      "category": "person"
+    },
+    "barbu": {
+      "label": "l'homme barbu",
+      "category": "person"
+    },
+    "jack": {
+      "label": "Jack the Ripper",
+      "category": "person"
+    },
+    "etudiant": {
+      "label": "étudiant",
+      "category": "person"
+    },
+    "london-e": {
+      "label": "Londres E.",
+      "category": "place"
+    },
+    "mile-end": {
+      "label": "Mile End",
+      "category": "place"
+    },
+    "wallace-street": {
+      "label": "Wallace Street",
+      "category": "place"
+    },
+    "crown": {
+      "label": "le Crown",
+      "category": "place"
+    },
+    "salle-dissection": {
+      "label": "salle de dissection",
+      "category": "place"
+    },
+    "rein": {
+      "label": "rein",
+      "category": "object"
+    },
+    "esprit-de-vin": {
+      "label": "esprit-de-vin",
+      "category": "object"
+    },
+    "encre-noire": {
+      "label": "encre noire",
+      "category": "object"
+    },
+    "encre-rouge": {
+      "label": "encre rouge",
+      "category": "object"
+    },
+    "couteau": {
+      "label": "couteau",
+      "category": "object"
+    },
+    "bocaux": {
+      "label": "bocaux",
+      "category": "object"
+    },
+    "from-hell": {
+      "label": "From hell",
+      "category": "other"
+    },
+    "dear-boss": {
+      "label": "Dear Boss",
+      "category": "other"
+    },
+    "gauche": {
+      "label": "gauche",
+      "category": "other"
+    },
+    "droit": {
+      "label": "droit",
+      "category": "other"
+    },
+    "gin": {
+      "label": "gin",
+      "category": "other"
+    },
+    "farce": {
+      "label": "farce",
+      "category": "other"
+    },
+    "chien": {
+      "label": "chien",
+      "category": "other"
+    },
+    "quarante-cinq": {
+      "label": "45 ans",
+      "category": "other"
+    },
+    "trente-sept": {
+      "label": "30 septembre",
+      "category": "other"
+    },
+    "quatre-oct": {
+      "label": "4 octobre",
+      "category": "other"
+    },
+    "treize-oct": {
+      "label": "13 octobre",
+      "category": "other"
+    },
+    "quinze-oct": {
+      "label": "15 octobre",
+      "category": "other"
+    },
+    "seize-oct": {
+      "label": "16 octobre",
+      "category": "other"
+    },
+    "dix-huit-oct": {
+      "label": "18 octobre",
+      "category": "other"
+    },
+    "dix-neuf-oct": {
+      "label": "19 octobre",
+      "category": "other"
+    }
+  },
+  "zones": [
+    {
+      "id": "larkin",
+      "kind": "person",
+      "label": "L'homme à la grosse moustache",
+      "character": "larkin",
+      "rect": {
+        "x": 183,
+        "y": 229,
+        "w": 292,
+        "h": 553
+      },
+      "portrait": {
+        "x": 334,
+        "y": 222,
+        "w": 126,
+        "h": 168
+      },
+      "text": "Un homme trapu, une rosette rouge à la boutonnière, montre la fenêtre du doigt. Sa main tremble.\n« Il est encore là, sous le réverbère ! Le même barbu qu'au [[crown|Crown]], samedi… Non, non, restez, jeune homme. Ce colis, c'est à moi qu'on l'a envoyé, pas à la police. Mardi, j'ai cru à une [[farce]] : un [[rein]] de [[chien]], de quoi faire peur au comité. Mais depuis, je ne dors plus. »",
+      "details": [
+        {
+          "label": "La rosette",
+          "text": "Un ruban rouge noué en cocarde, à la boutonnière. Les membres du comité de vigilance n'en portent qu'une : celle du président."
+        }
+      ]
+    },
+    {
+      "id": "harker",
+      "kind": "person",
+      "label": "Le jeune homme à lunettes",
+      "character": "harker",
+      "rect": {
+        "x": 920,
+        "y": 246,
+        "w": 215,
+        "h": 549
+      },
+      "portrait": {
+        "x": 1004,
+        "y": 243,
+        "w": 105,
+        "h": 140
+      },
+      "text": "Un jeune homme aux lunettes rondes écrit très vite dans un carnet, sans lever le nez. Il a ouvert la fenêtre tout à l'heure, à cause de l'odeur.\n« Une seconde… Le comité veut un compte rendu de chaque séance, signé de ma main. Ce soir, il y a de quoi écrire. »",
+      "details": [
+        {
+          "label": "Le compte rendu",
+          "text": "« Comité de vigilance de Whitechapel. Séance du jeudi [[dix-huit-oct|18 octobre]] 1888, 19 h, chez le président.\nPrésents : le président, J. [[larkin|Larkin]] ; le trésorier, J. [[adler|Adler]] ; le secrétaire, W. [[harker|Harker]].\nLe président montre un colis reçu mardi, par le courrier du soir. Décision : le porter ce soir même au docteur [[wylie|Wylie]], Mile End Road. Son assistant, M. [[redding|Redding]], le portera ensuite au London Hospital, à un docteur qui s'y connaît mieux.\n— Le secrétaire, W. H. »"
+        }
+      ]
+    },
+    {
+      "id": "adler",
+      "kind": "person",
+      "label": "L'homme au haut-de-forme",
+      "character": "adler",
+      "rect": {
+        "x": 1135,
+        "y": 171,
+        "w": 171,
+        "h": 574
+      },
+      "portrait": {
+        "x": 1175,
+        "y": 163,
+        "w": 145,
+        "h": 193
+      },
+      "text": "Un grand homme maigre, en pardessus et haut-de-forme, reste près de la porte. Il serre un livre vert contre sa poitrine et ne s'approche pas du guéridon.\n« Je suis venu pour les comptes, pas pour voir ça. Trente-deux livres de dons, voilà ce qu'il nous reste. Si un médecin doit examiner cette chose, il faudra bien que quelqu'un le paie. »",
+      "details": [
+        {
+          "label": "Le livre vert",
+          "text": "Sur la couverture, une étiquette : « Comité de vigilance — Comptes tenus par le trésorier ». Dedans, deux colonnes : les dons, les dépenses.\nLa dernière ligne vient d'être écrite : « 18 oct. — Examen d'un colis par le docteur [[wylie|Wylie]] : à payer. »"
+        }
+      ]
+    },
+    {
+      "id": "fenetre",
+      "kind": "object",
+      "label": "La fenêtre",
+      "rect": {
+        "x": 56,
+        "y": 60,
+        "w": 125,
+        "h": 400
+      },
+      "text": "Dehors, le brouillard jaunit sous le réverbère. En face, un homme [[barbu]], en long manteau au col relevé, regarde la maison sans bouger.\nQuand on s'approche de la vitre, il tourne le dos et s'en va, lentement, vers [[mile-end|Mile End Road]]."
+    },
+    {
+      "id": "pendule",
+      "kind": "object",
+      "label": "La pendule",
+      "rect": {
+        "x": 472,
+        "y": 322,
+        "w": 76,
+        "h": 72
+      },
+      "text": "Une pendule de marbre noir, sur la cheminée. Elle marque sept heures cinq. Dans l'âtre, les braises craquent.\nGlissée contre le cadran, une carte : « Comité de vigilance. Réunion jeudi, 7 heures du soir, chez le président. »"
+    },
+    {
+      "id": "affiche",
+      "kind": "document",
+      "label": "L'affiche de la police",
+      "rect": {
+        "x": 764,
+        "y": 144,
+        "w": 144,
+        "h": 202
+      },
+      "text": "La copie de l'affiche de la police, épinglée au mur par le comité. Une belle écriture penchée, à l'[[encre-rouge|encre rouge]], sans une seule faute.\n« [[dear-boss|Dear Boss]] (Cher Patron), j'entends dire partout que la police m'a attrapé, mais elle ne me tient pas encore. […] Bien à vous, [[jack|Jack the Ripper]]. »\nEn bas, au crayon : « Comparer avec toute lettre reçue. — J. L. »"
+    },
+    {
+      "id": "cadre",
+      "kind": "document",
+      "label": "Le cadre au mur",
+      "rect": {
+        "x": 952,
+        "y": 176,
+        "w": 150,
+        "h": 104
+      },
+      "text": "Un cadre doré, un peu de travers : « J. LARKIN — BUILDER & DECORATOR » (entrepreneur, peinture et décoration).\nDessous, en petites lettres : « Bureaux et ateliers à la même adresse. »"
+    },
+    {
+      "id": "journal",
+      "kind": "document",
+      "label": "Le journal du fauteuil",
+      "rect": {
+        "x": 134,
+        "y": 696,
+        "w": 168,
+        "h": 68
+      },
+      "text": "The Daily Ledger, vendredi 5 octobre 1888, plié à la page des crimes.\n« L'ENQUÊTE SUR LA MORT DE [[jenkins|MARGARET JENKINS]]. Hier [[quatre-oct|4 octobre]], devant le coroner, le docteur [[jefferson|Albert Jefferson]] a décrit les blessures de la victime de [[wallace-street|Wallace Street]], tuée dans la nuit du [[trente-sept|30 septembre]]. Le rein [[gauche]] avait été enlevé avec soin, par une main qui savait où le trouver. »\nQuelqu'un a entouré ce paragraphe à l'encre."
+    },
+    {
+      "id": "tiroir",
+      "kind": "object",
+      "label": "Le tiroir du bureau",
+      "rect": {
+        "x": 1344,
+        "y": 724,
+        "w": 256,
+        "h": 80
+      },
+      "text": "Le tiroir est resté ouvert. Des factures, des lettres d'injures arrivées depuis septembre, et un petit agenda noir.\n« Samedi [[treize-oct|13 oct.]] — Au [[crown|Crown]], un homme [[barbu]] demande où j'habite. Il veut voir le président du comité, dit-il. Je ne l'avais jamais vu. »\n« Mardi [[seize-oct|16 oct.]], courrier de 5 heures — Un colis. Une [[farce]] ? Un rein de [[chien]] ? Je le laisse dans ce tiroir. »\n« Jeudi [[dix-huit-oct|18 oct.]] — Le montrer au comité. »"
+    },
+    {
+      "id": "emballage",
+      "kind": "document",
+      "label": "Le papier d'emballage",
+      "rect": {
+        "x": 630,
+        "y": 676,
+        "w": 118,
+        "h": 58
+      },
+      "text": "Un papier brun, une ficelle coupée au couteau, deux timbres d'un penny. L'adresse est d'une écriture lourde : « Mr J. [[larkin|Larkin]], Alderney Road, [[mile-end|Mile End]] ».\nLe cachet de la poste est à moitié effacé : « [[london-e|London E.]] — [[quinze-oct|15 OC]] 88 »."
+    },
+    {
+      "id": "carton",
+      "kind": "object",
+      "label": "Le petit carton",
+      "rect": {
+        "x": 750,
+        "y": 634,
+        "w": 92,
+        "h": 78
+      },
+      "text": "Une petite boîte de carton, de celles où l'on vend les savonnettes. Au fond, dans un liquide jaune, une chose sombre et ratatinée, grosse comme une moitié de poing : la moitié d'un [[rein]].\nL'odeur prend à la gorge : c'est de l'[[esprit-de-vin]], l'alcool où l'on garde les pièces d'anatomie."
+    },
+    {
+      "id": "lettre",
+      "kind": "document",
+      "label": "La lettre",
+      "rect": {
+        "x": 856,
+        "y": 676,
+        "w": 80,
+        "h": 62
+      },
+      "text": "Une feuille pliée en quatre, à l'[[encre-noire|encre noire]], d'une main lourde qui appuie trop. Des fautes partout : celles d'un homme qui écrit peu… ou qui fait semblant.\n« [[from-hell|From hell]] (De l'enfer).\nMosieur Larkin,\nMosieur, je vous envoi la moitié du rin que j'ai pri a une fame, je lai concervé pour vous. L'autre morso je lai fai frire et je lai mangé, c'été très bon. Je vous envairé peut-être le [[couteau|couto]] sanglan qui la sorti, si vous atendé encor un peu.\nSigné : Atrapé moi si vous pouvé, Mishter Larkin. »\nNi date, ni nom."
+    },
+    {
+      "id": "bocaux",
+      "kind": "object",
+      "label": "Les étagères",
+      "scene": "musee",
+      "rect": {
+        "x": 380,
+        "y": 70,
+        "w": 960,
+        "h": 180
+      },
+      "text": "Des centaines de [[bocaux]], du sol au plafond. Dans l'alcool jaune flottent des cœurs, des mains, des reins, chacun avec son étiquette. L'odeur est la même que celle du colis : l'[[esprit-de-vin]].\nLes étudiants passent ici tous les jours, en sortant de la [[salle-dissection|salle de dissection]]. Sur la troisième étagère, un bocal est vide, son étiquette arrachée."
+    },
+    {
+      "id": "oldfield",
+      "kind": "person",
+      "label": "L'homme à la loupe",
+      "character": "oldfield",
+      "scene": "musee",
+      "rect": {
+        "x": 546,
+        "y": 257,
+        "w": 382,
+        "h": 551
+      },
+      "portrait": {
+        "x": 653,
+        "y": 251,
+        "w": 134,
+        "h": 179
+      },
+      "text": "Un jeune homme en redingote, penché sur un plat de porcelaine, ne quitte pas sa loupe des yeux.\n« Je l'ai déjà dit à ce monsieur du journal, et je le redis : un rein humain, un rein [[gauche]], gardé dans l'[[esprit-de-vin]]. Le reste, personne ne peut le dire. Ni moi, ni un autre. Et surtout pas lui. »"
+    },
+    {
+      "id": "bradford",
+      "kind": "person",
+      "label": "Le reporter au melon",
+      "character": "tim",
+      "scene": "musee",
+      "rect": {
+        "x": 974,
+        "y": 220,
+        "w": 354,
+        "h": 582
+      },
+      "portrait": {
+        "x": 1117,
+        "y": 215,
+        "w": 125,
+        "h": 167
+      },
+      "text": "Un homme en manteau à carreaux, un crayon derrière l'oreille, griffonne dans un carnet.\n« Vous avez lu le Comet de ce soir ? Tout Londres l'a lu. C'est mon article, mon vieux. Le docteur fait la tête, mais j'ai ce qu'il me faut. »",
+      "details": [
+        {
+          "label": "Son carnet",
+          "text": "« Jeudi, 23 h, à la porte du musée. Le docteur : « humain, gauche ». Femme ? « Impossible à dire. » Âge ? « Impossible à dire. »\nPour l'article : femme, 45 ans, buveuse de [[gin]]. Ça fera vendre. »"
+        }
+      ]
+    },
+    {
+      "id": "reglement",
+      "kind": "document",
+      "label": "Le règlement",
+      "scene": "musee",
+      "rect": {
+        "x": 274,
+        "y": 246,
+        "w": 100,
+        "h": 140
+      },
+      "text": "« SALLE DE DISSECTION. Règlement. […]\nArticle 7 : il est interdit à tout [[etudiant|étudiant]] d'emporter hors de la salle la moindre pièce anatomique.\nArticle 8 : les corps non réclamés des hospices et des asiles sont rendus à la paroisse après étude. »\nSous l'article 7, quelqu'un a ajouté au crayon : « Ha ! ha ! »"
+    },
+    {
+      "id": "plaque",
+      "kind": "document",
+      "label": "La plaque de la porte",
+      "scene": "musee",
+      "rect": {
+        "x": 1370,
+        "y": 322,
+        "w": 64,
+        "h": 50
+      },
+      "text": "Une plaque de cuivre : « LONDON HOSPITAL — PATHOLOGICAL MUSEUM. Conservateur : Dr T. [[oldfield|Oldfield]] ».\nDessous, une carte : « Fermé au public après 6 heures. »"
+    },
+    {
+      "id": "squelette",
+      "kind": "object",
+      "label": "La vitrine",
+      "scene": "musee",
+      "rect": {
+        "x": 1470,
+        "y": 10,
+        "w": 128,
+        "h": 700
+      },
+      "text": "Un squelette entier, monté sur une tige de fer. Sur l'étiquette : « Femme, environ quarante ans. Whitechapel, 1879. Corps non réclamé. »\nPersonne n'est jamais venu la chercher."
+    },
+    {
+      "id": "carnet",
+      "kind": "document",
+      "label": "Le carnet du docteur",
+      "scene": "musee",
+      "rect": {
+        "x": 532,
+        "y": 452,
+        "w": 76,
+        "h": 34
+      },
+      "text": "« Jeudi [[dix-huit-oct|18 oct.]], 10 h du soir. Reçu de M. F. [[redding|Redding]], assistant du docteur [[wylie|Wylie]] (Mile End Road), pour le comité de vigilance : la moitié d'un [[rein]] humain, côté [[gauche]] (la forme ne trompe pas : pas le [[droit]]). Conservé dans l'[[esprit-de-vin]].\nSexe : impossible à dire. Âge : impossible à dire. Depuis quand ? Impossible à dire.\nNos [[bocaux]] en sont pleins. — T. O. »"
+    },
+    {
+      "id": "rein",
+      "kind": "object",
+      "label": "Le plat de porcelaine",
+      "scene": "musee",
+      "rect": {
+        "x": 864,
+        "y": 452,
+        "w": 90,
+        "h": 32
+      },
+      "text": "Sous la loupe, la moitié du rein, sortie de son carton. Une coupe nette d'un côté, comme au scalpel. Le reste est gris et ratatiné.\nIl a passé des jours dans l'alcool. Combien ? Le docteur n'a pas voulu le dire."
+    },
+    {
+      "id": "comet",
+      "kind": "document",
+      "label": "The Comet",
+      "scene": "musee",
+      "rect": {
+        "x": 1076,
+        "y": 450,
+        "w": 82,
+        "h": 40
+      },
+      "text": "The Comet, vendredi [[dix-neuf-oct|19 octobre]] 1888, édition du soir. Froissé en boule, puis jeté au bout de la table.\n« LE REIN DE L'ENFER. Le docteur Oldfield, du London Hospital, l'affirme : c'est le rein gauche d'une femme de [[quarante-cinq|45 ans]], une buveuse de [[gin]], enlevé il y a moins de trois semaines. Comme celui de la malheureuse de Wallace Street ! — [[bradford|Tim Bradford]] »"
+    }
+  ],
+  "pages": [
+    {
+      "id": "qui",
+      "kind": "identities",
+      "title": "Qui est qui ?",
+      "people": [
+        {
+          "zone": "larkin",
+          "answer": "larkin"
+        },
+        {
+          "zone": "harker",
+          "answer": "harker"
+        },
+        {
+          "zone": "adler",
+          "answer": "adler"
+        },
+        {
+          "zone": "oldfield",
+          "answer": "oldfield"
+        },
+        {
+          "zone": "bradford",
+          "answer": "bradford"
+        }
+      ],
+      "hints": [
+        "Personne ne dit son nom. Mais quelqu'un a écrit les noms de tous, chacun avec sa fonction.",
+        "Au salon, chacun porte ou tient la marque de sa fonction.",
+        "Au musée, une porte dit qui travaille ici ; un journal dit qui l'a écrit."
+      ]
+    },
+    {
+      "id": "voyage",
+      "kind": "chronology",
+      "title": "Le voyage du colis",
+      "events": [
+        "Margaret Jenkins est tuée à Wallace Street.",
+        "À l'enquête, le docteur Jefferson dit que le rein gauche a été enlevé.",
+        "Un homme barbu demande où habite Joseph Larkin.",
+        "Le colis est posté à Londres E.",
+        "Le colis arrive chez Joseph Larkin.",
+        "Le comité décide de montrer le rein à un médecin.",
+        "Le docteur Oldfield examine le rein.",
+        "The Comet publie « rein de femme, buveuse de gin »."
+      ],
+      "hints": [
+        "Les dates sont éparpillées : un journal, un agenda, un cachet de la poste, deux carnets.",
+        "Deux de ces événements ont lieu le même jour : regardez l'heure."
+      ]
+    },
+    {
+      "id": "colis",
+      "kind": "sentences",
+      "title": "Que vaut le colis ?",
+      "sentences": [
+        "Posté à {london-e} le {quinze-oct}, le colis arrive chez {larkin} le lendemain soir.",
+        "Il contient la moitié d'un {rein}, conservé dans l'{esprit-de-vin}, et une lettre qui commence par « {from-hell} ».",
+        "Le docteur {oldfield} le dit humain, et {gauche} ; l'âge et le sexe, impossible à dire.",
+        "Le rein gauche de {jenkins} manquait ; mais depuis l'enquête du {quatre-oct}, tout Londres le savait.",
+        "Les {bocaux} de l'hôpital baignent dans le même alcool : un {etudiant} en médecine aurait pu jouer cette farce.",
+        "La lettre n'est pas signée {jack} : mal écrite, à l'{encre-noire}, elle ne ressemble pas à « Dear Boss ».",
+        "« Rein de femme, buveuse de {gin} » : {bradford} l'a inventé, le docteur ne l'a jamais dit."
+      ],
+      "hints": [
+        "Le papier d'emballage et ce qui traîne dans le bureau disent quand le colis part et quand il arrive.",
+        "Le journal du fauteuil dit ce que tout Londres savait déjà.",
+        "Au musée, regardez les étagères, puis le mur à côté.",
+        "Mettez la lettre à côté de l'affiche.",
+        "Comparez le carnet du docteur, le journal du soir, et le carnet de celui qui l'a écrit."
+      ]
+    }
+  ]
+}

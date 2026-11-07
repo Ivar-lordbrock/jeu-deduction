@@ -18,6 +18,8 @@ const { perso, defs: defsPersos, cadres } = creerPersos();
 // ——— placements ———
 const moorland = { x: 760, y: 815, s: echelle(815) }; // devant la porte de son bureau, tourné vers la gauche
 const pike = { x: 1478, y: 806, s: echelle(806) }; // devant la porte d'entrée, sur le mur droit
+// Tim Bradford, du Comet (affaire 1) : devant la fenêtre, penché par-dessus le comptoir, il lit le registre du courrier en douce
+const tim = { x: 215, y: 700, s: echelle(700) };
 // Tom corrige une dépêche, debout et penché sur son bureau : ses mains reposent sur le plateau
 const tom = { x: 1300, y: 760, s: echelle(760) };
 const PLATEAU = Math.round(tom.y + tom.s * reperes['reporter-penche'].mains.proche[1]) + 6; // bord avant du plateau
@@ -348,6 +350,7 @@ const personnages = {
   moorland: perso('directeur-brandit', { ...moorland, miroir: true, reflets: [[-3, -1.5, AMBRE, 0.65], [2.5, -2, TEAL, 0.5]], nom: 'moorland' }),
   tom: perso('reporter-penche', { ...tom, miroir: true, reflets: [[-2.5, -2.5, AMBRE, 0.75], [2.5, -1.5, TEAL, 0.4]], nom: 'tom' }),
   pike: perso('agent-sac', { ...pike, miroir: true, reflets: [[-3, -1.5, AMBRE, 0.5], [2.5, -2, TEAL, 0.5]], nom: 'pike' }),
+  tim: perso('journaliste-interroge', { ...tim, reflets: [[-3, -1.5, TEAL, 0.6], [2.5, -2, AMBRE, 0.5]], nom: 'tim' }),
 };
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
@@ -511,6 +514,10 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" widt
   <path d="M500 96 L380 900 L700 900 Z M1180 84 L1000 900 L1360 900 Z" fill="url(#coneLampe)"/>
 
   <!-- ═══ Plan 3 : meubles et personnages ═══ -->
+  <!-- Tim Bradford, du Comet : manteau à carreaux, melon, crayon sur l'oreille ; il lit le registre par-dessus le comptoir -->
+  <ellipse cx="${num(tim.x + 20)}" cy="${tim.y}" rx="70" ry="8" fill="#000" opacity="0.5"/>
+  ${personnages.tim}
+
   <!-- Les sacs de lettres signées Jack -->
   ${sacs}
 

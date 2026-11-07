@@ -104,6 +104,7 @@
       "id": "larkin",
       "name": "Joseph Larkin",
       "role": "Président du comité de vigilance de Whitechapel",
+      "appearance": "Trapu, épaisse chevelure, grosse moustache tombante et favoris, veste courte, rosette rouge du comité à la boutonnière.",
       "notes": "D'après George Lusk, qui reçut le 16 octobre la lettre « From hell » et un demi-rein."
     },
     {
@@ -178,6 +179,46 @@
       "name": "Arthur Wilkins",
       "role": "Inspecteur principal à Scotland Yard",
       "notes": "D'après l'inspecteur principal Adolphus Williamson, à qui la Central News envoya la lettre le 29 septembre 1888."
+    },
+    {
+      "id": "adler",
+      "name": "Joseph Adler",
+      "role": "Trésorier du comité de vigilance de Whitechapel",
+      "appearance": "Grand et maigre, haut-de-forme, favoris courts, long pardessus ; serre contre lui le livre vert des comptes.",
+      "notes": "D'après Joseph Aarons, trésorier du comité, présent quand Lusk montra le colis le 18 octobre 1888."
+    },
+    {
+      "id": "harker",
+      "name": "William Harker",
+      "role": "Secrétaire du comité de vigilance de Whitechapel",
+      "appearance": "Jeune, raie au milieu, lunettes rondes cerclées d'argent, nœud papillon, veste courte ; écrit le compte rendu des séances.",
+      "notes": "D'après le secrétaire du comité, M. Harris."
+    },
+    {
+      "id": "oldfield",
+      "name": "Thomas Oldfield",
+      "role": "Conservateur du musée d'anatomie pathologique du London Hospital",
+      "appearance": "Jeune, cheveux plaqués en arrière, fine moustache, redingote, plastron et manchettes blancs ; une loupe à la main.",
+      "notes": "D'après le docteur Thomas Horrocks Openshaw, qui examina le rein le 18 octobre 1888 : humain, gauche, rien de plus. Il démentit ce que la presse lui fit dire."
+    },
+    {
+      "id": "redding",
+      "name": "Frank Redding",
+      "role": "Assistant du docteur Wylie, Mile End Road",
+      "notes": "D'après F. S. Reed, qui porta le rein au docteur Openshaw. N'apparaît pas dans les scènes."
+    },
+    {
+      "id": "wylie",
+      "name": "Frederick Wylie",
+      "role": "Médecin, Mile End Road",
+      "notes": "D'après le docteur Frederick Wiles, à qui le comité porta d'abord le colis. N'apparaît pas dans les scènes."
+    },
+    {
+      "id": "barbu",
+      "name": "L'homme barbu",
+      "role": "Inconnu qui guette la maison de Joseph Larkin",
+      "appearance": "Chapeau mou à large bord, grande barbe, long manteau au col relevé, mains dans les poches.",
+      "notes": "D'après l'homme barbu qui, selon Lusk, lui demanda son adresse peu avant l'arrivée du colis. Jamais identifié."
     }
   ],
   "chapters": [

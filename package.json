@@ -13,7 +13,8 @@
     "scene": "node tools/scene-commissariat.mjs",
     "scene:morgue": "node tools/scene-morgue.mjs",
     "scene:fruiterie": "node tools/scene-fruiterie.mjs",
-    "scene:agence": "node tools/scene-agence.mjs"
+    "scene:agence": "node tools/scene-agence.mjs",
+    "scene:colis": "node tools/scene-colis.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
