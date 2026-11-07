@@ -60,9 +60,9 @@ describe('assets', () => {
 
   it('les scènes dessinées ne dépendent d’aucun fichier extérieur', () => {
     // la scène s'affiche en <img> : un lien vers un autre fichier y serait ignoré
-    for (const dossier of ['01-leman-street', '02-morgue']) {
-      const scene = readFileSync(new URL(`src/cases/${dossier}/scene.svg`, root), 'utf8');
-      for (const m of scene.matchAll(/href="([^"]+)"/g)) expect(m[1], `${dossier} ${m[1].slice(0, 40)}`).toMatch(/^(#|data:image\/)/);
+    for (const fichier of ['01-leman-street/scene.svg', '02-morgue/scene.svg', '02-morgue/autopsie.svg']) {
+      const scene = readFileSync(new URL(`src/cases/${fichier}`, root), 'utf8');
+      for (const m of scene.matchAll(/href="([^"]+)"/g)) expect(m[1], `${fichier} ${m[1].slice(0, 40)}`).toMatch(/^(#|data:image\/)/);
     }
   });
 });

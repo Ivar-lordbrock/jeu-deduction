@@ -3,19 +3,29 @@
   "order": 2,
   "chapter": "chapitre-1",
   "title": "À la morgue",
-  "intro": "À la morgue de Whitechapel, le 30 septembre 1888, au matin.\nLes deux corps découverts cette nuit ont été transportés ici, chacun allongé sur une table d'examen en acier. L'atmosphère est glaciale et lourde d'odeurs d'acide phénique. Le docteur Albert Jefferson s'affaire déjà au scalpel pour consigner les horribles blessures dans son journal. Près de la porte, l'agent Edouard Davis monte la garde, veillant à ce qu'aucun journaliste ou curieux ne perturbe l'autopsie. Vous vous êtes faufilé à l'intérieur pour examiner les corps de près : les gorges tranchées net et les mutilations abdominales portent la signature macabre d'un seul et même tueur. Observez chaque détail, lisez les étiquettes et formulez vos premières théories.",
+  "intro": "À la morgue de Whitechapel, le 30 septembre 1888, au matin.\nLes deux corps découverts cette nuit ont été transportés ici : le premier attend sous son drap dans la salle de dépôt, le second repose sur la table de la salle d'autopsie. L'atmosphère est glaciale et lourde d'odeurs d'acide phénique. Le docteur Albert Jefferson s'affaire déjà au scalpel pour consigner les horribles blessures dans son journal. À la porte de la salle de dépôt, l'agent Edouard Davis monte la garde, veillant à ce qu'aucun journaliste ou curieux ne perturbe l'autopsie. Vous vous êtes faufilé à l'intérieur pour examiner les corps de près, d'une salle à l'autre : les gorges tranchées net et les mutilations abdominales portent la signature macabre d'un seul et même tueur. Observez chaque détail, lisez les étiquettes, fouillez les effets des victimes et formulez vos premières théories.",
   "epilogue": "L'examen minutieux des corps ne laisse plus aucun doute. La précision chirurgicale des incisions au niveau du cou et de l'abdomen confirme qu'il ne s'agit pas de crimes passionnels ou de simple proxénétisme, mais de l'œuvre préméditée d'un maniaque anatomiste.",
   "notes": {
-    "moment": "Dimanche 30 septembre 1888, dans la matinée, après la scène du poste. Le docteur Albert Jefferson examine les deux corps ; l'agent Edouard Davis garde la porte ; le joueur s'est glissé entre les tables avec sa loupe.",
-    "truth": "Corps n° 1, table de gauche : l'inconnue de King's Row, tuée vers 1 h. Corps n° 2, table de droite : Margaret Jenkins, couturière, tuée à Wallace Street vers 2 h 30, reconnue par Elisabeth Coyle. Même tueur : gorge tranchée (cause de la mort : hémorragie), puis mutilations abdominales après la mort. Le joueur relie le numéro de chaque étiquette à la fiche du journal du médecin.",
-    "falseLeads": "Distracteurs : victime, cinquième (le docteur compte cinq victimes), Elisabeth Coyle (la témoin, pas la victime), lutte (le sang sous les ongles du corps n° 1 : impossible de dire à qui il appartient).",
-    "other": "Scène générée par tools/scene-morgue.mjs (npm run scene:morgue). Les corps sont couverts : les blessures se décrivent dans les fiches, jamais dans l'image. Corps n° 1 (table de gauche) : l'inconnue de King's Row, entièrement couverte, pieds visibles. Corps n° 2 (table de droite) : Margaret Jenkins, drap rabattu aux épaules, visage de profil."
+    "moment": "Dimanche 30 septembre 1888, dans la matinée, après la scène du poste. Deux salles. Salle de dépôt : le corps n° 1 sous son drap, ses effets sur un plateau, ses vêtements à la patère, l'agent Edouard Davis à la porte, le joueur penché avec sa loupe. Salle d'autopsie : le docteur Albert Jefferson examine le corps n° 2 ; ses effets sur un plateau, le journal sur le pupitre.",
+    "truth": "Corps n° 1, salle de dépôt : l'inconnue de King's Row, tuée vers 1 h, prostituée (du fard, un bonnet neuf, dehors la nuit avec trois pence pour un lit à quatre, des mains sans gerçures ni piqûres d'aiguille). Corps n° 2, salle d'autopsie : Margaret Jenkins, couturière (dé, épingles, fil, ourlet commencé, doigts piqués), tuée à Wallace Street vers 2 h 30, reconnue par Elisabeth Coyle. Même tueur : gorge tranchée (cause de la mort : hémorragie), puis mutilations abdominales après la mort. Le joueur relie le numéro de chaque étiquette à la fiche du journal du médecin. Les métiers ne sont écrits nulle part : l'agent en donne les mots, les effets disent lequel va à qui.",
+    "falseLeads": "Distracteurs : victime, cinquième (le docteur compte cinq victimes), Elisabeth Coyle (la témoin, pas la victime), lutte (le sang sous les ongles du corps n° 1 : impossible de dire à qui il appartient), blanchisseuse (l'agent cite trois métiers ; aucune des deux n'a les mains gercées par la lessive).",
+    "other": "Scènes générées par tools/scene-morgue.mjs (npm run scene:morgue) : scene.svg (la salle de dépôt) et autopsie.svg (la salle d'autopsie). Les corps sont couverts : les blessures se décrivent dans les fiches, jamais dans l'image. Corps n° 1 (salle de dépôt) : l'inconnue de King's Row, entièrement couverte, pieds visibles. Corps n° 2 (salle d'autopsie) : Margaret Jenkins, drap rabattu aux épaules, visage de profil. Les images du jeu sont les passes IA (scene-ia.png, autopsie-ia.png, D:/ComfyUI/scenes-couches.mjs 02-morgue-depot et 02-morgue-autopsie) peintes d'après ces dessins ; les corps, les plateaux d'effets, la patère et le journal y sont recollés tels quels. Après un changement des dessins ou des zones, refaire les passes."
   },
   "scene": {
     "image": "scene-ia.png",
     "width": 1600,
-    "height": 900
+    "height": 900,
+    "title": "La salle de dépôt"
   },
+  "scenes": [
+    {
+      "id": "autopsie",
+      "title": "La salle d'autopsie",
+      "image": "autopsie-ia.png",
+      "width": 1600,
+      "height": 900
+    }
+  ],
   "words": {
     "jefferson": {
       "label": "Albert Jefferson",
@@ -43,6 +53,10 @@
     },
     "couturiere": {
       "label": "couturière",
+      "category": "other"
+    },
+    "blanchisseuse": {
+      "label": "blanchisseuse",
       "category": "other"
     },
     "prostituee": {
@@ -94,45 +108,120 @@
     {
       "id": "corps-1",
       "kind": "person",
-      "label": "Le corps de la première table",
+      "label": "Le corps de la salle de dépôt",
       "character": "inconnue-kings-row",
       "rect": {
-        "x": 173,
-        "y": 403,
-        "w": 567,
-        "h": 98
+        "x": 241,
+        "y": 409,
+        "w": 616,
+        "h": 106
       },
       "portrait": {
-        "x": 684,
-        "y": 400,
-        "w": 96,
-        "h": 128
+        "x": 770,
+        "y": 388,
+        "w": 109,
+        "h": 146
       },
       "text": "Un drap couvre entièrement le corps. Du sang séché l'a traversé, au cou et au ventre. Seuls les pieds nus dépassent, une étiquette nouée à l'orteil.",
       "details": [
         {
           "label": "Les blessures",
-          "text": "La [[gorge-tranchee|gorge a été tranchée]] d'un geste sec et horizontal, d'une oreille à l'autre. C'est ce coup fatal qui a terrassé la victime.\n\nEn observant le torse et le ventre, on découvre des incisions ouvertes [[post-mortem]]. La lame s'est enfoncée profondément et des [[mutilations-abdominales]] d'une régularité chirurgicale sont constatées. Les mains de la victime sont usées et, sous les ongles, nous pouvons voir des traces de sang séché, sûrement dues à une [[lutte]] ; impossible de savoir à qui appartient le [[sang]]."
+          "text": "La [[gorge-tranchee|gorge a été tranchée]] d'un geste sec et horizontal, d'une oreille à l'autre. C'est ce coup fatal qui a terrassé la victime.\n\nEn observant le torse et le ventre, on découvre des incisions ouvertes [[post-mortem]]. La lame s'est enfoncée profondément et des [[mutilations-abdominales]] d'une régularité chirurgicale sont constatées. Sous les ongles, on voit des traces de sang séché, sûrement dues à une [[lutte]] ; impossible de savoir à qui appartient le [[sang]]."
+        },
+        {
+          "label": "Les mains",
+          "text": "Des mains maigres, rougies par le froid. Mais ni gerçures de blanchisseuse, ni piqûres d'aiguille : ces mains-là n'ont pas fait la lessive, ni la couture."
         }
       ],
-      "notes": "Corps n° 1. Les blessures se décrivent ici, avec retenue."
+      "notes": "Corps n° 1. Les blessures se décrivent ici, avec retenue. Les mains écartent la lessive et la couture."
+    },
+    {
+      "id": "effets-1",
+      "kind": "object",
+      "label": "Le plateau de la salle de dépôt",
+      "rect": {
+        "x": 17,
+        "y": 574,
+        "w": 313,
+        "h": 97
+      },
+      "text": "Un plateau de zinc, un carton « N° 1 » posé dessus : ce qu'on a trouvé dans les poches du corps.\nUn petit miroir à main. Un pot de fard rouge, bien entamé. Trois pièces de cuivre : trois pence en tout.",
+      "details": [
+        {
+          "label": "Le ticket",
+          "text": "Un ticket de garni de Flower and Dean Street : « Lit pour la nuit, 4 d. » Il n'a jamais été poinçonné. Avec trois pence en poche, il lui manquait un penny pour dormir à l'abri."
+        }
+      ],
+      "notes": "Corps n° 1 : du fard, dehors la nuit, pas de quoi payer son lit. Avec les mains et la patère : la rue."
+    },
+    {
+      "id": "patere-1",
+      "kind": "object",
+      "label": "La patère",
+      "rect": {
+        "x": 1080,
+        "y": 248,
+        "w": 215,
+        "h": 425
+      },
+      "text": "Les vêtements du corps n° 1, pendus au mur. Un châle de laine, reprisé de partout. À côté, un bonnet de velours noir, tout neuf, avec sa fleur : le seul luxe de la tenue.",
+      "details": [
+        {
+          "label": "Les bottines",
+          "text": "Posées par terre. Les semelles sont percées, les talons usés de travers. Les bas bon marché sont crottés jusqu'aux mollets : elle a beaucoup marché, la nuit, dans les boues de l'East End."
+        }
+      ],
+      "notes": "Corps n° 1 : un bonnet neuf pour plaire, des bottines usées par la marche. Reprend l'observation qu'avait le journal."
+    },
+    {
+      "id": "agent",
+      "kind": "person",
+      "label": "L'agent à la porte",
+      "character": "davis",
+      "rect": {
+        "x": 1378,
+        "y": 189,
+        "w": 119,
+        "h": 546
+      },
+      "portrait": {
+        "x": 1375,
+        "y": 183,
+        "w": 122,
+        "h": 163
+      },
+      "text": "Un agent en uniforme garde la porte, les mains dans le dos.\nAgent [[davis|Edouard Davis]], division H.\n« Quelle sale nuit... Une femme dehors à cette heure-là, dans ce foutu coin, c'est une [[blanchisseuse]] qui rentre de la lessive, une [[couturiere|couturière]] qui va livrer son ouvrage, ou une [[prostituee|fille des rues]] qui cherche de quoi payer son lit. Pas besoin d'être docteur pour le savoir. »",
+      "notes": "Donne les trois métiers. Les effets de chaque corps disent lequel va à qui ; blanchisseuse ne va à personne."
+    },
+    {
+      "id": "etiquette-1",
+      "kind": "document",
+      "label": "L'étiquette du corps n° 1",
+      "rect": {
+        "x": 840,
+        "y": 455,
+        "w": 55,
+        "h": 43
+      },
+      "text": "« N° 1. King's Row. 30 sept. 1888. »"
     },
     {
       "id": "corps-2",
       "kind": "person",
-      "label": "Le corps de la seconde table",
+      "label": "Le corps de la table d'autopsie",
       "character": "jenkins",
+      "scene": "autopsie",
       "rect": {
-        "x": 862,
-        "y": 392,
-        "w": 482,
-        "h": 83
+        "x": 300,
+        "y": 407,
+        "w": 599,
+        "h": 104
       },
       "portrait": {
-        "x": 884,
-        "y": 380,
-        "w": 96,
-        "h": 128
+        "x": 312,
+        "y": 398,
+        "w": 98,
+        "h": 130
       },
       "text": "Le drap est rabattu jusqu'aux épaules. Une femme, les cheveux défaits, le visage calme. Le sang a traversé le drap, au cou et au ventre.",
       "details": [
@@ -152,50 +241,53 @@
       "kind": "person",
       "label": "L'homme au tablier",
       "character": "jefferson",
+      "scene": "autopsie",
       "rect": {
-        "x": 935,
-        "y": 283,
-        "w": 215,
-        "h": 109
+        "x": 390,
+        "y": 262,
+        "w": 285,
+        "h": 145
       },
       "portrait": {
-        "x": 998,
-        "y": 283,
-        "w": 90,
-        "h": 120
+        "x": 503,
+        "y": 272,
+        "w": 111,
+        "h": 148
       },
-      "text": "Le médecin légiste, pince-nez sur le nez, se penche sur la seconde table, une sonde à la main.\n« Docteur [[jefferson|Albert Jefferson]]. Ne touchez à rien, jeune homme. Vous êtes le [[journaliste]] qui cherche à démêler tout ça ? Bon courage... C'est déjà la [[cinquieme]] [[victimes]] que je reçois avec ces blessures. »"
+      "text": "Le médecin légiste, pince-nez sur le nez, se penche sur le corps, une sonde à la main.\n« Docteur [[jefferson|Albert Jefferson]]. Ne touchez à rien, jeune homme. Vous êtes le [[journaliste]] qui cherche à démêler tout ça ? Bon courage... C'est déjà la [[cinquieme]] [[victimes]] que je reçois avec ces blessures. »"
     },
     {
-      "id": "agent",
-      "kind": "person",
-      "label": "L'agent à la porte",
-      "character": "davis",
+      "id": "effets-2",
+      "kind": "object",
+      "label": "Le plateau de la salle d'autopsie",
+      "scene": "autopsie",
       "rect": {
-        "x": 1378,
-        "y": 189,
-        "w": 119,
-        "h": 546
+        "x": 17,
+        "y": 574,
+        "w": 313,
+        "h": 97
       },
-      "portrait": {
-        "x": 1375,
-        "y": 183,
-        "w": 122,
-        "h": 163
-      },
-      "text": "Un agent en uniforme garde la porte, les mains dans le dos.\nAgent [[davis|Edouard Davis]], division H.\n« Quelle sale nuit... Heureusement, pour se changer les idées après un service pareil, je connais un bon moyen : ce soir, je vais aller voir ma [[prostituee]] préférée de l'autre côté du quartier. De toute façon, dans ce foutu coin, elles ne servent qu'à ça. »"
+      "text": "Un plateau de zinc, un carton « N° 2 » posé dessus : ce qu'on a trouvé dans les poches du corps.\nUn dé à coudre en laiton. Une pelote hérissée d'épingles. Deux bobines de fil noir. Un ruban à mesurer.",
+      "details": [
+        {
+          "label": "L'ouvrage",
+          "text": "Un morceau de drap bleu plié, un ourlet commencé, faufilé au fil blanc. L'aiguille est encore piquée dedans, là où elle s'est arrêtée."
+        }
+      ],
+      "notes": "Corps n° 2 : tout le nécessaire de couture, avec les doigts piqués."
     },
     {
       "id": "journal",
       "kind": "document",
       "label": "Le journal du médecin",
+      "scene": "autopsie",
       "rect": {
-        "x": 781,
-        "y": 471,
-        "w": 70,
-        "h": 58
+        "x": 1052,
+        "y": 504,
+        "w": 88,
+        "h": 73
       },
-      "text": "Un registre ouvert sur le pupitre, d'une écriture serrée.\nRédigé par [[jefferson]]. Extrait :\n« 30 septembre 1888. Examen des deux dépouilles. Sur la table de gauche, la première victime (femme non identifiée, découverte près de King's Row) présente l'usure caractéristique des semelles de bottines et les bas bon marché abîmés par la marche nocturne dans les boues de l'East End. L'état de ses vêtements et de ses mains trahit une vie de misère passée à racoler les clients dans les ruelles sombres pour quelques pièces. La gorge est tranchée net, de part en part.\nCause de la mort pour les deux victimes : [[hemorragie]]. »",
+      "text": "Un registre ouvert sur le pupitre, d'une écriture serrée.\nRédigé par [[jefferson]]. Extrait :\n« 30 septembre 1888. Examen des deux dépouilles : la première attend dans la salle de dépôt, la seconde est ici, sur ma table. Pour l'une comme pour l'autre, la gorge est tranchée net, de part en part.\nCause de la mort pour les deux victimes : [[hemorragie]]. »",
       "details": [
         {
           "label": "Corps n° 1",
@@ -203,31 +295,20 @@
         },
         {
           "label": "Corps n° 2",
-          "text": "« Femme, trente ans environ. Trouvée à [[wallace|Wallace Street]] vers deux heures et demie. Identité reconnue par la témoin [[elisabeth-coyle]] : [[jenkins|Margaret Jenkins]]. Profession : [[couturiere|couturière]]. »"
+          "text": "« Femme, trente ans environ. Trouvée à [[wallace|Wallace Street]] vers deux heures et demie. Identité reconnue par la témoin [[elisabeth-coyle]] : [[jenkins|Margaret Jenkins]]. »"
         }
       ]
-    },
-    {
-      "id": "etiquette-1",
-      "kind": "document",
-      "label": "L'étiquette du corps n° 1",
-      "rect": {
-        "x": 724,
-        "y": 445,
-        "w": 50,
-        "h": 39
-      },
-      "text": "« N° 1. King's Row. 30 sept. 1888. »"
     },
     {
       "id": "etiquette-2",
       "kind": "document",
       "label": "L'étiquette du corps n° 2",
+      "scene": "autopsie",
       "rect": {
-        "x": 1331,
-        "y": 428,
-        "w": 43,
-        "h": 33
+        "x": 883,
+        "y": 451,
+        "w": 53,
+        "h": 41
       },
       "text": "« N° 2. Wallace Street. 30 sept. 1888. »"
     }
@@ -258,7 +339,7 @@
       "hints": [
         "Deux hommes se présentent. Les deux corps, eux, portent un numéro.",
         "Chaque étiquette nouée à un orteil donne un numéro et un lieu.",
-        "Le journal du médecin dit qui est le corps n° 1 et qui est le corps n° 2. Reste à voir quelle table porte quel numéro."
+        "Le journal du médecin dit qui est le corps n° 1 et qui est le corps n° 2. Reste à voir quelle salle garde quel numéro."
       ]
     },
     {
@@ -266,16 +347,16 @@
       "kind": "sentences",
       "title": "Premières théories",
       "sentences": [
-        "Le docteur {jefferson} s'affaire sur les tables d'autopsie et s'adresse au {journaliste}, tandis que l'agent {davis} monte la garde près de la porte.",
-        "Sur la table de gauche, le corps de {inconnue}, découverte près de {kings-row}, présente les stigmates d'une vie de {prostituee}.",
-        "Sur la table de droite repose {jenkins}, reconnue comme {couturiere}, dont le corps a été signalé à {wallace}.",
+        "Le docteur {jefferson} s'affaire dans la salle d'autopsie et s'adresse au {journaliste}, tandis que l'agent {davis} garde la salle de dépôt.",
+        "Dans la salle de dépôt repose {inconnue}, découverte près de {kings-row} ; ses effets disent une vie de {prostituee}.",
+        "Dans la salle d'autopsie repose {jenkins}, {couturiere} d'après ses effets, dont le corps a été signalé à {wallace}.",
         "L'examen des dépouilles révèle que la cause immédiate du décès est une {gorge-tranchee} ayant provoqué une {hemorragie} fatale et rapide.",
         "Enfin, les incisions pratiquées sur le torse confirment qu'il s'agit de {mutilations-abdominales} d'ordre {post-mortem}, maculées de {sang} séché, marquant la signature implacable du tueur."
       ],
       "hints": [
-        "Le journal ouvert sur le pupitre contient presque tout.",
-        "Chaque fiche du journal donne le lieu de la découverte et, quand on la connaît, la profession.",
-        "La cause de la mort est écrite à la fin du journal. Ce qui a été fait après la mort se lit dans les blessures du corps n° 1."
+        "Le journal du médecin, dans la salle d'autopsie, donne les lieux, et la cause de la mort à la fin.",
+        "Les métiers ne sont écrits nulle part. L'agent en cite trois ; les effets de chaque victime (plateau, patère, mains) disent lequel est le sien.",
+        "Un dé, des épingles, des doigts piqués : la couture. Du fard, un bonnet neuf, dehors la nuit sans de quoi payer son lit : la rue. Ce qui a été fait après la mort se lit dans les blessures du corps n° 1."
       ]
     }
   ]
