@@ -488,3 +488,34 @@ select.input { padding-right: 28px; }
   .identity-row { grid-template-columns: 1fr auto; }
   .identity-row .arrow { display: none; }
 }
+
+/* ---------- Signalements des testeurs ---------- */
+.side-link .badge.new { margin-left: auto; background: var(--accent); color: var(--on-accent); }
+.badge.idea { background: var(--accent-soft); color: var(--accent-text); }
+.reports-time { color: var(--muted); }
+.reports-error { color: var(--danger-text); background: var(--danger-soft); border-radius: 8px; padding: 10px 14px; margin: 0 0 16px; }
+.reports-filters { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+.reports-done { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 14px; cursor: pointer; }
+.reports-list { display: grid; gap: 12px; }
+.report-card { padding: 14px 18px; }
+.report-card.status-nouveau { border-left: 3px solid var(--accent); }
+.report-card.status-regle { opacity: 0.6; }
+.report-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.report-meta { color: var(--muted); font-size: 13px; }
+.report-status-pick { margin-left: auto; font-size: 13px; }
+.report-message { margin: 10px 0 0; white-space: pre-wrap; line-height: 1.5; }
+.report-foot { display: flex; align-items: flex-start; gap: 10px; margin-top: 10px; }
+.report-foot .btn { margin-left: auto; }
+.report-ctx { flex: 1; font-size: 13px; }
+.report-ctx summary { cursor: pointer; color: var(--muted); }
+.report-ctx pre {
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: var(--field);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text-2);
+  font: 12px/1.45 ui-monospace, Consolas, monospace;
+}

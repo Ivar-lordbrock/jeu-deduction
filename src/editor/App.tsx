@@ -1,10 +1,12 @@
 import type { ComponentChildren } from 'preact';
 import { useEffect, useRef } from 'preact/hooks';
 import { caseIssues } from './model';
+import { loadReports, newReports, useReports } from './reports';
 import { addChapter, casesOfChapter, createCase, flush, navigate, state, useEditor, type CaseEntry, type Route } from './store';
 import { CaseView } from './views/CaseView';
 import { ChapterView } from './views/ChapterView';
 import { CharactersView } from './views/CharactersView';
+import { ReportsView } from './views/ReportsView';
 import { StoryView } from './views/StoryView';
 
 export function App() {
@@ -17,6 +19,11 @@ export function App() {
   useEffect(() => {
     mainRef.current?.scrollTo({ top: 0 });
   }, [viewKey]);
+
+  // Les signalements des testeurs sont relus à l'ouverture : la barre latérale compte les nouveaux.
+  useEffect(() => {
+    void loadReports();
+  }, []);
 
   const gameTitle = s.story?.title;
   useEffect(() => {
@@ -50,6 +57,8 @@ function View({ route }: { route: Route }) {
   switch (route.view) {
     case 'characters':
       return <CharactersView />;
+    case 'reports':
+      return <ReportsView />;
     case 'chapter':
       return <ChapterView id={route.id} />;
     case 'case':
@@ -100,8 +109,10 @@ function SaveIndicator() {
 
 function Sidebar() {
   const s = useEditor();
+  const rep = useReports();
   const r = s.route;
   const orphans = casesOfChapter(null);
+  const fresh = newReports();
 
   return (
     <nav class="ed-side" aria-label="Navigation">
@@ -111,6 +122,16 @@ function Sidebar() {
       </SideLink>
       <SideLink active={r.view === 'characters'} onClick={() => navigate({ view: 'characters' })}>
         Personnages <span class="count">{s.story.characters.length}</span>
+      </SideLink>
+      <SideLink active={r.view === 'reports'} onClick={() => navigate({ view: 'reports' })}>
+        Signalements
+        {fresh > 0 ? (
+          <span class="badge new" title={`${fresh} signalement(s) pas encore lu(s)`}>
+            {fresh}
+          </span>
+        ) : (
+          <span class="count">{rep.status === 'ready' ? rep.items.length : ''}</span>
+        )}
       </SideLink>
 
       <div class="side-section">

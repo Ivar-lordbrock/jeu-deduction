@@ -999,6 +999,49 @@ button.chip:hover { background: color-mix(in srgb, var(--cat) 25%, transparent);
 .save-error { margin: 8px 0 0; color: var(--danger); font-size: 14px; min-height: 1em; }
 .save-error:empty { display: none; }
 
+/* Signaler un bug ou une idée (testeurs) */
+.report-btn { display: inline-flex; align-items: center; gap: 6px; }
+.report-btn .ico { width: 15px; height: 15px; }
+.report-float { position: fixed; top: 14px; right: 56px; z-index: 25; height: 34px; background: rgb(12 20 19 / 0.65); }
+#app.screen-case ~ .report-float { display: none; }
+.modal.report-dialog { max-width: 560px; }
+.report-help { font-family: var(--serif); font-size: 17px; margin: 10px 0 0; }
+.report-kinds { display: flex; gap: 8px; margin: 18px 0 4px; }
+.report-kind { flex: 1; }
+.report-kind[aria-checked='true'] { border-color: var(--accent); color: var(--accent); background: rgb(226 174 76 / 0.08); }
+.report-dialog > label { display: block; margin: 14px 0 6px; color: var(--muted); font-size: 14px; }
+.report-field {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font: 15px/1.45 var(--sans);
+}
+textarea.report-field { resize: vertical; min-height: 110px; }
+.report-field:focus { outline: none; border-color: var(--accent); }
+.report-dialog > label.report-attach { display: flex; align-items: center; gap: 8px; margin-top: 16px; color: var(--text); font-size: 14px; cursor: pointer; }
+.report-attach input { accent-color: var(--accent); width: 16px; height: 16px; }
+.report-context { margin: 6px 0 0 24px; font-size: 13px; }
+.report-context summary { cursor: pointer; color: var(--muted); }
+.report-context pre {
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  max-height: 170px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  font: 12px/1.45 ui-monospace, Consolas, monospace;
+}
+.report-status { min-height: 1.3em; margin: 14px 0 10px; font-size: 14px; color: var(--muted); }
+.report-status.ok { color: var(--ok); }
+.report-status.error { color: var(--danger); }
+
 /* La une de fin d'affaire */
 .frontpage {
   display: flex;
@@ -1200,3 +1243,5 @@ kbd {
   .intro-caption.center, .intro-caption.center.on { transform: translateY(-50%); left: 5vw; right: 5vw; width: auto; }
   .intro-caption:not(.center), .intro-caption:not(.center).on { left: 5vw; right: 5vw; width: auto; }
 }
+.report-manual { margin-bottom: 12px; font: 12px/1.45 ui-monospace, Consolas, monospace; color: var(--muted); }
+.report-manual[hidden] { display: none; }

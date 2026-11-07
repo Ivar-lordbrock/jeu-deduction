@@ -8,6 +8,7 @@ import type { IncomingMessage, ServerResponse } from 'node:http';
 import path from 'node:path';
 import type { Plugin } from 'vite';
 import { slugify, uniqueId } from '../src/engine/slug.ts';
+import { REPORT_INBOX } from '../src/signalements.ts';
 
 const FOLDER_RE = /^[a-z0-9][a-z0-9-]{0,80}$/;
 const IMAGE_FILE_RE = /^[a-z0-9][a-z0-9_-]{0,80}\.(svg|png|jpe?g|webp)$/i;
@@ -191,6 +192,31 @@ export function editorApi(): Plugin {
     return { trashedTo: path.relative(root, target) };
   }
 
+  /** Clé de la boîte aux lettres des signalements : SIGNALEMENTS_CLE dans .env.local (jamais dans le dépôt). */
+  async function inboxKey(): Promise<string> {
+    try {
+      const env = await fs.readFile(path.join(root, '.env.local'), 'utf8');
+      return /^\s*SIGNALEMENTS_CLE\s*=\s*(\S+)\s*$/m.exec(env)?.[1] ?? '';
+    } catch {
+      return '';
+    }
+  }
+
+  /** Relit la boîte aux lettres (tools/signalements.gs) ou y change un statut : le script répond en JSON. */
+  async function inbox(params: Record<string, string>) {
+    const cle = await inboxKey();
+    if (!REPORT_INBOX || !cle) throw new HttpError(503, 'Boîte aux lettres pas encore branchée : adresse dans src/signalements.ts, clé SIGNALEMENTS_CLE dans .env.local');
+    const r = await fetch(`${REPORT_INBOX}?${new URLSearchParams({ ...params, cle })}`, { redirect: 'follow' });
+    let body: { ok?: boolean; erreur?: string } = {};
+    try {
+      body = await r.json();
+    } catch {
+      throw new HttpError(502, `Réponse illisible de la boîte aux lettres (${r.status})`);
+    }
+    if (!body.ok) throw new HttpError(502, `Boîte aux lettres : ${body.erreur ?? 'refus'}`);
+    return body;
+  }
+
   async function handle(req: IncomingMessage, res: ServerResponse) {
     const url = new URL(req.url ?? '/', 'http://localhost');
     const parts = url.pathname.split('/').filter(Boolean).map(decodeURIComponent);
@@ -226,6 +252,14 @@ export function editorApi(): Plugin {
 
       case 'DELETE cases/:folder':
         return send(res, 200, await trashCase(parts[1]));
+
+      case 'GET signalements':
+        return send(res, 200, await inbox({ action: 'liste' }));
+
+      case 'POST signalements': {
+        const body = await readJsonBody(req);
+        return send(res, 200, await inbox({ action: 'statut', ligne: String(body.ligne ?? ''), statut: String(body.statut ?? '') }));
+      }
 
       case 'PUT cases/:folder/files': {
         const dir = caseDir(parts[1]);

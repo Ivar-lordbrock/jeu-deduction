@@ -15,6 +15,7 @@ export const CASE_TABS: CaseTab[] = ['recit', 'scene', 'mots', 'reflexion', 'ver
 export type Route =
   | { view: 'story' }
   | { view: 'characters' }
+  | { view: 'reports' }
   | { view: 'chapter'; id: string }
   | { view: 'case'; folder: string; tab: CaseTab; zone?: string | null; page?: string | null };
 
@@ -83,6 +84,7 @@ const message = (e: unknown) => (e instanceof Error ? e.message : String(e));
 export function parseHash(hash: string): Route {
   const [view, a, b, c] = hash.replace(/^#\/?/, '').split('/').map(decodeURIComponent);
   if (view === 'personnages') return { view: 'characters' };
+  if (view === 'signalements') return { view: 'reports' };
   if (view === 'chapitre' && a) return { view: 'chapter', id: a };
   if (view === 'affaire' && a) {
     const tab = (CASE_TABS as string[]).includes(b) ? (b as CaseTab) : 'recit';
@@ -104,6 +106,8 @@ export function routeToHash(r: Route): string {
       return '#histoire';
     case 'characters':
       return '#personnages';
+    case 'reports':
+      return '#signalements';
     case 'chapter':
       return `#chapitre/${enc(r.id)}`;
     case 'case': {

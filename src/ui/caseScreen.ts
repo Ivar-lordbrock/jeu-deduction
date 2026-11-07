@@ -11,6 +11,7 @@ import { openFrontPage, renderReport } from './frontPage';
 import { renderGazette } from './gazette';
 import { createGuide, type Guide } from './guide';
 import { renderNotebook } from './notebook';
+import { reportButton, setReportContext } from './reportDialog';
 import { openRules } from './rules';
 import type { Actions, Session } from './session';
 import { playSound, prepareSounds, soundButton, zoneSound } from './sound';
@@ -435,11 +436,28 @@ export function openCase(root: HTMLElement, data: LoadedCase, opts: CaseScreenOp
   }
 
   render();
+  // Un signalement de testeur joint où en est le joueur dans l'affaire.
+  setReportContext(() => {
+    const scenes = caseScenes(data);
+    const scene = sceneById(data, s.sceneId);
+    const hints = Object.values(s.progress.hints).reduce((n, x) => n + x, 0);
+    return [
+      `Affaire : ${data.title} (${data.folder})`,
+      ...(scenes.length > 1 ? [`Scène : ${scene.title} (${scenes.findIndex((x) => x.id === scene.id) + 1} sur ${scenes.length})`] : []),
+      `Zoom : ×${s.view.k.toFixed(1).replace('.', ',')}`,
+      `Fiche ouverte : ${s.openZone ?? 'aucune'}`,
+      `Mots notés : ${s.progress.collected.length} sur ${Object.keys(data.words).length}`,
+      `Articles validés : ${s.progress.solved.length} sur ${data.pages.length}${isCaseSolved(data, s.progress) ? ' (affaire résolue)' : ''}`,
+      `Indices révélés : ${hints}, articles jugés faux : ${s.progress.mistakes}`,
+      `Temps dans l'affaire : ${Math.round(s.progress.elapsed / 60000)} min`,
+    ];
+  });
   // Première partie : le tutoriel se joue dans l'affaire marquée « tutorial ».
   if (data.tutorial && !loadFlags().tutorialDone) startGuide();
 
   return () => {
     save();
+    setReportContext(null);
     window.clearInterval(clock);
     root.removeEventListener('pointerdown', onActivity, true);
     root.removeEventListener('pointermove', onActivity, true);
@@ -491,6 +509,7 @@ function renderHeader(s: Session, a: Actions, kicker: string): HTMLElement {
         { class: 'btn ghost small help-btn', 'data-tool': 'help', title: 'Comment jouer', 'aria-label': 'Comment jouer', onClick: () => a.help() },
         '?',
       ),
+      reportButton(),
       soundButton(),
     ),
   );

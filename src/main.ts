@@ -10,15 +10,17 @@ import { openCase } from './ui/caseScreen';
 import { introSeen, openIntro } from './ui/intro';
 import { renderCases } from './ui/menu';
 import { renderPrologue } from './ui/prologue';
+import { reportButton, watchErrors } from './ui/reportDialog';
 import { openRules } from './ui/rules';
 import { openSaveDialog } from './ui/saveDialog';
 import { ambienceFor, setAmbience, soundButton } from './ui/sound';
 import { renderTitle } from './ui/title';
 
+watchErrors();
 const root = document.getElementById('app') as HTMLElement;
 document.title = GAME_TITLE;
-// Le bouton du son flotte sur les menus ; dans une affaire, il est dans l'en-tête.
-document.body.append(soundButton('sound-float'));
+// Les boutons du son et « Signaler » flottent sur les menus ; dans une affaire, ils sont dans l'en-tête.
+document.body.append(reportButton('report-float'), soundButton('sound-float'));
 
 // Quand l'éditeur enregistre une affaire ou l'histoire, le jeu se recharge (sur l'écran ouvert).
 if (import.meta.hot) {
