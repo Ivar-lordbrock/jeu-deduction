@@ -5,7 +5,7 @@
   "title": "Ce n'est pas lui",
   "intro": "Leman Street, lundi 16 février 1891, dix heures du matin.\nVendredi, à 2 h 15, un jeune agent a trouvé Frances Hale sous une arche du chemin de fer, à Swift Gardens. Samedi soir, The Comet titrait : « C'EST LUI ! » Il accuse James Selwyn, un chauffeur de navire qui avait passé la soirée avec elle. Et il demande : était-il aussi l'Éventreur de 1888 ?\n\nVous revenez dans le poste où tout a commencé, il y a deux ans et demi. Cette fois, vous ne cherchez pas un coupable. Vous cherchez la vérité, même si elle ne fait pas un bon titre.",
   "epilogue": "Le 3 mars 1891, au tribunal de Thames, on abandonna les charges contre James Selwyn. Dehors, la foule des marins l'applaudit et le porta en triomphe. Personne ne fut jamais jugé pour la mort de Frances Hale. Comme pour les autres, il n'y eut pas de coupable.\n\nLe lendemain, The Comet publia un rectificatif en page deux. Pour la première fois, Tim le signa de son vrai nom : Tim Stone.\n\nEt vous, vous avez rangé votre carnet de reporter. Sur une porte de Commercial Street, il y a maintenant une petite plaque de cuivre : « Agence de recherches. Discrétion assurée. »\n\nOn n'a jamais su le nom de l'assassin. On connaît les leurs :\nEllen Holt. Agnes Croft. Elsa Lindqvist. Margaret Jenkins. Jenny Doyle. Frances Hale.",
-  "notes": "Brouillon écrit par Claude : à relire et à réécrire librement. D'après le meurtre de Frances Coles (Swallow Gardens, 13 février 1891) et l'arrestation de James Thomas Sadler, relâché le 3 mars 1891. Noms changés : Frances Coles → Frances Hale, James Sadler → James Selwyn, Swallow Gardens → Swift Gardens, PC Ernest Thompson → Ernest Thorne, Duncan Campbell → Duncan Cameron, J. Havelock Wilson → Harry Wilkes, le Winestead → le Winfield, le Fez → le Tanger, Elizabeth Stride → Elsa Lindqvist (le nom prévu dans story.json). Inventés : le gardien Pell, Mme Venn (d'après la modiste de Nottingham Street). Arrangés pour le jeu : la feuille de la loge des docks (d'après la bagarre de Sadler à la grille de St Katharine), le psautier dans la boîte non réclamée (Stride avait reçu un psautier de l'église suédoise, qui l'aida à l'identifier), Stone et Tim. Scènes : tools/scene-retour.mjs (npm run scene:retour), d'après la scène de l'affaire 1 ; versions peintes (scene-ia.png, reserve-ia.png) refaites dans D:/ComfyUI/scenes-couches.mjs (le poste reprend le décor peint de l'affaire 1). Bruits des zones : sound.ts (ZONE_SOUNDS) ; position sur la carte : menu.ts (MAP_PINS).",
+  "notes": "Brouillon écrit par Claude : à relire et à réécrire librement. D'après le meurtre de Frances Coles (Swallow Gardens, 13 février 1891) et l'arrestation de James Thomas Sadler, relâché le 3 mars 1891. Noms changés : Frances Coles → Frances Hale, James Sadler → James Selwyn, Swallow Gardens → Swift Gardens, PC Ernest Thompson → Ernest Thorne, Duncan Campbell → Duncan Cameron, J. Havelock Wilson → Harry Wilkes, le Winestead → le Winfield, le Fez → le Tanger, Elizabeth Stride → Elsa Lindqvist (le nom prévu dans story.json). Inventés : le gardien Pell, Mme Venn (d'après la modiste de Nottingham Street). Arrangés pour le jeu : la feuille de la loge des docks (d'après la bagarre de Sadler à la grille de St Katharine), le psautier cousu dans une reprise du châle, rangé dans la boîte non réclamée (le châle « reprisé de partout » de l'affaire 2 ; Stride avait reçu un psautier de l'église suédoise, qui l'aida à l'identifier), Stone et Tim. Scènes : tools/scene-retour.mjs (npm run scene:retour), d'après la scène de l'affaire 1 ; versions peintes (scene-ia.png, reserve-ia.png) refaites dans D:/ComfyUI/scenes-couches.mjs (le poste reprend le décor peint de l'affaire 1). Bruits des zones : sound.ts (ZONE_SOUNDS) ; position sur la carte : menu.ts (MAP_PINS).",
   "scene": {
     "image": "scene-ia.png",
     "width": 1600,
@@ -31,7 +31,7 @@
       "category": "person"
     },
     "stone": {
-      "label": "le sergent Stone",
+      "label": "William Stone",
       "category": "person"
     },
     "thorne": {
@@ -229,7 +229,7 @@
     {
       "id": "stone",
       "kind": "person",
-      "label": "Le sergent au comptoir",
+      "label": "L'homme au comptoir",
       "character": "stone",
       "rect": {
         "x": 560,
@@ -243,7 +243,7 @@
         "w": 90,
         "h": 120
       },
-      "text": "Le sergent écrit sans lever la tête. Il a vieilli.\n« Vingt ans que je tiens ce registre, de ma main. Le Comet a écrit que c'était lui ? Le Comet a écrit beaucoup de choses, depuis 1888. Cette fois, mon neveu n'a rien eu de moi. Pas un mot. »"
+      "text": "L'adjoint écrit sans lever la tête, trois chevrons sur la manche. Il a vieilli.\n« Vingt ans que je tiens ce registre, de ma main. Le Comet a écrit que c'était lui ? Le Comet a écrit beaucoup de choses, depuis 1888. Cette fois, mon neveu n'a rien eu de moi. Pas un mot. »"
     },
     {
       "id": "selwyn",
@@ -322,7 +322,7 @@
         "w": 96,
         "h": 42
       },
-      "text": "Une feuille arrivée ce matin des docks.\n« Docks de [[st-katharine|St Katharine]], loge de la grille. 13 février, de [[h0205|2 h 05]] à [[h0240|2 h 40]] : un chauffeur ivre, blessé à la tête, refusé à la grille, gardé et pansé dans la [[loge]] par l'agent des docks et deux dockers. Nom donné : Selwyn, du Tanger. »\nEn marge, de la main du sergent : « Vérifié. — W. S. »"
+      "text": "Une feuille arrivée ce matin des docks.\n« Docks de [[st-katharine|St Katharine]], loge de la grille. 13 février, de [[h0205|2 h 05]] à [[h0240|2 h 40]] : un chauffeur ivre, blessé à la tête, refusé à la grille, gardé et pansé dans la [[loge]] par l'agent des docks et deux dockers. Nom donné : Selwyn, du Tanger. »\nEn marge, de la main de l'adjoint : « Vérifié. — W. S. »"
     },
     {
       "id": "journaux",
@@ -482,15 +482,15 @@
         "w": 172,
         "h": 82
       },
-      "text": "Une boîte de carton, descendue de l'étagère des objets non réclamés.\nÉtiquette : « 30 septembre 1888. Femme [[inconnue]], [[kings-row|King's Row]]. Non réclamé. »\nPersonne n'est jamais venu la chercher.",
+      "text": "Une boîte de carton, descendue de l'étagère des objets non réclamés.\nÉtiquette : « 30 septembre 1888. Femme [[inconnue|inconnue]], [[kings-row|King's Row]]. Non réclamé. »\nPersonne n'est jamais venu la chercher.",
       "details": [
         {
-          "label": "Le sachet et le ticket",
-          "text": "Un sachet de [[pastilles]] pour l'haleine, entamé. Un [[ticket]] de garni : « [[flower-dean|Flower and Dean Street]]. Lit pour la nuit, 4 d. »"
+          "label": "Ce qu'il y a dedans",
+          "text": "Ce qu'on avait trouvé sur elle, à la morgue : un petit miroir à main, un pot de fard rouge, trois pence. Le sachet de [[pastilles]] pour l'haleine qu'elle tenait dans la main gauche, entamé. Un [[ticket]] de garni jamais poinçonné : « [[flower-dean|Flower and Dean Street]]. Lit pour la nuit, 4 d. »\nEt, plié au fond, son vieux châle de laine, reprisé de partout."
         },
         {
-          "label": "Le petit livre noir",
-          "text": "Un [[psautier]] en suédois, la tranche usée. Sur la page de garde, d'une écriture soignée : « À [[lindqvist|Elsa Lindqvist]], de l'église suédoise de [[princes-square|Princes Square]]. Noël 1886. »\nGlissée dedans, une carte de l'église : « Secours aux pauvres. E. Lindqvist, née le 27 novembre 1843, à Göteborg. »"
+          "label": "Le châle",
+          "text": "Les reprises sont faites à grands points, vite, de travers. Sauf une : un carré bien net, cousu serré, plus épais que le reste. En 1888, personne ne l'a décousu.\nLe fil cède sous vos doigts. Dedans, enveloppé dans un mouchoir, un petit [[psautier]] en suédois, la tranche usée. Sur la page de garde, d'une écriture soignée : « À [[lindqvist|Elsa Lindqvist]], de l'église suédoise de [[princes-square|Princes Square]]. Noël 1886. »\nGlissée dedans, une carte de l'église : « Secours aux pauvres. E. Lindqvist, née le 27 novembre 1843, à Göteborg. »"
         }
       ]
     }
@@ -529,7 +529,7 @@
       "hints": [
         "Le registre de garde dit qui a sifflé sous l'arche, et depuis quand il est en service.",
         "Une carte, une étiquette, un registre signé : chacun laisse son nom quelque part.",
-        "Le sergent parle de son registre. Un registre se signe à la fin."
+        "L'homme au comptoir parle de son registre. Un registre se signe à la fin."
       ]
     },
     {
@@ -578,11 +578,11 @@
       "title": "Son nom",
       "sentences": [
         "L'{inconnue} de {kings-row} tenait des {pastilles} dans la main gauche ; son {ticket} de garni venait de {flower-dean}.",
-        "Dans sa boîte, un {psautier} de l'église suédoise de {princes-square} porte son nom : elle s'appelait {lindqvist}."
+        "Cousu dans son vieux châle, un {psautier} de l'église suédoise de {princes-square} porte son nom : elle s'appelait {lindqvist}."
       ],
       "hints": [
         "La boîte vient d'une étagère que personne ne regarde.",
-        "Sous le sachet et le ticket, il y a un petit livre noir.",
+        "Au fond de la boîte, le vieux châle : une de ses reprises n'est pas comme les autres.",
         "Souvenez-vous : à King's Row, le docteur n'a trouvé que des pastilles dans sa main."
       ]
     }

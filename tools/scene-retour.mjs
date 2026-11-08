@@ -1,7 +1,7 @@
 // Scènes de l'affaire 7 : « Ce n'est pas lui ».
 //   scene.svg   : le poste de police de Leman Street, lundi 16 février 1891, 10 h. La même pièce que l'affaire 1
 //                 (tirée de tools/scene-commissariat.mjs), deux ans et demi plus tard : James Selwyn menotté sur le banc,
-//                 la recrue qui a trouvé Frances, le sergent Stone, le délégué des marins et Tim, The Comet à la main.
+//                 la recrue qui a trouvé Frances, l'adjoint Stone, le délégué des marins et Tim, The Comet à la main.
 //   reserve.svg : la réserve des pièces, l'arrière-salle du poste : le couteau, les deux chapeaux, la boîte des objets
 //                 non réclamés (ceux de l'inconnue de King's Row).
 // Les papiers (indices) restent clairs. La gravure et la rue de la fenêtre viennent de tools/scene-commissariat/.
@@ -22,7 +22,7 @@ const { perso, defs: defsPersos, cadres } = creerPersos();
 
 // ——— placements ———
 const selwyn = { x: 165, y: 760, s: echelle(760) }; // assis sur le banc, menotté, contre le mur gauche
-const stone = { x: 590, y: 0, s: 0.7 }; // le sergent Stone, derrière le comptoir : ses poings reposent sur le plateau
+const stone = { x: 590, y: 0, s: 0.7 }; // l'adjoint Stone, derrière le comptoir : ses poings reposent sur le plateau
 const COMPTOIR = 414; // dessus du plateau
 stone.y = COMPTOIR - 4 - stone.s * reperes['agent-sergent'].mains.proche[1];
 const thorne = { x: 352, y: 724, s: echelle(724) }; // la recrue, au garde-à-vous près du banc
@@ -406,7 +406,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" widt
   <rect x="410" y="${COMPTOIR}" width="490" height="12" fill="#1d2e2c"/>
   <path d="M410 ${COMPTOIR} H900" stroke="#c99a4e" stroke-width="2.5" opacity="0.7"/>
 
-  <!-- Le sergent William Stone, derrière le comptoir, la tête basse : trois chevrons sur la manche -->
+  <!-- L’adjoint William Stone, derrière le comptoir, la tête basse : trois chevrons sur la manche -->
   <g clip-path="url(#derriereComptoir)">${personnages.stone}</g>
 
   <!-- registre de garde ouvert sur son pupitre, plume, encrier -->

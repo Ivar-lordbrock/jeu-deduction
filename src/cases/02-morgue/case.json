@@ -8,7 +8,7 @@
   "notes": {
     "moment": "Dimanche 30 septembre 1888, dans la matinée, après la scène du poste. Deux salles. Salle de dépôt : le corps n° 1 sous son drap, ses effets sur un plateau, ses vêtements à la patère, l'agent Edouard Davis à la porte, le joueur penché avec sa loupe. Salle d'autopsie : le docteur Albert Jefferson examine le corps n° 2 ; ses effets sur un plateau, le journal sur le pupitre.",
     "truth": "Corps n° 1, salle de dépôt : l'inconnue de King's Row, tuée vers 1 h, prostituée (du fard, un bonnet neuf, dehors la nuit avec trois pence pour un lit à quatre, des mains sans gerçures ni piqûres d'aiguille). Corps n° 2, salle d'autopsie : Margaret Jenkins, couturière (dé, épingles, fil, ourlet commencé, doigts piqués), tuée à Wallace Street vers 2 h 30, reconnue par Elisabeth Coyle. Même tueur : gorge tranchée (cause de la mort : hémorragie), puis mutilations abdominales après la mort. Le joueur relie le numéro de chaque étiquette à la fiche du journal du médecin. Les métiers ne sont écrits nulle part : l'agent en donne les mots, les effets disent lequel va à qui.",
-    "falseLeads": "Distracteurs : victime, cinquième (le docteur compte cinq victimes), Elisabeth Coyle (la témoin, pas la victime), lutte (le sang sous les ongles du corps n° 1 : impossible de dire à qui il appartient), blanchisseuse (l'agent cite trois métiers ; aucune des deux n'a les mains gercées par la lessive).",
+    "falseLeads": "Distracteurs : victime, quatrième (le docteur compte quatre victimes), Elisabeth Coyle (la témoin, pas la victime), lutte (le sang sous les ongles du corps n° 1 : impossible de dire à qui il appartient), blanchisseuse (l'agent cite trois métiers ; aucune des deux n'a les mains gercées par la lessive).",
     "other": "Scènes générées par tools/scene-morgue.mjs (npm run scene:morgue) : scene.svg (la salle de dépôt) et autopsie.svg (la salle d'autopsie). Les corps sont couverts : les blessures se décrivent dans les fiches, jamais dans l'image. Corps n° 1 (salle de dépôt) : l'inconnue de King's Row, entièrement couverte, pieds visibles. Corps n° 2 (salle d'autopsie) : Margaret Jenkins, drap rabattu aux épaules, visage de profil. Les images du jeu sont les passes IA (scene-ia.png, autopsie-ia.png, D:/ComfyUI/scenes-couches.mjs 02-morgue-depot et 02-morgue-autopsie) peintes d'après ces dessins ; les corps, les plateaux d'effets, la patère et le journal y sont recollés tels quels. Après un changement des dessins ou des zones, refaire les passes."
   },
   "scene": {
@@ -71,8 +71,8 @@
       "label": "victime",
       "category": "person"
     },
-    "cinquieme": {
-      "label": "cinquième",
+    "quatrieme": {
+      "label": "quatrième",
       "category": "other"
     },
     "elisabeth-coyle": {
@@ -254,7 +254,7 @@
         "w": 111,
         "h": 148
       },
-      "text": "Le médecin légiste, pince-nez sur le nez, se penche sur le corps, une sonde à la main.\n« Docteur [[jefferson|Albert Jefferson]]. Ne touchez à rien, jeune homme. Vous êtes le [[journaliste]] qui cherche à démêler tout ça ? Bon courage... C'est déjà la [[cinquieme]] [[victimes]] que je reçois avec ces blessures. »"
+      "text": "Le médecin légiste, pince-nez sur le nez, se penche sur le corps, une sonde à la main.\n« Docteur [[jefferson|Albert Jefferson]]. Ne touchez à rien, jeune homme. Vous êtes le [[journaliste]] qui cherche à démêler tout ça ? Bon courage... C'est déjà la [[quatrieme]] [[victimes]] que je reçois avec ces blessures. »"
     },
     {
       "id": "effets-2",
