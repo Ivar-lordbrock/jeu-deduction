@@ -1,0 +1,641 @@
+{
+  "id": "millers-court",
+  "order": 1,
+  "chapter": "chapitre-3",
+  "title": "La chambre 13",
+  "intro": "Dorset Street, vendredi 9 novembre 1888, une heure et demie de l'après-midi.\nDans la City, la foule acclame le défilé du nouveau Lord-Maire. Ici, dans une cour grande comme un mouchoir, personne ne parle. Ce matin, une jeune femme, Jenny Doyle, a été retrouvée morte dans sa chambre, au n° 13. Depuis, la porte est restée fermée : la police attend des chiens qui ne viennent pas.\n\nVous ne verrez pas la chambre. Vous n'en avez pas besoin. Comment l'assassin est-il sorti d'une chambre fermée ? Qui a vu quoi, et quand ? Et trois jours plus tard, au poste de Commercial Street, qui dit vrai ?",
+  "epilogue": "La porte n'avait pas besoin de clé : un loquet à ressort, qu'on referme en tirant. L'assassin de Jenny Doyle est reparti comme il était venu, par la cour, sans que personne le voie.\n\nL'inspecteur Hollis crut d'abord George Hutchings. Puis la police cessa d'en parler : un homme si bien mis, couvert d'or, la nuit, dans Dorset Street ? Les journaux, eux, publièrent son portrait pendant des semaines. Personne ne sut jamais si Hutchings avait vu l'assassin, s'il l'avait inventé, ou s'il était seulement l'homme au chapeau mou qui guettait la cour.\n\nJenny Doyle avait environ vingt-cinq ans. On l'enterra le 19 novembre ; des milliers de gens suivirent son cercueil. Ce fut le dernier des cinq meurtres que la police attribua à l'Éventreur. Il ne fut jamais retrouvé.",
+  "notes": "Brouillon écrit par Claude : à relire et à réécrire librement. D'après les faits de Miller's Court (Mary Jane Kelly, 9 novembre 1888), noms changés : McCarthy → McAllister, Bowyer → Boyd, Cox → Cullen, Prater → Porter, Lewis → Lowe, Maxwell → Maxton, Barnett → Bennett, Hutchinson → Hutchings, Badham → Baird, Bond → Bland. Arrangés pour le jeu : le billet d'Arden, le carnet de Tim, la note épinglée de Hollis, le chapeau mou de Hutchings sur le comptoir (le jeu tranche : l'homme vu par Sarah Lowe, c'est lui ; les historiens en discutent). La chambre n'est jamais montrée. Scènes : tools/scene-millers.mjs (npm run scene:millers). Bruits des zones : sound.ts (ZONE_SOUNDS) ; position sur la carte : menu.ts (MAP_PINS).",
+  "scene": {
+    "image": "scene-ia.png",
+    "width": 1600,
+    "height": 900,
+    "title": "La cour de Miller's Court"
+  },
+  "scenes": [
+    {
+      "id": "poste",
+      "title": "Le poste de Commercial Street",
+      "image": "poste-ia.png",
+      "width": 1600,
+      "height": 900
+    }
+  ],
+  "words": {
+    "doyle": {
+      "label": "Jenny Doyle",
+      "category": "person"
+    },
+    "mcallister": {
+      "label": "John McAllister",
+      "category": "person"
+    },
+    "boyd": {
+      "label": "Thomas Boyd",
+      "category": "person"
+    },
+    "hollis": {
+      "label": "l'inspecteur Hollis",
+      "category": "person"
+    },
+    "arden": {
+      "label": "le surintendant Arden",
+      "category": "person"
+    },
+    "cullen": {
+      "label": "Mary Ann Cullen",
+      "category": "person"
+    },
+    "porter": {
+      "label": "Elizabeth Porter",
+      "category": "person"
+    },
+    "lowe": {
+      "label": "Sarah Lowe",
+      "category": "person"
+    },
+    "maxton": {
+      "label": "Caroline Maxton",
+      "category": "person"
+    },
+    "hutchings": {
+      "label": "George Hutchings",
+      "category": "person"
+    },
+    "baird": {
+      "label": "le sergent Baird",
+      "category": "person"
+    },
+    "bennett": {
+      "label": "Joseph Bennett",
+      "category": "person"
+    },
+    "bradford": {
+      "label": "Tim Bradford",
+      "category": "person"
+    },
+    "bland": {
+      "label": "le docteur Bland",
+      "category": "person"
+    },
+    "dorset-street": {
+      "label": "Dorset Street",
+      "category": "place"
+    },
+    "crossingham": {
+      "label": "le garni de Crossingham",
+      "category": "place"
+    },
+    "flower-dean": {
+      "label": "Flower and Dean Street",
+      "category": "place"
+    },
+    "commercial-street": {
+      "label": "Commercial Street",
+      "category": "place"
+    },
+    "chambre-13": {
+      "label": "la chambre 13",
+      "category": "place"
+    },
+    "cle": {
+      "label": "clé",
+      "category": "object"
+    },
+    "loquet": {
+      "label": "loquet à ressort",
+      "category": "object"
+    },
+    "carreau": {
+      "label": "carreau cassé",
+      "category": "object"
+    },
+    "manteau": {
+      "label": "vieux manteau",
+      "category": "object"
+    },
+    "pioche": {
+      "label": "pioche",
+      "category": "object"
+    },
+    "chiens": {
+      "label": "chiens",
+      "category": "object"
+    },
+    "chapeau-mou": {
+      "label": "chapeau mou",
+      "category": "object"
+    },
+    "astrakan": {
+      "label": "col d'astrakan",
+      "category": "object"
+    },
+    "epingle": {
+      "label": "épingle en fer à cheval",
+      "category": "object"
+    },
+    "pot-biere": {
+      "label": "pot de bière",
+      "category": "object"
+    },
+    "moustache-rousse": {
+      "label": "moustache rousse",
+      "category": "object"
+    },
+    "enquete": {
+      "label": "enquête",
+      "category": "other"
+    },
+    "loyer": {
+      "label": "29 shillings",
+      "category": "other"
+    },
+    "trente-oct": {
+      "label": "30 octobre",
+      "category": "other"
+    },
+    "huit-nov": {
+      "label": "8 novembre",
+      "category": "other"
+    },
+    "douze-nov": {
+      "label": "12 novembre",
+      "category": "other"
+    },
+    "h2345": {
+      "label": "23 h 45",
+      "category": "other"
+    },
+    "h0200": {
+      "label": "2 h",
+      "category": "other"
+    },
+    "h0230": {
+      "label": "2 h 30",
+      "category": "other"
+    },
+    "h0400": {
+      "label": "4 h",
+      "category": "other"
+    },
+    "h0830": {
+      "label": "8 h 30",
+      "category": "other"
+    },
+    "h1045": {
+      "label": "10 h 45",
+      "category": "other"
+    },
+    "h1330": {
+      "label": "13 h 30",
+      "category": "other"
+    }
+  },
+  "zones": [
+    {
+      "id": "passage",
+      "kind": "object",
+      "label": "Le passage",
+      "rect": {
+        "x": 446,
+        "y": 326,
+        "w": 138,
+        "h": 314
+      },
+      "text": "Un passage voûté, à peine plus large qu'un homme, relie la cour à [[dorset-street|Dorset Street]]. Au bout, la police tient les curieux à distance.\nJuste en face, de l'autre côté de la rue, la porte du [[crossingham|garni de Crossingham]] et son bec de gaz : de là, on voit tout ce qui entre dans la cour, et tout ce qui en sort."
+    },
+    {
+      "id": "porte",
+      "kind": "object",
+      "label": "La porte du 13",
+      "rect": {
+        "x": 602,
+        "y": 262,
+        "w": 106,
+        "h": 378
+      },
+      "text": "Une porte de bois mal peinte, un 13 en haut. Pas de trou de serrure côté cour : seulement un [[loquet|loquet à ressort]], qui se ferme tout seul quand on tire la porte derrière soi.\nElle est fermée depuis ce matin. Personne n'a le droit de l'ouvrir."
+    },
+    {
+      "id": "fenetre",
+      "kind": "object",
+      "label": "La fenêtre cassée",
+      "rect": {
+        "x": 726,
+        "y": 346,
+        "w": 168,
+        "h": 192
+      },
+      "text": "La fenêtre de la [[chambre-13|chambre 13]], la plus proche de la porte. Deux carreaux du bas sont cassés depuis longtemps : des éclats restent pris dans le cadre. Un [[manteau|vieux manteau]] bouche le premier trou ; un coin a été écarté ce matin.\nPar le [[carreau|carreau cassé]], le loquet de la porte est à portée de bras.",
+      "details": [
+        {
+          "label": "Le rideau",
+          "text": "Derrière les carreaux intacts, un rideau de mousseline est tiré. On ne voit rien de la chambre, et c'est mieux ainsi."
+        }
+      ]
+    },
+    {
+      "id": "pioche",
+      "kind": "object",
+      "label": "La pioche",
+      "rect": {
+        "x": 684,
+        "y": 504,
+        "w": 72,
+        "h": 138
+      },
+      "text": "Une [[pioche]] de terrassier, posée contre le mur. Le logeur l'a sortie de sa boutique à midi : « Si leurs chiens ne viennent pas, il faudra bien entrer. »"
+    },
+    {
+      "id": "journal",
+      "kind": "document",
+      "label": "Le journal sur le tonneau",
+      "rect": {
+        "x": 940,
+        "y": 548,
+        "w": 82,
+        "h": 94
+      },
+      "text": "The Morning Courier de ce matin, vendredi 9 novembre, plié en quatre.\n« LE CHEF DE LA POLICE DÉMISSIONNE. Sir Alan Winkoff a remis sa démission hier, [[huit-nov|8 novembre]]. »\nEn dessous : « Aujourd'hui, le défilé du nouveau Lord-Maire dans la City. »"
+    },
+    {
+      "id": "porter",
+      "kind": "person",
+      "label": "La femme à la fenêtre",
+      "character": "porter",
+      "rect": {
+        "x": 766,
+        "y": 156,
+        "w": 128,
+        "h": 100
+      },
+      "portrait": {
+        "x": 758,
+        "y": 160,
+        "w": 72,
+        "h": 96
+      },
+      "text": "Une femme se penche à la fenêtre du dessus, juste au-dessus de la chambre 13.\n« Je dors là, au-dessus d'elle. Vers [[h0400|4 heures]], mon chaton m'a marché sur la figure. Et j'ai entendu une voix de femme, toute faible : \"Oh, murder !\" Une seule fois. Ici, on entend ça tous les soirs, alors je me suis rendormie… Mon Dieu. »",
+      "details": [
+        {
+          "label": "Le chaton",
+          "text": "Un petit chat noir, sur l'appui de la fenêtre. Il fixe la porte du 13 sans bouger."
+        }
+      ]
+    },
+    {
+      "id": "tim",
+      "kind": "person",
+      "label": "L'homme au manteau à carreaux",
+      "character": "tim",
+      "rect": {
+        "x": 433,
+        "y": 250,
+        "w": 124,
+        "h": 391
+      },
+      "portrait": {
+        "x": 442,
+        "y": 247,
+        "w": 81,
+        "h": 108
+      },
+      "text": "« Laissez-moi passer, je suis de la presse ! » L'agent ne bouge pas. [[bradford|Tim Bradford]] vous fait un clin d'œil fatigué.\n« Toute la City regarde le défilé du Lord-Maire, et nous, on est ici. Le Comet aura son édition spéciale avant le Courier, crois-moi. Même si je dois payer chaque témoin de Dorset Street. »",
+      "details": [
+        {
+          "label": "Son carnet",
+          "text": "« 9 nov., Miller's Court. Le logeur : loyer en retard. Voisine du n° 5 : un homme roux vers minuit. — À trouver : qui d'autre l'a vue ? Payer bien. »"
+        }
+      ]
+    },
+    {
+      "id": "cullen",
+      "kind": "person",
+      "label": "La femme au châle noir",
+      "character": "cullen",
+      "rect": {
+        "x": 58,
+        "y": 280,
+        "w": 151,
+        "h": 445
+      },
+      "portrait": {
+        "x": 78,
+        "y": 277,
+        "w": 98,
+        "h": 131
+      },
+      "text": "Une veuve serre son châle noir sur le pas de la porte n° 5. Elle a les yeux rouges.\n« Je l'ai vue rentrer à [[h2345|minuit moins le quart]], avec un homme. Petit, trapu, le visage plein de taches, une [[moustache-rousse|moustache rousse]], un [[pot-biere|pot de bière]] à la main. Elle m'a dit bonsoir, elle allait chanter. Et elle a chanté, longtemps : Une violette sur la tombe de ma mère. À 3 heures, quand je suis rentrée, tout était noir chez elle. Plus un bruit. »"
+    },
+    {
+      "id": "mcallister",
+      "kind": "person",
+      "label": "L'homme au tablier",
+      "character": "mcallister",
+      "rect": {
+        "x": 1040,
+        "y": 246,
+        "w": 177,
+        "h": 517
+      },
+      "portrait": {
+        "x": 1093,
+        "y": 241,
+        "w": 118,
+        "h": 157
+      },
+      "text": "Le logeur serre un gros cahier rouge contre son tablier.\n« Elle me devait [[loyer|vingt-neuf shillings]]. Ce matin, j'ai envoyé mon homme, Tom [[boyd|Boyd]], frapper chez elle. Pas de réponse. La [[cle|clé]] ? Perdue depuis des semaines ! Et le carreau, cassé un soir qu'ils se disputaient, elle et son homme. Je n'ai jamais rien fait réparer. »",
+      "details": [
+        {
+          "label": "Le cahier des loyers",
+          "text": "« J. [[mcallister|McAllister]], 27 [[dorset-street|Dorset Street]]. Loyers de Miller's Court. »\nN° 5 : Mme [[cullen|Cullen]], veuve. À jour.\nN° 13 : [[doyle|J. Doyle]] et [[bennett|J. Bennett]], 4 s 6 d la semaine. « J. Bennett » est rayé : « parti le [[trente-oct|30 oct.]] ». En marge : « dû : 29 s ».\nN° 20, au-dessus du 13 : E. [[porter|Porter]]. À jour."
+        }
+      ]
+    },
+    {
+      "id": "hollis",
+      "kind": "person",
+      "label": "L'homme au billet",
+      "character": "hollis",
+      "rect": {
+        "x": 250,
+        "y": 209,
+        "w": 239,
+        "h": 593
+      },
+      "portrait": {
+        "x": 269,
+        "y": 203,
+        "w": 125,
+        "h": 167
+      },
+      "text": "Un inspecteur en pèlerine relit un billet, l'autre main dans la poche.\n« Arrivé à 11 h 30. Ordre : personne n'entre, on ne touche à rien. On attend les [[chiens]] : s'ils prennent la piste dès la porte, on le tient. Ça fait deux heures qu'on attend. Je connais ce quartier depuis quatorze ans, jeune homme. Je n'ai encore rien vu, et je n'ai pas envie de voir. »",
+      "details": [
+        {
+          "label": "Le billet",
+          "text": "« Inspecteur [[hollis|Hollis]]. Les chiens ne viendront pas : leur maître les a repris. Faites forcer la porte par le logeur. — [[arden|T. Arden]], surintendant, [[h1330|13 h 30]]. »"
+        }
+      ]
+    },
+    {
+      "id": "boyd",
+      "kind": "person",
+      "label": "Le vieux soldat",
+      "character": "boyd",
+      "rect": {
+        "x": 1237,
+        "y": 374,
+        "w": 277,
+        "h": 480
+      },
+      "portrait": {
+        "x": 1285,
+        "y": 368,
+        "w": 140,
+        "h": 187
+      },
+      "text": "Un vieil homme, des rubans de médailles sur sa capote, est assis sur une caisse. Il ne lève pas la tête.\n« Le patron m'a envoyé chercher le loyer, à [[h1045|11 heures moins le quart]]. J'ai frappé deux fois. Rien. Alors j'ai fait le tour, j'ai passé la main par le carreau cassé, j'ai écarté le manteau… J'ai fait l'Inde, monsieur. Je ne dirai pas ce que j'ai vu. »"
+    },
+    {
+      "id": "affiche",
+      "kind": "document",
+      "label": "L'affiche de la police",
+      "scene": "poste",
+      "rect": {
+        "x": 310,
+        "y": 198,
+        "w": 130,
+        "h": 204
+      },
+      "text": "« MEURTRE. GRÂCE. Le 8 ou le 9 novembre, à Miller's Court, Dorset Street, [[doyle|Jenny Doyle]] a été assassinée par une ou plusieurs personnes inconnues. Le ministre de l'Intérieur fera accorder la grâce de Sa Majesté à tout complice, sauf à celui qui a commis le crime, qui aidera à trouver le coupable. Whitehall, 10 novembre 1888. »\nC'est la première fois qu'on promet une grâce depuis le début des meurtres."
+    },
+    {
+      "id": "note",
+      "kind": "document",
+      "label": "La note épinglée",
+      "scene": "poste",
+      "rect": {
+        "x": 448,
+        "y": 208,
+        "w": 106,
+        "h": 116
+      },
+      "text": "Une note de l'inspecteur, épinglée au tableau :\n« [[bennett|Joseph Bennett]], porteur au marché de Billingsgate. A vécu avec J. Doyle au n° 13 jusqu'au [[trente-oct|30 octobre]]. Entendu quatre heures le 9. Vêtements examinés : rien. Relâché.\nIl dit : la [[cle|clé]] est perdue depuis des semaines. Pour ouvrir, on passait le bras par le [[carreau|carreau cassé]], cassé le soir de leur dispute, et on tirait le [[loquet]]. Il lui lisait le journal, les meurtres surtout. — F. H. »"
+    },
+    {
+      "id": "horloge",
+      "kind": "object",
+      "label": "L'horloge",
+      "scene": "poste",
+      "rect": {
+        "x": 1196,
+        "y": 106,
+        "w": 88,
+        "h": 88
+      },
+      "text": "Six heures cinq du soir. Dehors, il fait nuit noire depuis deux heures. On vient d'allumer le gaz."
+    },
+    {
+      "id": "vitre",
+      "kind": "person",
+      "label": "L'homme derrière la vitre",
+      "character": "tim",
+      "scene": "poste",
+      "rect": {
+        "x": 127,
+        "y": 305,
+        "w": 94,
+        "h": 297
+      },
+      "portrait": {
+        "x": 133,
+        "y": 302,
+        "w": 62,
+        "h": 83
+      },
+      "text": "Dehors, sous le bec de gaz de [[commercial-street|Commercial Street]], Tim Bradford attend, son carnet à la main. Il ne quitte pas l'ouvrier des yeux.",
+      "details": [
+        {
+          "label": "Son carnet, contre la vitre",
+          "text": "« G. H. : attendre la fin de sa déposition. Sa déclaration mot pour mot, une livre si c'est pour nous seuls. Titre : L'HOMME AU COL D'[[astrakan|ASTRAKAN]] ! — [[bradford|T. B.]] »"
+        }
+      ]
+    },
+    {
+      "id": "chapeau",
+      "kind": "object",
+      "label": "Le chapeau sur le comptoir",
+      "scene": "poste",
+      "rect": {
+        "x": 1196,
+        "y": 370,
+        "w": 88,
+        "h": 52
+      },
+      "text": "Le chapeau de l'ouvrier, posé sur le comptoir pendant qu'il parle : un [[chapeau-mou|chapeau mou]] noir à larges bords, de ceux qu'on appelle un « wide-awake »."
+    },
+    {
+      "id": "baird",
+      "kind": "person",
+      "label": "Le sergent au comptoir",
+      "character": "baird",
+      "scene": "poste",
+      "rect": {
+        "x": 955,
+        "y": 215,
+        "w": 189,
+        "h": 205
+      },
+      "portrait": {
+        "x": 1018,
+        "y": 211,
+        "w": 101,
+        "h": 135
+      },
+      "text": "Le sergent écrit sans lever la tête ; la plume grince sur le papier.\n« Il est venu de lui-même, à six heures. L'enquête est close depuis ce matin, et voilà qu'il se rappelle tout. Tout, monsieur. Même la couleur des cils, à deux heures du matin, sous un seul bec de gaz. »",
+      "details": [
+        {
+          "label": "La déposition",
+          "text": "« Déposition de [[hutchings|George Hutchings]], journalier, 12 novembre 1888.\nLe 9, vers [[h0200|2 heures]] du matin, à [[flower-dean|Flower and Dean Street]], j'ai rencontré J. Doyle, que je connais bien. Elle m'a demandé six pence ; je n'avais rien. Un homme l'a abordée : bien mis, trente-cinq ans, moustache relevée, cils sombres, un manteau au [[astrakan|col d'astrakan]], une [[epingle|épingle en fer à cheval]] à la cravate, une grosse chaîne d'or, des guêtres claires. Je les ai suivis jusqu'à la cour. Je suis resté en face, près du [[crossingham|garni de Crossingham]], jusqu'à 3 heures moins le quart. Personne n'est ressorti.\nSigné : G. Hutchings. Recueilli par le sergent E. [[baird|Baird]]. »"
+        }
+      ]
+    },
+    {
+      "id": "dossier",
+      "kind": "document",
+      "label": "Le dossier de l'enquête",
+      "scene": "poste",
+      "rect": {
+        "x": 262,
+        "y": 700,
+        "w": 120,
+        "h": 40
+      },
+      "text": "« [[enquete|Enquête]] sur la mort de Jenny Doyle, mairie de Shoreditch, lundi [[douze-nov|12 novembre]]. » Ouverte et close ce matin, en une seule séance. Dedans, la copie des dépositions.",
+      "details": [
+        {
+          "label": "Déposition de Sarah Lowe",
+          "text": "« [[lowe|Sarah Lowe]], blanchisseuse. Je suis arrivée dans la cour vers [[h0230|2 h 30]], pour dormir chez une amie. En face du passage, devant le garni, un homme attendait : petit, trapu, un [[chapeau-mou|chapeau mou]] noir. Il regardait la cour, comme s'il guettait quelqu'un. Vers 4 heures, j'ai entendu une femme crier « Oh, murder ! », une seule fois. »"
+        },
+        {
+          "label": "Déposition de Caroline Maxton",
+          "text": "« [[maxton|Caroline Maxton]]. J'ai vu Jenny Doyle à [[h0830|8 h 30]] du matin, au coin de la cour : elle était malade, elle avait trop bu. Je l'ai revue un quart d'heure plus tard devant le pub. » En marge, de la main du coroner : « Témoin averti. Est-elle sûre du jour ? »"
+        }
+      ]
+    },
+    {
+      "id": "rapport",
+      "kind": "document",
+      "label": "Le rapport du docteur",
+      "scene": "poste",
+      "rect": {
+        "x": 426,
+        "y": 700,
+        "w": 90,
+        "h": 40
+      },
+      "text": "« Rapport du docteur [[bland|Thomas Bland]], chirurgien de la police, 10 novembre. D'après l'état du corps, la mort remonte à la nuit, des heures avant le jour. Le feu de la grille était éteint depuis longtemps. »\nLe reste du rapport décrit les blessures. Vous le refermez."
+    },
+    {
+      "id": "hutchings",
+      "kind": "person",
+      "label": "L'ouvrier au comptoir",
+      "character": "hutchings",
+      "scene": "poste",
+      "rect": {
+        "x": 644,
+        "y": 257,
+        "w": 255,
+        "h": 557
+      },
+      "portrait": {
+        "x": 650,
+        "y": 252,
+        "w": 124,
+        "h": 165
+      },
+      "text": "Un petit homme trapu, tête nue, un foulard rouge au cou. Il parle vite, sûr de lui.\n« Je la connaissais bien, Jenny. Je lui donnais un shilling de temps en temps. Cette nuit-là, j'ai tout vu, sergent : l'homme, son manteau, sa chaîne, sa cravate… Je suis resté devant la cour presque une heure. Pourquoi je viens seulement aujourd'hui ? J'avais peur, voilà tout. »"
+    }
+  ],
+  "pages": [
+    {
+      "id": "qui",
+      "kind": "identities",
+      "title": "Qui est qui ?",
+      "people": [
+        {
+          "zone": "mcallister",
+          "answer": "mcallister"
+        },
+        {
+          "zone": "boyd",
+          "answer": "boyd"
+        },
+        {
+          "zone": "cullen",
+          "answer": "cullen"
+        },
+        {
+          "zone": "porter",
+          "answer": "porter"
+        },
+        {
+          "zone": "hutchings",
+          "answer": "hutchings"
+        },
+        {
+          "zone": "baird",
+          "answer": "baird"
+        }
+      ],
+      "hints": [
+        "Personne ne se présente. Mais le logeur tient un cahier : chaque chambre, chaque nom.",
+        "Les portes ont des numéros, et la chambre 20 est au-dessus du 13.",
+        "Au poste, une déposition est toujours signée, et dit qui l'a écrite."
+      ]
+    },
+    {
+      "id": "nuit",
+      "kind": "chronology",
+      "title": "La dernière nuit de Jenny",
+      "events": [
+        "Joseph Bennett quitte Jenny après une dispute ; un carreau est cassé.",
+        "Le chef Alan Winkoff démissionne.",
+        "Jenny rentre avec un homme à la moustache rousse, un pot de bière à la main.",
+        "Hutchings dit avoir vu Jenny avec un homme élégant.",
+        "Un homme en chapeau mou guette la cour.",
+        "Deux voisines entendent crier « Oh, murder ! ».",
+        "Thomas Boyd regarde par le carreau cassé.",
+        "La porte est forcée à la pioche.",
+        "George Hutchings vient raconter son histoire au poste."
+      ],
+      "hints": [
+        "Les heures sont éparpillées : chez les voisines, dans le billet de l'inspecteur, dans le dossier de l'enquête.",
+        "Deux hommes auraient été devant la cour au milieu de la nuit : l'un à 2 h, l'autre à 2 h 30.",
+        "Les dates : un cahier rayé, un journal, et l'horloge du poste."
+      ]
+    },
+    {
+      "id": "porte-close",
+      "kind": "sentences",
+      "title": "La porte close",
+      "sentences": [
+        "La porte de la chambre 13 n'a plus de {cle} : elle ferme avec un {loquet}. En partant, l'assassin n'a eu qu'à la tirer.",
+        "Pour ouvrir, Jenny et {bennett} passaient le bras par le {carreau}, cassé le {trente-oct} pendant une dispute.",
+        "{hollis} attend des {chiens} qui ne viennent pas : à {h1330}, on force la porte à la {pioche}.",
+        "Vers {h0400}, deux voisines entendent crier ; {maxton}, qui dit l'avoir vue à {h0830}, se trompe sans doute de jour.",
+        "L'homme au {chapeau-mou} qui guettait la cour à {h0230}, c'était {hutchings} lui-même.",
+        "Il ne vient au poste qu'après la fin de l'{enquete}, et décrit en pleine nuit une {epingle} en fer à cheval.",
+        "{bradford} lui achète son histoire : The Comet publiera l'homme au {astrakan}."
+      ],
+      "hints": [
+        "Regardez la porte de près, puis écoutez le logeur.",
+        "Au poste, une note épinglée dit comment on ouvrait sans clé.",
+        "Le billet dans la main de l'inspecteur donne l'heure.",
+        "Le dossier de l'enquête : une voisine de plus, et une femme que le coroner a avertie.",
+        "Comparez ce que Sarah Lowe a vu à 2 h 30 avec ce qui est posé sur le comptoir.",
+        "Derrière la vitre, quelqu'un tient un carnet."
+      ]
+    }
+  ]
+}

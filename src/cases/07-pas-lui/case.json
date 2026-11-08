@@ -1,0 +1,590 @@
+{
+  "id": "pas-lui",
+  "order": 1,
+  "chapter": "chapitre-4",
+  "title": "Ce n'est pas lui",
+  "intro": "Leman Street, lundi 16 février 1891, dix heures du matin.\nVendredi, à 2 h 15, un jeune agent a trouvé Frances Hale sous une arche du chemin de fer, à Swift Gardens. Samedi soir, The Comet titrait : « C'EST LUI ! » Il accuse James Selwyn, un chauffeur de navire qui avait passé la soirée avec elle. Et il demande : était-il aussi l'Éventreur de 1888 ?\n\nVous revenez dans le poste où tout a commencé, il y a deux ans et demi. Cette fois, vous ne cherchez pas un coupable. Vous cherchez la vérité, même si elle ne fait pas un bon titre.",
+  "epilogue": "Le 3 mars 1891, au tribunal de Thames, on abandonna les charges contre James Selwyn. Dehors, la foule des marins l'applaudit et le porta en triomphe. Personne ne fut jamais jugé pour la mort de Frances Hale. Comme pour les autres, il n'y eut pas de coupable.\n\nLe lendemain, The Comet publia un rectificatif en page deux. Pour la première fois, Tim le signa de son vrai nom : Tim Stone.\n\nEt vous, vous avez rangé votre carnet de reporter. Sur une porte de Commercial Street, il y a maintenant une petite plaque de cuivre : « Agence de recherches. Discrétion assurée. »\n\nOn n'a jamais su le nom de l'assassin. On connaît les leurs :\nEllen Holt. Agnes Croft. Elsa Lindqvist. Margaret Jenkins. Jenny Doyle. Frances Hale.",
+  "notes": "Brouillon écrit par Claude : à relire et à réécrire librement. D'après le meurtre de Frances Coles (Swallow Gardens, 13 février 1891) et l'arrestation de James Thomas Sadler, relâché le 3 mars 1891. Noms changés : Frances Coles → Frances Hale, James Sadler → James Selwyn, Swallow Gardens → Swift Gardens, PC Ernest Thompson → Ernest Thorne, Duncan Campbell → Duncan Cameron, J. Havelock Wilson → Harry Wilkes, le Winestead → le Winfield, le Fez → le Tanger, Elizabeth Stride → Elsa Lindqvist (le nom prévu dans story.json). Inventés : le gardien Pell, Mme Venn (d'après la modiste de Nottingham Street). Arrangés pour le jeu : la feuille de la loge des docks (d'après la bagarre de Sadler à la grille de St Katharine), le psautier dans la boîte non réclamée (Stride avait reçu un psautier de l'église suédoise, qui l'aida à l'identifier), Stone et Tim. Scènes : tools/scene-retour.mjs (npm run scene:retour), d'après la scène de l'affaire 1 ; versions peintes (scene-ia.png, reserve-ia.png) refaites dans D:/ComfyUI/scenes-couches.mjs (le poste reprend le décor peint de l'affaire 1). Bruits des zones : sound.ts (ZONE_SOUNDS) ; position sur la carte : menu.ts (MAP_PINS).",
+  "scene": {
+    "image": "scene-ia.png",
+    "width": 1600,
+    "height": 900,
+    "title": "Le poste de Leman Street"
+  },
+  "scenes": [
+    {
+      "id": "reserve",
+      "title": "La réserve des pièces",
+      "image": "reserve-ia.png",
+      "width": 1600,
+      "height": 900
+    }
+  ],
+  "words": {
+    "hale": {
+      "label": "Frances Hale",
+      "category": "person"
+    },
+    "selwyn": {
+      "label": "James Selwyn",
+      "category": "person"
+    },
+    "stone": {
+      "label": "le sergent Stone",
+      "category": "person"
+    },
+    "thorne": {
+      "label": "Ernest Thorne",
+      "category": "person"
+    },
+    "wilkes": {
+      "label": "Harry Wilkes",
+      "category": "person"
+    },
+    "bradford": {
+      "label": "Tim Bradford",
+      "category": "person"
+    },
+    "hollis": {
+      "label": "l'inspecteur Hollis",
+      "category": "person"
+    },
+    "cameron": {
+      "label": "Duncan Cameron",
+      "category": "person"
+    },
+    "pell": {
+      "label": "le gardien Pell",
+      "category": "person"
+    },
+    "venn": {
+      "label": "Mme Venn",
+      "category": "person"
+    },
+    "lindqvist": {
+      "label": "Elsa Lindqvist",
+      "category": "person"
+    },
+    "inconnue": {
+      "label": "l'inconnue",
+      "category": "person"
+    },
+    "swift-gardens": {
+      "label": "Swift Gardens",
+      "category": "place"
+    },
+    "st-katharine": {
+      "label": "St Katharine",
+      "category": "place"
+    },
+    "thrawl-street": {
+      "label": "Thrawl Street",
+      "category": "place"
+    },
+    "kings-row": {
+      "label": "King's Row",
+      "category": "place"
+    },
+    "flower-dean": {
+      "label": "Flower and Dean Street",
+      "category": "place"
+    },
+    "princes-square": {
+      "label": "Princes Square",
+      "category": "place"
+    },
+    "foyer-marins": {
+      "label": "le Foyer des marins",
+      "category": "place"
+    },
+    "journal-de-bord": {
+      "label": "journal de bord",
+      "category": "object"
+    },
+    "couteau": {
+      "label": "couteau",
+      "category": "object"
+    },
+    "emousse": {
+      "label": "émoussé",
+      "category": "other"
+    },
+    "shilling": {
+      "label": "shilling",
+      "category": "object"
+    },
+    "chapeau-neuf": {
+      "label": "chapeau de crêpe",
+      "category": "object"
+    },
+    "vieux-chapeau": {
+      "label": "vieux chapeau",
+      "category": "object"
+    },
+    "pastilles": {
+      "label": "pastilles",
+      "category": "object"
+    },
+    "ticket": {
+      "label": "ticket",
+      "category": "object"
+    },
+    "psautier": {
+      "label": "psautier",
+      "category": "object"
+    },
+    "loge": {
+      "label": "loge",
+      "category": "place"
+    },
+    "pas": {
+      "label": "pas",
+      "category": "other"
+    },
+    "dix-sept-aout": {
+      "label": "17 août 1888",
+      "category": "other"
+    },
+    "premier-oct": {
+      "label": "1er octobre 1888",
+      "category": "other"
+    },
+    "h2300": {
+      "label": "23 h",
+      "category": "other"
+    },
+    "h0205": {
+      "label": "2 h 05",
+      "category": "other"
+    },
+    "h0215": {
+      "label": "2 h 15",
+      "category": "other"
+    },
+    "h0240": {
+      "label": "2 h 40",
+      "category": "other"
+    },
+    "un-s-onze": {
+      "label": "1 s 11 d",
+      "category": "other"
+    }
+  },
+  "zones": [
+    {
+      "id": "fenetre",
+      "kind": "object",
+      "label": "La fenêtre",
+      "rect": {
+        "x": 62,
+        "y": 24,
+        "w": 176,
+        "h": 340
+      },
+      "text": "Dehors, dans Leman Street, une foule attend depuis l'aube dans le brouillard : des marins, des chauffeurs, des dockers. Ils ne sont pas venus voir un monstre. Ils sont venus pour un camarade.\nUn crieur vend The Comet à la criée : « C'est lui ! C'est lui ! » Personne ne lui en achète."
+    },
+    {
+      "id": "gravure",
+      "kind": "document",
+      "label": "La gravure au mur",
+      "rect": {
+        "x": 330,
+        "y": 138,
+        "w": 192,
+        "h": 162
+      },
+      "text": "La gravure du London Pictorial, punaisée là depuis l'automne 1888. Dessous, au crayon : « Et toujours rien ! »\nUne autre main a ajouté, plus bas, d'une écriture plus récente : « 1891. Toujours rien. »"
+    },
+    {
+      "id": "pendule",
+      "kind": "object",
+      "label": "La pendule",
+      "rect": {
+        "x": 758,
+        "y": 113,
+        "w": 94,
+        "h": 94
+      },
+      "text": "Dix heures du matin, lundi 16 février 1891. Le gaz brûle encore : dehors, le brouillard de février ne se lève pas."
+    },
+    {
+      "id": "registre",
+      "kind": "document",
+      "label": "Le registre de garde",
+      "rect": {
+        "x": 450,
+        "y": 388,
+        "w": 148,
+        "h": 28
+      },
+      "text": "Le registre de garde du poste, ouvert sur le comptoir. L'écriture est penchée, soignée.",
+      "details": [
+        {
+          "label": "Vendredi 13 et samedi 14 février",
+          "text": "« 13 février 1891. [[h0215|2 h 15]] : l'agent [[thorne|E. Thorne]], 240 H, en service depuis le 6 février, siffle sous l'arche du chemin de fer, [[swift-gardens|Swift Gardens]]. Une femme blessée à la gorge, vivante encore ; morte avant l'arrivée du docteur. Identifiée dans la matinée : [[hale|Frances Hale]], 26 ans.\n14 février, 23 h : [[selwyn|James Selwyn]], chauffeur, descendu du vapeur Tanger le 11, arrêté au Phoenix, Smithfield. La tête bandée. Dit : « Je la connaissais. Je ne l'ai pas tuée. » — [[stone|W. S.]] »"
+        }
+      ]
+    },
+    {
+      "id": "stone",
+      "kind": "person",
+      "label": "Le sergent au comptoir",
+      "character": "stone",
+      "rect": {
+        "x": 560,
+        "y": 234,
+        "w": 168,
+        "h": 182
+      },
+      "portrait": {
+        "x": 583,
+        "y": 231,
+        "w": 90,
+        "h": 120
+      },
+      "text": "Le sergent écrit sans lever la tête. Il a vieilli.\n« Vingt ans que je tiens ce registre, de ma main. Le Comet a écrit que c'était lui ? Le Comet a écrit beaucoup de choses, depuis 1888. Cette fois, mon neveu n'a rien eu de moi. Pas un mot. »"
+    },
+    {
+      "id": "selwyn",
+      "kind": "person",
+      "label": "L'homme à la tête bandée",
+      "character": "selwyn",
+      "rect": {
+        "x": 119,
+        "y": 371,
+        "w": 198,
+        "h": 391
+      },
+      "portrait": {
+        "x": 167,
+        "y": 367,
+        "w": 102,
+        "h": 136
+      },
+      "text": "Un homme trapu, la tête bandée, les poignets menottés. Il parle bas, sans lever les yeux.\n« Je suis descendu du bateau le 11. Frances, je la connaissais d'avant. Le soir du 12, je lui ai donné de quoi s'acheter un chapeau neuf ; elle était si contente. Vers [[h2300|onze heures]], à [[thrawl-street|Thrawl Street]], on m'a volé, on m'a cogné. On s'est disputés, elle et moi. Après, j'ai voulu rentrer à bord, aux docks de [[st-katharine|St Katharine]]. On ne m'a pas laissé passer. Je ne l'ai pas tuée. Je n'ai jamais tué personne. »"
+    },
+    {
+      "id": "thorne",
+      "kind": "person",
+      "label": "Le jeune agent",
+      "character": "thorne",
+      "rect": {
+        "x": 297,
+        "y": 192,
+        "w": 116,
+        "h": 534
+      },
+      "portrait": {
+        "x": 297,
+        "y": 186,
+        "w": 119,
+        "h": 159
+      },
+      "text": "Un tout jeune agent, rasé de près, au garde-à-vous près du banc.\n« C'était ma première semaine de ronde. À 2 h 15, sous l'arche, je l'ai trouvée. Elle respirait encore. Et j'ai entendu des [[pas]] s'éloigner, vite, vers Royal Mint Street. Je ne pouvais pas la laisser seule, alors je n'ai pas couru. J'y pense tous les jours. »"
+    },
+    {
+      "id": "wilkes",
+      "kind": "person",
+      "label": "L'homme au cahier bleu",
+      "character": "wilkes",
+      "rect": {
+        "x": 915,
+        "y": 213,
+        "w": 278,
+        "h": 589
+      },
+      "portrait": {
+        "x": 1064,
+        "y": 207,
+        "w": 124,
+        "h": 165
+      },
+      "text": "Un homme en melon, un insigne bleu à la boutonnière, tend un gros cahier relié de toile.\n« Le syndicat des marins paie l'avocat de Selwyn. Vous voulez savoir pourquoi ? Lisez. C'est le [[journal-de-bord|journal de bord]] de son navire, en 1888. »",
+      "details": [
+        {
+          "label": "Le journal de bord",
+          "text": "« Vapeur Winfield, port de Londres. Parti de Londres le [[dix-sept-aout|17 août 1888]], pour la mer Noire. Rentré à Londres le [[premier-oct|1er octobre 1888]]. Équipage au complet du premier au dernier jour, dont : J. Selwyn, chauffeur. » Copie certifiée par le capitaine."
+        },
+        {
+          "label": "Sa carte",
+          "text": "« Syndicat national des marins et chauffeurs. [[wilkes|H. Wilkes]], délégué. »"
+        }
+      ]
+    },
+    {
+      "id": "feuille",
+      "kind": "document",
+      "label": "La feuille sur le bureau",
+      "rect": {
+        "x": 932,
+        "y": 508,
+        "w": 96,
+        "h": 42
+      },
+      "text": "Une feuille arrivée ce matin des docks.\n« Docks de [[st-katharine|St Katharine]], loge de la grille. 13 février, de [[h0205|2 h 05]] à [[h0240|2 h 40]] : un chauffeur ivre, blessé à la tête, refusé à la grille, gardé et pansé dans la [[loge]] par l'agent des docks et deux dockers. Nom donné : Selwyn, du Tanger. »\nEn marge, de la main du sergent : « Vérifié. — W. S. »"
+    },
+    {
+      "id": "journaux",
+      "kind": "document",
+      "label": "La pile de vieux journaux",
+      "rect": {
+        "x": 888,
+        "y": 700,
+        "w": 155,
+        "h": 105
+      },
+      "text": "Une pile de vieux numéros du Comet, gardés depuis 1888. « TABLIER DE CUIR ! » « DOUBLE MEURTRE ! » « FROM HELL ! » « LA CHAMBRE 13 ! »\nChaque fois, The Comet savait tout avant tout le monde. Et chaque fois, il avait un coupable à vendre."
+    },
+    {
+      "id": "tim",
+      "kind": "person",
+      "label": "L'homme au manteau à carreaux",
+      "character": "tim",
+      "rect": {
+        "x": 1213,
+        "y": 214,
+        "w": 322,
+        "h": 580
+      },
+      "portrait": {
+        "x": 1407,
+        "y": 209,
+        "w": 123,
+        "h": 164
+      },
+      "text": "[[bradford|Tim Bradford]] tient The Comet à bout de bras, mais il ne sourit pas.\n« C'est le rédacteur qui a titré, pas moi. Je ne signe rien tant que je ne suis pas sûr. Et là, je ne suis plus sûr de rien. »",
+      "details": [
+        {
+          "label": "Son carnet",
+          "text": "« Selwyn = l'Éventreur ? Où était-il en 1888 ? Demander au syndicat. — Le couteau : qui l'a ? — Si c'est faux : un rectificatif. Signé. De mon vrai nom ? »"
+        }
+      ]
+    },
+    {
+      "id": "comet",
+      "kind": "document",
+      "label": "The Comet",
+      "rect": {
+        "x": 1216,
+        "y": 222,
+        "w": 124,
+        "h": 148
+      },
+      "text": "The Comet, samedi 14 février 1891, édition du soir.\n« C'EST LUI ! L'homme de Swift Gardens est arrêté. James Selwyn, chauffeur de navire, avait passé la soirée avec la victime. Il avait un couteau. Était-il aussi à Whitechapel en 1888 ? Nos lecteurs ont le droit de savoir. »"
+    },
+    {
+      "id": "hollis",
+      "kind": "person",
+      "label": "L'homme à l'étiquette",
+      "character": "hollis",
+      "scene": "reserve",
+      "rect": {
+        "x": 612,
+        "y": 237,
+        "w": 183,
+        "h": 265
+      },
+      "portrait": {
+        "x": 626,
+        "y": 233,
+        "w": 96,
+        "h": 128
+      },
+      "text": "« Avec ça ? » L'inspecteur [[hollis|Hollis]] tourne l'étiquette du [[couteau]] sous le gaz.\n« Il ne couperait pas une ficelle. Celui de Swift Gardens avait une lame comme un rasoir. Et le marin dit qu'il l'a acheté vendredi matin. Demandez au vieux Pell : ici, il note tout. »"
+    },
+    {
+      "id": "pell",
+      "kind": "person",
+      "label": "Le vieil agent à la barbe blanche",
+      "character": "pell",
+      "scene": "reserve",
+      "rect": {
+        "x": 204,
+        "y": 215,
+        "w": 189,
+        "h": 577
+      },
+      "portrait": {
+        "x": 210,
+        "y": 210,
+        "w": 114,
+        "h": 152
+      },
+      "text": "Un vieil agent à barbe blanche serre un registre contre lui.\n« Trente ans de service, dont vingt dans cette cave. Ici, rien ne se perd. Même ce que personne ne vient chercher. »",
+      "details": [
+        {
+          "label": "Le registre de la réserve",
+          "text": "« Réserve du poste de Leman Street.\nPièce n° 3 : couteau de J. Selwyn, rapporté le 14 février par [[cameron|D. Cameron]], marin.\nPièces n° 4 et 5 : deux chapeaux de femme, trouvés sur F. Hale.\nObjets non réclamés : boîte du 30 septembre 1888, « femme inconnue, King's Row ». Personne n'est venu.\n— [[pell|J. Pell]], garde-magasin. »"
+        }
+      ]
+    },
+    {
+      "id": "cameron",
+      "kind": "person",
+      "label": "Le marin barbu",
+      "character": "cameron",
+      "scene": "reserve",
+      "rect": {
+        "x": 1054,
+        "y": 221,
+        "w": 301,
+        "h": 581
+      },
+      "portrait": {
+        "x": 1206,
+        "y": 215,
+        "w": 132,
+        "h": 176
+      },
+      "text": "Un marin barbu, en vareuse, montre le couteau du doigt.\n« C'est bien lui. Je l'ai acheté vendredi matin, au [[foyer-marins|Foyer des marins]], pour un [[shilling]] et un bout de tabac. Le gars avait la tête en sang, il voulait boire. Le couteau ? Déjà [[emousse|émoussé]]. Je n'arrivais même pas à couper mon tabac avec. »"
+    },
+    {
+      "id": "couteau",
+      "kind": "object",
+      "label": "Le couteau",
+      "scene": "reserve",
+      "rect": {
+        "x": 552,
+        "y": 506,
+        "w": 158,
+        "h": 56
+      },
+      "text": "Un couteau de marin à manche de bois, posé sur un linge. La lame est [[emousse|émoussée]], ébréchée en trois endroits.\nÉtiquette : « Pièce n° 3. Couteau de J. Selwyn. »\nÉpinglé au linge, un mot du docteur : « La blessure a été faite par une lame très tranchante. »"
+    },
+    {
+      "id": "chapeaux",
+      "kind": "object",
+      "label": "Les deux chapeaux",
+      "scene": "reserve",
+      "rect": {
+        "x": 744,
+        "y": 498,
+        "w": 208,
+        "h": 52
+      },
+      "text": "Les deux chapeaux de Frances. Un [[chapeau-neuf|chapeau de crêpe]] noir, tout neuf, retrouvé près d'elle. Et un [[vieux-chapeau|vieux chapeau]] cabossé, qu'elle avait épinglé sous sa robe : elle n'avait pas voulu le jeter.",
+      "details": [
+        {
+          "label": "Le sac de la modiste",
+          "text": "Dans le sac en papier, une facture : « [[venn|Mme Venn]], modiste, Nottingham Street. 12 février 1891, vers 9 h du soir. Un chapeau de crêpe noir : [[un-s-onze|1 s 11 d]]. Payé par la dame, avec une pièce que lui a donnée un marin, qui l'attendait dehors. »"
+        }
+      ]
+    },
+    {
+      "id": "boite",
+      "kind": "object",
+      "label": "La boîte non réclamée",
+      "scene": "reserve",
+      "rect": {
+        "x": 952,
+        "y": 474,
+        "w": 172,
+        "h": 82
+      },
+      "text": "Une boîte de carton, descendue de l'étagère des objets non réclamés.\nÉtiquette : « 30 septembre 1888. Femme [[inconnue]], [[kings-row|King's Row]]. Non réclamé. »\nPersonne n'est jamais venu la chercher.",
+      "details": [
+        {
+          "label": "Le sachet et le ticket",
+          "text": "Un sachet de [[pastilles]] pour l'haleine, entamé. Un [[ticket]] de garni : « [[flower-dean|Flower and Dean Street]]. Lit pour la nuit, 4 d. »"
+        },
+        {
+          "label": "Le petit livre noir",
+          "text": "Un [[psautier]] en suédois, la tranche usée. Sur la page de garde, d'une écriture soignée : « À [[lindqvist|Elsa Lindqvist]], de l'église suédoise de [[princes-square|Princes Square]]. Noël 1886. »\nGlissée dedans, une carte de l'église : « Secours aux pauvres. E. Lindqvist, née le 27 novembre 1843, à Göteborg. »"
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "id": "qui",
+      "kind": "identities",
+      "title": "Qui est qui ?",
+      "people": [
+        {
+          "zone": "selwyn",
+          "answer": "selwyn"
+        },
+        {
+          "zone": "stone",
+          "answer": "stone"
+        },
+        {
+          "zone": "thorne",
+          "answer": "thorne"
+        },
+        {
+          "zone": "wilkes",
+          "answer": "wilkes"
+        },
+        {
+          "zone": "cameron",
+          "answer": "cameron"
+        },
+        {
+          "zone": "pell",
+          "answer": "pell"
+        }
+      ],
+      "hints": [
+        "Le registre de garde dit qui a sifflé sous l'arche, et depuis quand il est en service.",
+        "Une carte, une étiquette, un registre signé : chacun laisse son nom quelque part.",
+        "Le sergent parle de son registre. Un registre se signe à la fin."
+      ]
+    },
+    {
+      "id": "frances",
+      "kind": "chronology",
+      "title": "Les derniers jours de Frances",
+      "events": [
+        "Le Winfield quitte Londres, avec James Selwyn à bord.",
+        "L'inconnue de King's Row et Margaret Jenkins sont tuées.",
+        "Le Winfield rentre à Londres.",
+        "Frances achète un chapeau de crêpe neuf.",
+        "Selwyn est volé et battu à Thrawl Street.",
+        "Selwyn est refusé à la grille des docks, puis gardé à la loge.",
+        "L'agent Thorne trouve Frances sous l'arche.",
+        "Selwyn vend son couteau à un marin.",
+        "The Comet titre « C'est lui ! »."
+      ],
+      "hints": [
+        "Les dates de 1888 sont dans le cahier du délégué ; le double meurtre, vous le connaissez depuis la première affaire.",
+        "Les heures de la nuit du 13 : le registre, la feuille des docks, et Selwyn lui-même.",
+        "Le chapeau a une facture, et le marin dit quand il a acheté le couteau."
+      ]
+    },
+    {
+      "id": "pas-lui",
+      "kind": "sentences",
+      "title": "Ce n'est pas lui",
+      "sentences": [
+        "D'après le {journal-de-bord}, le Winfield a quitté Londres le {dix-sept-aout} et n'est rentré que le {premier-oct} : {selwyn} était en mer pendant les quatre premiers meurtres.",
+        "Son {couteau} est {emousse} : il l'a vendu un {shilling} au marin {cameron}, le matin du crime.",
+        "À {h0205}, il est refusé, en sang, à la grille de {st-katharine}, et gardé dans la {loge} jusqu'à {h0240}.",
+        "À {h0215}, {thorne} trouve Frances sous l'arche de {swift-gardens} et entend des {pas} s'éloigner : l'assassin était là, pas Selwyn.",
+        "Frances portait deux chapeaux : le {chapeau-neuf}, payé {un-s-onze} chez {venn} avec l'argent de Selwyn, et le {vieux-chapeau}, épinglé sous sa robe."
+      ],
+      "hints": [
+        "Le délégué tend un cahier : lisez les dates.",
+        "Le marin a acheté le couteau. Regardez la lame de près.",
+        "Une feuille est arrivée des docks ce matin.",
+        "La recrue a entendu quelque chose, sous l'arche.",
+        "Ouvrez le sac en papier, à côté des chapeaux."
+      ]
+    },
+    {
+      "id": "son-nom",
+      "kind": "sentences",
+      "title": "Son nom",
+      "sentences": [
+        "L'{inconnue} de {kings-row} tenait des {pastilles} dans la main gauche ; son {ticket} de garni venait de {flower-dean}.",
+        "Dans sa boîte, un {psautier} de l'église suédoise de {princes-square} porte son nom : elle s'appelait {lindqvist}."
+      ],
+      "hints": [
+        "La boîte vient d'une étagère que personne ne regarde.",
+        "Sous le sachet et le ticket, il y a un petit livre noir.",
+        "Souvenez-vous : à King's Row, le docteur n'a trouvé que des pastilles dans sa main."
+      ]
+    }
+  ]
+}

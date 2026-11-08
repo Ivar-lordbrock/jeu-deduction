@@ -144,7 +144,7 @@ const casiers = (() => {
     }
   }
   return `<rect x="${x0 - 6}" y="${y0 - 26}" width="${cols * w + 12}" height="${rows * h + 30}" fill="#132120"/>
-    <text x="${x0 + (cols * w) / 2}" y="${y0 - 8}" font-family="Georgia, serif" font-size="12" letter-spacing="3" fill="#c9a24a" text-anchor="middle" opacity="0.8">DESPATCHES</text>
+    <text x="${x0 + (cols * w) / 2}" y="${y0 - 8}" font-family="Georgia, serif" font-size="12" letter-spacing="3" fill="#c9a24a" text-anchor="middle" opacity="0.8" id="enseigne">DESPATCHES</text>
     <g fill="#0a1211">${cases}</g>
     <g fill="#b3a98a" opacity="0.8">${papiers}</g>
     <g fill="#b08a45" opacity="0.55">${plaques}</g>`;
@@ -164,13 +164,13 @@ const comptoir = (() => {
     </g>
     <path d="M${avant(xa)} ${num(gy(haut, k))} H${avant(xb)}" stroke="#c99a4e" stroke-width="2" opacity="0.6"/>`;
 })();
-const registre = `<polygon points="338,436 478,436 470,408 346,408" fill="#0e1716"/>
+const registre = `<g id="registre"><polygon points="338,436 478,436 470,408 346,408" fill="#0e1716"/>
   <path d="M352 410 L408 404 L410 432 L346 434 Z" fill="#e2d8bc"/>
   <path d="M408 404 L462 410 L468 434 L410 432 Z" fill="#d6cbad"/>
   <line x1="408.5" y1="404" x2="410" y2="432" stroke="#8a7a60" stroke-width="2"/>
   <g stroke="#5c5040" stroke-width="1"><path d="${lignesImprimees(354, 412, 48, 5, 4.4, 3)}"/></g>
   <g stroke="#7a2a22" stroke-width="1.1" opacity="0.8"><path d="M414 413 h40 M415 418 h44 M416 423 h30"/></g>
-  <path d="M352 410 L346 434" stroke="#8a2a22" stroke-width="3"/>`;
+  <path d="M352 410 L346 434" stroke="#8a2a22" stroke-width="3"/></g>`;
 
 // La porte vitrée du directeur
 const porteDirecteur = `<rect x="626" y="128" width="208" height="512" fill="#122019"/>
@@ -181,14 +181,14 @@ const porteDirecteur = `<rect x="626" y="128" width="208" height="512" fill="#12
   <rect x="640" y="452" width="180" height="170" fill="#16231f"/>
   <g fill="none" stroke="#0b1413" stroke-width="3"><rect x="684" y="470" width="96" height="136"/></g>
   <circle cx="780" cy="440" r="5" fill="#c9a24a"/>
-  <g font-family="Georgia, serif" text-anchor="middle" fill="#d6ad55">
+  <g id="lettres-porte" font-family="Georgia, serif" text-anchor="middle" fill="#d6ad55">
     <text x="732" y="206" font-size="15" letter-spacing="1.5">J. MOORLAND</text>
     <text x="732" y="226" font-size="10" letter-spacing="3">DIRECTEUR</text>
   </g>
   <path d="M694 213 H770" stroke="#d6ad55" stroke-width="0.8" opacity="0.7"/>`;
 
 // L'affiche de la police : le fac-similé de la lettre et de la carte postale
-const affiche = `<g transform="rotate(-1.2 950 260)">
+const affiche = `<g id="affiche" transform="rotate(-1.2 950 260)">
     <rect x="858" y="102" width="186" height="316" fill="#c9bf9e"/>
     <rect x="858" y="102" width="186" height="316" fill="url(#papierAffiche)" opacity="0.5"/>
     <text x="951" y="122" font-family="Georgia, serif" font-size="9" letter-spacing="2" fill="#2a241c" text-anchor="middle">METROPOLITAN</text>
@@ -212,7 +212,7 @@ const affiche = `<g transform="rotate(-1.2 950 260)">
   </g>`;
 
 // Le tableau noir des abonnés
-const tableau = `<rect x="1072" y="108" width="248" height="186" fill="#3a2c1c"/>
+const tableau = `<g id="tableau"><rect x="1072" y="108" width="248" height="186" fill="#3a2c1c"/>
   <rect x="1080" y="116" width="232" height="170" fill="#18211e"/>
   <rect x="1080" y="116" width="232" height="170" fill="url(#craieEffacee)"/>
   <g font-family="'Segoe Print', 'Comic Sans MS', cursive" fill="#dcd8c8" opacity="0.88">
@@ -223,7 +223,7 @@ const tableau = `<rect x="1072" y="108" width="248" height="186" fill="#3a2c1c"/
   </g>
   <path d="M1100 150 H1292 M1196 250 C1230 256 1266 252 1294 246" fill="none" stroke="#dcd8c8" stroke-width="1.6" opacity="0.7"/>
   <rect x="1076" y="286" width="240" height="8" fill="#2c2116"/>
-  <rect x="1250" y="282" width="16" height="5" fill="#e8e4d6"/>`;
+  <rect x="1250" y="282" width="16" height="5" fill="#e8e4d6"/></g>`;
 
 // La porte d'entrée, sur le mur droit
 const porte = { x1: 1392, x2: 1552 };
@@ -231,7 +231,7 @@ const vitre = quadMur(porte.x1 + 16, porte.x2 - 16, 190, 380);
 const porteEntree = `<polygon points="${quadMur(1378, 1566, 150, 640)}" fill="#0c1514"/>
   <polygon points="${quadMur(porte.x1, porte.x2, 164, 640)}" fill="#121e1d"/>
   <polygon points="${vitre}" fill="url(#vitreEscalier)"/>
-  <g clip-path="url(#vitreClip)">
+  <g id="mercury" clip-path="url(#vitreClip)">
     <text transform="translate(1480 ${num(ym(1480, 270))}) scale(-1 1) skewY(${num(-Math.atan((ym(1600, 270) - ym(1400, 270)) / 200) * 57.3)})" font-family="Georgia, serif" font-size="17" letter-spacing="2" fill="#c9a24a" opacity="0.6" text-anchor="middle">MERCURY</text>
   </g>
   <polygon points="${vitre}" fill="none" stroke="#0b1413" stroke-width="5"/>
@@ -240,11 +240,16 @@ const porteEntree = `<polygon points="${quadMur(1378, 1566, 150, 640)}" fill="#0
   <path d="M${porte.x1} ${num(ym(porte.x1, 164))} L${porte.x1} ${num(ym(porte.x1, 640))}" stroke="#56716c" stroke-width="1.5" opacity="0.45"/>`;
 
 // Lampes à gaz suspendues, abat-jour de verre vert
-const lampe = (x, y) => `<path d="M${x} 0 V${y - 26}" stroke="#0b1211" stroke-width="3"/>
+const lampe = (x, y) => `<g id="lampe-${x}"><path d="M${x} 0 V${y - 26}" stroke="#0b1211" stroke-width="3"/>
   <path d="M${x - 6} ${y - 26} h12 l-2 10 h-8 Z" fill="#0b1211"/>
   <path d="M${x - 40} ${y} C${x - 36} ${y - 14} ${x - 18} ${y - 18} ${x - 8} ${y - 18} L${x + 8} ${y - 18} C${x + 18} ${y - 18} ${x + 36} ${y - 14} ${x + 40} ${y} Z" fill="#1f5a44"/>
   <path d="M${x - 40} ${y} C${x - 36} ${y - 14} ${x - 18} ${y - 18} ${x - 8} ${y - 18}" fill="none" stroke="#5fa184" stroke-width="1.5" opacity="0.7"/>
-  <ellipse cx="${x}" cy="${y + 1}" rx="40" ry="4" fill="#ffe2a0"/>`;
+  <ellipse cx="${x}" cy="${y + 1}" rx="40" ry="4" fill="#ffe2a0"/>
+  <rect x="${x - 1.5}" y="${y + 1}" width="3" height="20" fill="#6a5a34"/>
+  <path d="M${x - 5} ${y + 20} h10 l-2 5 h-6 Z" fill="#8a7440"/>
+  <circle cx="${x}" cy="${y + 11}" r="15" fill="#ffd27a" opacity="0.25"/>
+  <path d="M${x} ${y + 20} C${x - 6} ${y + 16} ${x - 5} ${y + 9} ${x} ${y + 2} C${x + 5} ${y + 9} ${x + 6} ${y + 16} ${x} ${y + 20} Z" fill="#ffc64a"/>
+  <path d="M${x} ${y + 19} C${x - 3} ${y + 16} ${x - 2.5} ${y + 12} ${x} ${y + 7} C${x + 2.5} ${y + 12} ${x + 3} ${y + 16} ${x} ${y + 19} Z" fill="#fff4d0"/></g>`;
 
 // La presse à copier, sur son pied de fonte, au premier plan à gauche ; le copie-de-lettres ouvert en dessous
 const presse = `<ellipse cx="146" cy="812" rx="128" ry="12" fill="#000" opacity="0.5"/>
@@ -261,7 +266,7 @@ const presse = `<ellipse cx="146" cy="812" rx="128" ry="12" fill="#000" opacity=
   </g>
   <path d="M60 612 H232 M96 594 H196 M64 514 H228" stroke="${AMBRE}" stroke-width="1.4" opacity="0.4"/>
   <path d="M78 600 L210 600" stroke="#cfc4a6" stroke-width="2.4" opacity="0.8"/>
-  <g transform="translate(0 2)">
+  <g id="copie" transform="translate(0 2)">
     <path d="M86 698 L146 690 L148 706 L82 710 Z" fill="#d8ceb2"/>
     <path d="M146 690 L206 694 L212 708 L148 706 Z" fill="#cbbf9f"/>
     <path d="M146.5 690 L148 706" stroke="#7a6a50" stroke-width="1.6"/>
@@ -286,11 +291,11 @@ const sacs = (() => {
     lettres += `<rect x="${num(x)}" y="${num(y)}" width="${num(24 * k)}" height="${num(10 * k)}" fill="${c}" transform="rotate(${num(r() * 50 - 25)} ${num(x)} ${num(y)})"/>`;
     if (r() < 0.4) lettres += `<path d="M${num(x + 3)} ${num(y + 4 * k)} h${num(14 * k)}" stroke="#8f2a22" stroke-width="0.9" transform="rotate(${num(r() * 50 - 25)} ${num(x)} ${num(y)})" opacity="0.7"/>`;
   }
-  return `<ellipse cx="470" cy="790" rx="190" ry="18" fill="#000" opacity="0.45"/>
+  return `<g id="sacs"><ellipse cx="470" cy="790" rx="190" ry="18" fill="#000" opacity="0.45"/>
     ${sac(360, 772, 110, 150, -6)}${sac(566, 778, 120, 160, 5)}
     <g fill="#d8cdaa"><rect x="420" y="676" width="40" height="18" transform="rotate(-20 440 685)"/><rect x="452" y="668" width="36" height="16" transform="rotate(14 470 676)"/></g>
     ${sac(462, 796, 130, 150, 2)}
-    <g>${lettres}</g>`;
+    <g>${lettres}</g></g>`;
 })();
 
 // Le bureau de Tom : plateau, caissons, la pique à dépêches, les deux encriers, les dépêches corrigées
@@ -312,6 +317,7 @@ const bureau = (() => {
       ${[0, 1, 2].map((i) => `<rect x="${x1 + 62}" y="${av + ep + 38 + i * 70}" width="16" height="5" rx="2"/><rect x="${x2 - 78}" y="${av + ep + 38 + i * 70}" width="16" height="5" rx="2"/>`).join('')}
     </g>
     <!-- la pique à dépêches -->
+    <g id="pique">
     <ellipse cx="984" cy="${av - 7}" rx="16" ry="4.5" fill="#070b0b"/>
     <rect x="982.6" y="${av - 92}" width="2.8" height="86" fill="#1a2220"/>
     <path d="M984 ${av - 92} l0 -8" stroke="#a3b4b1" stroke-width="1.6"/>
@@ -323,6 +329,8 @@ const bureau = (() => {
       <path d="${lignesImprimees(966, av - 61, 36, 2, 4, 9)}" stroke="#6d6550" stroke-width="1" transform="rotate(-3 984 ${av - 64})"/>
       <path d="${lignesImprimees(968, av - 45, 32, 3, 4, 13)}" stroke="#6d6550" stroke-width="1" transform="rotate(5 985 ${av - 41})"/>
     </g>
+    </g>
+    <g id="encriers">
     <!-- les deux encriers : le rouge presque vide, le noir plein -->
     <rect x="1024" y="${av - 22}" width="20" height="16" rx="2" fill="#0d1413"/>
     <rect x="1026" y="${av - 12}" width="16" height="5" fill="#a8322a"/>
@@ -342,6 +350,7 @@ const bureau = (() => {
       <rect x="1086" y="${av - 18}" width="86" height="12" fill="#e2d8bc"/>
       <path d="M1092 ${av - 14} h70 M1092 ${av - 10} h60" stroke="#6d6550" stroke-width="0.9"/>
       <path d="M1100 ${av - 14} l14 4 M1130 ${av - 11} q8 -4 16 0" stroke="#a8322a" stroke-width="1.3" fill="none"/>
+    </g>
     </g>
     <path d="M${x1 + 14} ${fond} H${x2 - 14}" stroke="${TEAL}" stroke-width="1" opacity="0.3"/>`;
 })();

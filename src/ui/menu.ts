@@ -33,6 +33,11 @@ export const MAP_PINS: Record<string, { x: number; y: number; place: string }> =
   'agence-mercury': { x: 36, y: 958, place: 'Agence Mercury, New Bridge Street, près de Fleet Street' },
   // Alderney Road est au nord de Mile End Road, un peu à l'est du bord du plan : l'épingle est au bord, sur Mile End Road
   'colis-mile-end': { x: 1560, y: 330, place: 'Chez Joseph Larkin, Alderney Road, Mile End' },
+  // Dorset Street part de Commercial Street, en face de Christ Church, vers l'ouest
+  'millers-court': { x: 100, y: 660, place: "Miller's Court, Dorset Street, Spitalfields" },
+  // Swift Gardens passe sous les arches du chemin de fer, au sud de Chamber Street : juste sous le bord du plan,
+  // un peu à l'ouest du poste de Leman Street ; l'affaire se joue au poste, l'épingle marque le crime
+  'pas-lui': { x: 220, y: 1128, place: 'Swift Gardens, sous les arches du chemin de fer, près de Leman Street' },
 };
 
 /** Les couleurs de Booth, de la misère à l'aisance. */

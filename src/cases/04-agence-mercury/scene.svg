@@ -132,7 +132,7 @@
 
   <!-- Les casiers des journaux abonnés et le comptoir du courrier -->
   <rect x="282" y="124" width="324" height="280" fill="#132120"/>
-    <text x="444" y="142" font-family="Georgia, serif" font-size="12" letter-spacing="3" fill="#c9a24a" text-anchor="middle" opacity="0.8">DESPATCHES</text>
+    <text x="444" y="142" font-family="Georgia, serif" font-size="12" letter-spacing="3" fill="#c9a24a" text-anchor="middle" opacity="0.8" id="enseigne">DESPATCHES</text>
     <g fill="#0a1211"><rect x="292" y="154" width="44" height="38"/><rect x="292" y="204" width="44" height="38"/><rect x="292" y="254" width="44" height="38"/><rect x="292" y="304" width="44" height="38"/><rect x="292" y="354" width="44" height="38"/><rect x="344" y="154" width="44" height="38"/><rect x="344" y="204" width="44" height="38"/><rect x="344" y="254" width="44" height="38"/><rect x="344" y="304" width="44" height="38"/><rect x="344" y="354" width="44" height="38"/><rect x="396" y="154" width="44" height="38"/><rect x="396" y="204" width="44" height="38"/><rect x="396" y="254" width="44" height="38"/><rect x="396" y="304" width="44" height="38"/><rect x="396" y="354" width="44" height="38"/><rect x="448" y="154" width="44" height="38"/><rect x="448" y="204" width="44" height="38"/><rect x="448" y="254" width="44" height="38"/><rect x="448" y="304" width="44" height="38"/><rect x="448" y="354" width="44" height="38"/><rect x="500" y="154" width="44" height="38"/><rect x="500" y="204" width="44" height="38"/><rect x="500" y="254" width="44" height="38"/><rect x="500" y="304" width="44" height="38"/><rect x="500" y="354" width="44" height="38"/><rect x="552" y="154" width="44" height="38"/><rect x="552" y="204" width="44" height="38"/><rect x="552" y="254" width="44" height="38"/><rect x="552" y="304" width="44" height="38"/><rect x="552" y="354" width="44" height="38"/></g>
     <g fill="#b3a98a" opacity="0.8"><rect x="296.2" y="167.4" width="32.3" height="24.6" transform="rotate(1.4 314 192)"/><rect x="298" y="228.1" width="28" height="13.9" transform="rotate(0.3 314 242)"/><rect x="298.3" y="272.6" width="32.1" height="19.4" transform="rotate(-0.8 314 292)"/><rect x="297.7" y="383" width="30.3" height="9" transform="rotate(2.5 314 392)"/><rect x="350.7" y="224.8" width="28.5" height="17.2" transform="rotate(0.9 366 242)"/><rect x="350.6" y="267.6" width="31" height="24.4" transform="rotate(-1 366 292)"/><rect x="348.2" y="381.3" width="30.6" height="10.7" transform="rotate(-1.2 366 392)"/><rect x="402.5" y="220.9" width="33.5" height="21.1" transform="rotate(-1.4 418 242)"/><rect x="400.7" y="274.8" width="32.5" height="17.2" transform="rotate(2.5 418 292)"/><rect x="400.4" y="327.4" width="28.7" height="14.6" transform="rotate(2.5 418 342)"/><rect x="400.6" y="381" width="31.7" height="11" transform="rotate(-0.8 418 392)"/><rect x="453.1" y="178" width="29.1" height="14" transform="rotate(-1.6 470 192)"/><rect x="453.5" y="268.5" width="28.9" height="23.5" transform="rotate(0.1 470 292)"/><rect x="454.8" y="321.6" width="30.8" height="20.4" transform="rotate(1.2 470 342)"/><rect x="452.4" y="373.4" width="31.4" height="18.6" transform="rotate(-0.7 470 392)"/><rect x="503.3" y="269.3" width="30.7" height="22.7" transform="rotate(-2.1 522 292)"/><rect x="503.9" y="316.1" width="28.9" height="25.9" transform="rotate(-2.1 522 342)"/><rect x="503.6" y="373.3" width="26.6" height="18.7" transform="rotate(2.3 522 392)"/><rect x="556" y="383.8" width="33.4" height="8.2" transform="rotate(-3 574 392)"/></g>
     <g fill="#b08a45" opacity="0.55"><rect x="306" y="193" width="16" height="4"/><rect x="306" y="243" width="16" height="4"/><rect x="306" y="293" width="16" height="4"/><rect x="306" y="343" width="16" height="4"/><rect x="306" y="393" width="16" height="4"/><rect x="358" y="193" width="16" height="4"/><rect x="358" y="243" width="16" height="4"/><rect x="358" y="293" width="16" height="4"/><rect x="358" y="343" width="16" height="4"/><rect x="358" y="393" width="16" height="4"/><rect x="410" y="193" width="16" height="4"/><rect x="410" y="243" width="16" height="4"/><rect x="410" y="293" width="16" height="4"/><rect x="410" y="343" width="16" height="4"/><rect x="410" y="393" width="16" height="4"/><rect x="462" y="193" width="16" height="4"/><rect x="462" y="243" width="16" height="4"/><rect x="462" y="293" width="16" height="4"/><rect x="462" y="343" width="16" height="4"/><rect x="462" y="393" width="16" height="4"/><rect x="514" y="193" width="16" height="4"/><rect x="514" y="243" width="16" height="4"/><rect x="514" y="293" width="16" height="4"/><rect x="514" y="343" width="16" height="4"/><rect x="514" y="393" width="16" height="4"/><rect x="566" y="193" width="16" height="4"/><rect x="566" y="243" width="16" height="4"/><rect x="566" y="293" width="16" height="4"/><rect x="566" y="343" width="16" height="4"/><rect x="566" y="393" width="16" height="4"/></g>
@@ -146,14 +146,14 @@
   <rect x="640" y="452" width="180" height="170" fill="#16231f"/>
   <g fill="none" stroke="#0b1413" stroke-width="3"><rect x="684" y="470" width="96" height="136"/></g>
   <circle cx="780" cy="440" r="5" fill="#c9a24a"/>
-  <g font-family="Georgia, serif" text-anchor="middle" fill="#d6ad55">
+  <g id="lettres-porte" font-family="Georgia, serif" text-anchor="middle" fill="#d6ad55">
     <text x="732" y="206" font-size="15" letter-spacing="1.5">J. MOORLAND</text>
     <text x="732" y="226" font-size="10" letter-spacing="3">DIRECTEUR</text>
   </g>
   <path d="M694 213 H770" stroke="#d6ad55" stroke-width="0.8" opacity="0.7"/>
 
   <!-- L'affiche de la police, collée le 3 octobre -->
-  <g transform="rotate(-1.2 950 260)">
+  <g id="affiche" transform="rotate(-1.2 950 260)">
     <rect x="858" y="102" width="186" height="316" fill="#c9bf9e"/>
     <rect x="858" y="102" width="186" height="316" fill="url(#papierAffiche)" opacity="0.5"/>
     <text x="951" y="122" font-family="Georgia, serif" font-size="9" letter-spacing="2" fill="#2a241c" text-anchor="middle">METROPOLITAN</text>
@@ -177,7 +177,7 @@
   </g>
 
   <!-- Le tableau noir des abonnés -->
-  <rect x="1072" y="108" width="248" height="186" fill="#3a2c1c"/>
+  <g id="tableau"><rect x="1072" y="108" width="248" height="186" fill="#3a2c1c"/>
   <rect x="1080" y="116" width="232" height="170" fill="#18211e"/>
   <rect x="1080" y="116" width="232" height="170" fill="url(#craieEffacee)"/>
   <g font-family="'Segoe Print', 'Comic Sans MS', cursive" fill="#dcd8c8" opacity="0.88">
@@ -188,13 +188,13 @@
   </g>
   <path d="M1100 150 H1292 M1196 250 C1230 256 1266 252 1294 246" fill="none" stroke="#dcd8c8" stroke-width="1.6" opacity="0.7"/>
   <rect x="1076" y="286" width="240" height="8" fill="#2c2116"/>
-  <rect x="1250" y="282" width="16" height="5" fill="#e8e4d6"/>
+  <rect x="1250" y="282" width="16" height="5" fill="#e8e4d6"/></g>
 
   <!-- La porte d'entrée de l'agence, sur le mur droit -->
   <polygon points="1378,137.3 1566,74.7 1566,769.7 1378,661.8" fill="#0c1514"/>
   <polygon points="1392,148 1552,98.8 1552,761.7 1392,669.9" fill="#121e1d"/>
   <polygon points="1408,172.4 1536,139.2 1536,398.1 1408,386.3" fill="url(#vitreEscalier)"/>
-  <g clip-path="url(#vitreClip)">
+  <g id="mercury" clip-path="url(#vitreClip)">
     <text transform="translate(1480 254.4) scale(-1 1) skewY(6.3)" font-family="Georgia, serif" font-size="17" letter-spacing="2" fill="#c9a24a" opacity="0.6" text-anchor="middle">MERCURY</text>
   </g>
   <polygon points="1408,172.4 1536,139.2 1536,398.1 1408,386.3" fill="none" stroke="#0b1413" stroke-width="5"/>
@@ -235,13 +235,13 @@
       <rect x="254.6" y="462.2" width="148" height="150"/><rect x="418.6" y="462.2" width="148" height="150"/>
     </g>
     <path d="M240.6 440.2 H597" stroke="#c99a4e" stroke-width="2" opacity="0.6"/>
-  <polygon points="338,436 478,436 470,408 346,408" fill="#0e1716"/>
+  <g id="registre"><polygon points="338,436 478,436 470,408 346,408" fill="#0e1716"/>
   <path d="M352 410 L408 404 L410 432 L346 434 Z" fill="#e2d8bc"/>
   <path d="M408 404 L462 410 L468 434 L410 432 Z" fill="#d6cbad"/>
   <line x1="408.5" y1="404" x2="410" y2="432" stroke="#8a7a60" stroke-width="2"/>
   <g stroke="#5c5040" stroke-width="1"><path d="M354 412 h40.8 M354 416.4 h43.6 M354 420.8 h42.7 M354 425.2 h43.5 M354 429.6 h24 "/></g>
   <g stroke="#7a2a22" stroke-width="1.1" opacity="0.8"><path d="M414 413 h40 M415 418 h44 M416 423 h30"/></g>
-  <path d="M352 410 L346 434" stroke="#8a2a22" stroke-width="3"/>
+  <path d="M352 410 L346 434" stroke="#8a2a22" stroke-width="3"/></g>
 
   <!-- Le jour de la fenêtre et la lumière des lampes -->
   <polygon points="236,92 236,440 560,900 1000,900" fill="url(#rayonFenetre)"/>
@@ -253,7 +253,7 @@
   <use href="#sc-tim" transform="translate(212 698.5) scale(0.8 0.8)" fill="#9fbcb7" opacity="0.6"/><use href="#sc-tim" transform="translate(217.5 698) scale(0.8 0.8)" fill="#e8b452" opacity="0.5"/><g transform="translate(215 700) scale(0.8 0.8)"><use href="#sc-tim" fill="#070b0b"/><g mask="url(#sc-tim-dedans)" fill="none" stroke="#253534" stroke-linecap="round"><path d="M6.6 -173.2 L6.6 -203.2" stroke-width="1.6"/><path d="M 70.2 -444.7 C 55.2 -417.5 49.4 -377.7 43.6 -337.9" stroke-width="1.8"/><path d="M 218 -402 L 218.7 -422" stroke-width="1.6"/><path d="M 45.1 -540.7 C 67.7 -535.7 88.7 -528.9 103.7 -521.7" stroke-width="2.2"/></g><g><rect x="-400" y="-800" width="800" height="800" fill="url(#sc-tim-carreaux)" clip-path="url(#sc-tim-manteau)"/><path d="M 231.6 -448.8 L 263.4 -452.2 L 267.8 -410.4 L 235.9 -407.1 Z" fill="#d8cdaa"/><path d="M 237.5 -440.4 L 259.3 -442.7 M 238.3 -432.4 L 258.2 -434.5 M 239.1 -424.5 L 262 -426.9 M 240 -416.5 L 253.9 -418" fill="none" stroke="#8d8468" stroke-width="1.2" stroke-linecap="round"/><path d="M 183.5 -405.6 L 194.7 -433.4" fill="none" stroke="#d6ad3a" stroke-width="4.2" stroke-linecap="round"/><path d="M 194.7 -433.4 L 196.9 -439" fill="none" stroke="#3a2f1c" stroke-width="2.2" stroke-linecap="round"/></g></g>
 
   <!-- Les sacs de lettres signées Jack -->
-  <ellipse cx="470" cy="790" rx="190" ry="18" fill="#000" opacity="0.45"/>
+  <g id="sacs"><ellipse cx="470" cy="790" rx="190" ry="18" fill="#000" opacity="0.45"/>
     <g transform="rotate(-6 360 772)">
       <path d="M340.2 622 C335.8 652 305 667 305 719.5 C302.8 764.5 327 772 360 772 C393 772 417.2 764.5 415 719.5 C415 667 384.2 652 379.8 622 Z" fill="#2c2b22"/>
       <path d="M311.6 697 C327 727 327 749.5 320.4 766 M382 679 C393 712 395.2 742 388.6 766" fill="none" stroke="#14140f" stroke-width="2"/>
@@ -272,7 +272,7 @@
       <path d="M397 743.5 C397 691 433.4 676 438.6 646" fill="none" stroke="#9fbcb7" stroke-width="1.6" opacity="0.35"/>
       <text x="462" y="739" font-family="Georgia, serif" font-size="16.9" fill="#6a6450" text-anchor="middle" letter-spacing="1">G.P.O.</text>
     </g>
-    <g><rect x="300.1" y="765.9" width="24.9" height="10.4" fill="#c3b896" transform="rotate(15.2 300.1 765.9)"/><rect x="622.5" y="801.3" width="26.9" height="11.2" fill="#c3b896" transform="rotate(17.6 622.5 801.3)"/><path d="M625.5 805.8 h15.7" stroke="#8f2a22" stroke-width="0.9" transform="rotate(11.2 622.5 801.3)" opacity="0.7"/><rect x="397.7" y="744.6" width="23.7" height="9.9" fill="#cfc4a3" transform="rotate(-15.4 397.7 744.6)"/><rect x="470.7" y="760.8" width="24.6" height="10.3" fill="#e2d8bc" transform="rotate(12 470.7 760.8)"/><path d="M473.7 764.9 h14.4" stroke="#8f2a22" stroke-width="0.9" transform="rotate(-17.1 470.7 760.8)" opacity="0.7"/><rect x="348.9" y="749.8" width="24" height="10" fill="#e2d8bc" transform="rotate(5.2 348.9 749.8)"/><rect x="567.5" y="743.7" width="23.6" height="9.8" fill="#e2d8bc" transform="rotate(-8.8 567.5 743.7)"/><path d="M570.5 747.6 h13.8" stroke="#8f2a22" stroke-width="0.9" transform="rotate(13 567.5 743.7)" opacity="0.7"/><rect x="612.2" y="751.8" width="24.1" height="10" fill="#cfc4a3" transform="rotate(21.9 612.2 751.8)"/><path d="M615.2 755.9 h14.1" stroke="#8f2a22" stroke-width="0.9" transform="rotate(6.6 612.2 751.8)" opacity="0.7"/><rect x="623" y="748.5" width="23.9" height="10" fill="#cfc4a3" transform="rotate(6.5 623 748.5)"/><rect x="535" y="804.7" width="27.1" height="11.3" fill="#c3b896" transform="rotate(-11.4 535 804.7)"/><path d="M538 809.2 h15.8" stroke="#8f2a22" stroke-width="0.9" transform="rotate(19.6 535 804.7)" opacity="0.7"/><rect x="440.7" y="778.7" width="25.6" height="10.7" fill="#e2d8bc" transform="rotate(-11.4 440.7 778.7)"/><rect x="572.8" y="802.5" width="27" height="11.3" fill="#c3b896" transform="rotate(-11.1 572.8 802.5)"/><rect x="330" y="785.2" width="26" height="10.8" fill="#d8cdaa" transform="rotate(-21 330 785.2)"/><rect x="383.5" y="800.2" width="26.9" height="11.2" fill="#e2d8bc" transform="rotate(17.9 383.5 800.2)"/><path d="M386.5 804.7 h15.7" stroke="#8f2a22" stroke-width="0.9" transform="rotate(1.4 383.5 800.2)" opacity="0.7"/><rect x="547.4" y="763.8" width="24.8" height="10.3" fill="#cfc4a3" transform="rotate(11 547.4 763.8)"/><path d="M550.4 767.9 h14.5" stroke="#8f2a22" stroke-width="0.9" transform="rotate(4 547.4 763.8)" opacity="0.7"/><rect x="317.6" y="754.7" width="24.3" height="10.1" fill="#e2d8bc" transform="rotate(22 317.6 754.7)"/><path d="M320.6 758.7 h14.2" stroke="#8f2a22" stroke-width="0.9" transform="rotate(7.5 317.6 754.7)" opacity="0.7"/><rect x="374.8" y="779.5" width="25.7" height="10.7" fill="#c3b896" transform="rotate(-15.7 374.8 779.5)"/><rect x="622.7" y="768.5" width="25.1" height="10.4" fill="#e2d8bc" transform="rotate(3 622.7 768.5)"/><path d="M625.7 772.7 h14.6" stroke="#8f2a22" stroke-width="0.9" transform="rotate(-22.8 622.7 768.5)" opacity="0.7"/><rect x="377.8" y="785.2" width="26" height="10.8" fill="#c3b896" transform="rotate(0.1 377.8 785.2)"/><path d="M380.8 789.6 h15.2" stroke="#8f2a22" stroke-width="0.9" transform="rotate(-23.4 377.8 785.2)" opacity="0.7"/><rect x="309.7" y="752.2" width="24.1" height="10.1" fill="#c3b896" transform="rotate(-9.4 309.7 752.2)"/><path d="M312.7 756.2 h14.1" stroke="#8f2a22" stroke-width="0.9" transform="rotate(-3.1 309.7 752.2)" opacity="0.7"/><rect x="596.5" y="763.4" width="24.8" height="10.3" fill="#c3b896" transform="rotate(-3.1 596.5 763.4)"/><path d="M599.5 767.6 h14.4" stroke="#8f2a22" stroke-width="0.9" transform="rotate(9 596.5 763.4)" opacity="0.7"/><rect x="543.5" y="774.3" width="25.4" height="10.6" fill="#e2d8bc" transform="rotate(1.2 543.5 774.3)"/><rect x="538.5" y="760" width="24.6" height="10.2" fill="#cfc4a3" transform="rotate(11.5 538.5 760)"/><path d="M541.5 764.1 h14.3" stroke="#8f2a22" stroke-width="0.9" transform="rotate(-18.9 538.5 760)" opacity="0.7"/><rect x="625.4" y="746.7" width="23.8" height="9.9" fill="#d8cdaa" transform="rotate(-2.3 625.4 746.7)"/><rect x="437.5" y="741.3" width="23.5" height="9.8" fill="#cfc4a3" transform="rotate(11.7 437.5 741.3)"/><path d="M440.5 745.2 h13.7" stroke="#8f2a22" stroke-width="0.9" transform="rotate(21.8 437.5 741.3)" opacity="0.7"/><rect x="570.1" y="799.2" width="26.8" height="11.2" fill="#cfc4a3" transform="rotate(-22.6 570.1 799.2)"/><path d="M573.1 803.7 h15.6" stroke="#8f2a22" stroke-width="0.9" transform="rotate(8.4 570.1 799.2)" opacity="0.7"/><rect x="364.2" y="751.3" width="24.1" height="10" fill="#c3b896" transform="rotate(-21.3 364.2 751.3)"/><path d="M367.2 755.3 h14" stroke="#8f2a22" stroke-width="0.9" transform="rotate(13 364.2 751.3)" opacity="0.7"/></g>
+    <g><rect x="300.1" y="765.9" width="24.9" height="10.4" fill="#c3b896" transform="rotate(15.2 300.1 765.9)"/><rect x="622.5" y="801.3" width="26.9" height="11.2" fill="#c3b896" transform="rotate(17.6 622.5 801.3)"/><path d="M625.5 805.8 h15.7" stroke="#8f2a22" stroke-width="0.9" transform="rotate(11.2 622.5 801.3)" opacity="0.7"/><rect x="397.7" y="744.6" width="23.7" height="9.9" fill="#cfc4a3" transform="rotate(-15.4 397.7 744.6)"/><rect x="470.7" y="760.8" width="24.6" height="10.3" fill="#e2d8bc" transform="rotate(12 470.7 760.8)"/><path d="M473.7 764.9 h14.4" stroke="#8f2a22" stroke-width="0.9" transform="rotate(-17.1 470.7 760.8)" opacity="0.7"/><rect x="348.9" y="749.8" width="24" height="10" fill="#e2d8bc" transform="rotate(5.2 348.9 749.8)"/><rect x="567.5" y="743.7" width="23.6" height="9.8" fill="#e2d8bc" transform="rotate(-8.8 567.5 743.7)"/><path d="M570.5 747.6 h13.8" stroke="#8f2a22" stroke-width="0.9" transform="rotate(13 567.5 743.7)" opacity="0.7"/><rect x="612.2" y="751.8" width="24.1" height="10" fill="#cfc4a3" transform="rotate(21.9 612.2 751.8)"/><path d="M615.2 755.9 h14.1" stroke="#8f2a22" stroke-width="0.9" transform="rotate(6.6 612.2 751.8)" opacity="0.7"/><rect x="623" y="748.5" width="23.9" height="10" fill="#cfc4a3" transform="rotate(6.5 623 748.5)"/><rect x="535" y="804.7" width="27.1" height="11.3" fill="#c3b896" transform="rotate(-11.4 535 804.7)"/><path d="M538 809.2 h15.8" stroke="#8f2a22" stroke-width="0.9" transform="rotate(19.6 535 804.7)" opacity="0.7"/><rect x="440.7" y="778.7" width="25.6" height="10.7" fill="#e2d8bc" transform="rotate(-11.4 440.7 778.7)"/><rect x="572.8" y="802.5" width="27" height="11.3" fill="#c3b896" transform="rotate(-11.1 572.8 802.5)"/><rect x="330" y="785.2" width="26" height="10.8" fill="#d8cdaa" transform="rotate(-21 330 785.2)"/><rect x="383.5" y="800.2" width="26.9" height="11.2" fill="#e2d8bc" transform="rotate(17.9 383.5 800.2)"/><path d="M386.5 804.7 h15.7" stroke="#8f2a22" stroke-width="0.9" transform="rotate(1.4 383.5 800.2)" opacity="0.7"/><rect x="547.4" y="763.8" width="24.8" height="10.3" fill="#cfc4a3" transform="rotate(11 547.4 763.8)"/><path d="M550.4 767.9 h14.5" stroke="#8f2a22" stroke-width="0.9" transform="rotate(4 547.4 763.8)" opacity="0.7"/><rect x="317.6" y="754.7" width="24.3" height="10.1" fill="#e2d8bc" transform="rotate(22 317.6 754.7)"/><path d="M320.6 758.7 h14.2" stroke="#8f2a22" stroke-width="0.9" transform="rotate(7.5 317.6 754.7)" opacity="0.7"/><rect x="374.8" y="779.5" width="25.7" height="10.7" fill="#c3b896" transform="rotate(-15.7 374.8 779.5)"/><rect x="622.7" y="768.5" width="25.1" height="10.4" fill="#e2d8bc" transform="rotate(3 622.7 768.5)"/><path d="M625.7 772.7 h14.6" stroke="#8f2a22" stroke-width="0.9" transform="rotate(-22.8 622.7 768.5)" opacity="0.7"/><rect x="377.8" y="785.2" width="26" height="10.8" fill="#c3b896" transform="rotate(0.1 377.8 785.2)"/><path d="M380.8 789.6 h15.2" stroke="#8f2a22" stroke-width="0.9" transform="rotate(-23.4 377.8 785.2)" opacity="0.7"/><rect x="309.7" y="752.2" width="24.1" height="10.1" fill="#c3b896" transform="rotate(-9.4 309.7 752.2)"/><path d="M312.7 756.2 h14.1" stroke="#8f2a22" stroke-width="0.9" transform="rotate(-3.1 309.7 752.2)" opacity="0.7"/><rect x="596.5" y="763.4" width="24.8" height="10.3" fill="#c3b896" transform="rotate(-3.1 596.5 763.4)"/><path d="M599.5 767.6 h14.4" stroke="#8f2a22" stroke-width="0.9" transform="rotate(9 596.5 763.4)" opacity="0.7"/><rect x="543.5" y="774.3" width="25.4" height="10.6" fill="#e2d8bc" transform="rotate(1.2 543.5 774.3)"/><rect x="538.5" y="760" width="24.6" height="10.2" fill="#cfc4a3" transform="rotate(11.5 538.5 760)"/><path d="M541.5 764.1 h14.3" stroke="#8f2a22" stroke-width="0.9" transform="rotate(-18.9 538.5 760)" opacity="0.7"/><rect x="625.4" y="746.7" width="23.8" height="9.9" fill="#d8cdaa" transform="rotate(-2.3 625.4 746.7)"/><rect x="437.5" y="741.3" width="23.5" height="9.8" fill="#cfc4a3" transform="rotate(11.7 437.5 741.3)"/><path d="M440.5 745.2 h13.7" stroke="#8f2a22" stroke-width="0.9" transform="rotate(21.8 437.5 741.3)" opacity="0.7"/><rect x="570.1" y="799.2" width="26.8" height="11.2" fill="#cfc4a3" transform="rotate(-22.6 570.1 799.2)"/><path d="M573.1 803.7 h15.6" stroke="#8f2a22" stroke-width="0.9" transform="rotate(8.4 570.1 799.2)" opacity="0.7"/><rect x="364.2" y="751.3" width="24.1" height="10" fill="#c3b896" transform="rotate(-21.3 364.2 751.3)"/><path d="M367.2 755.3 h14" stroke="#8f2a22" stroke-width="0.9" transform="rotate(13 364.2 751.3)" opacity="0.7"/></g></g>
 
   <!-- John Moorland, le directeur : favoris, cigare, redingote ouverte, The Morning Courier brandi -->
   <ellipse cx="770" cy="815" rx="100" ry="11" fill="#000" opacity="0.55"/>
@@ -298,6 +298,7 @@
       <rect x="1012" y="587" width="16" height="5" rx="2"/><rect x="1262" y="587" width="16" height="5" rx="2"/><rect x="1012" y="657" width="16" height="5" rx="2"/><rect x="1262" y="657" width="16" height="5" rx="2"/><rect x="1012" y="727" width="16" height="5" rx="2"/><rect x="1262" y="727" width="16" height="5" rx="2"/>
     </g>
     <!-- la pique à dépêches -->
+    <g id="pique">
     <ellipse cx="984" cy="528" rx="16" ry="4.5" fill="#070b0b"/>
     <rect x="982.6" y="443" width="2.8" height="86" fill="#1a2220"/>
     <path d="M984 443 l0 -8" stroke="#a3b4b1" stroke-width="1.6"/>
@@ -309,6 +310,8 @@
       <path d="M966 474 h30.6 M966 478 h18 " stroke="#6d6550" stroke-width="1" transform="rotate(-3 984 471)"/>
       <path d="M968 490 h27.2 M968 494 h30.6 M968 498 h16 " stroke="#6d6550" stroke-width="1" transform="rotate(5 985 494)"/>
     </g>
+    </g>
+    <g id="encriers">
     <!-- les deux encriers : le rouge presque vide, le noir plein -->
     <rect x="1024" y="513" width="20" height="16" rx="2" fill="#0d1413"/>
     <rect x="1026" y="523" width="16" height="5" fill="#a8322a"/>
@@ -329,6 +332,7 @@
       <path d="M1092 521 h70 M1092 525 h60" stroke="#6d6550" stroke-width="0.9"/>
       <path d="M1100 521 l14 4 M1130 524 q8 -4 16 0" stroke="#a8322a" stroke-width="1.3" fill="none"/>
     </g>
+    </g>
     <path d="M964 515 H1326" stroke="#9fbcb7" stroke-width="1" opacity="0.3"/>
 
   <!-- La presse à copier, au premier plan -->
@@ -346,7 +350,7 @@
   </g>
   <path d="M60 612 H232 M96 594 H196 M64 514 H228" stroke="#e8b452" stroke-width="1.4" opacity="0.4"/>
   <path d="M78 600 L210 600" stroke="#cfc4a6" stroke-width="2.4" opacity="0.8"/>
-  <g transform="translate(0 2)">
+  <g id="copie" transform="translate(0 2)">
     <path d="M86 698 L146 690 L148 706 L82 710 Z" fill="#d8ceb2"/>
     <path d="M146 690 L206 694 L212 708 L148 706 Z" fill="#cbbf9f"/>
     <path d="M146.5 690 L148 706" stroke="#7a6a50" stroke-width="1.6"/>
@@ -354,16 +358,26 @@
   </g>
 
   <!-- Lampes à gaz suspendues -->
-  <path d="M500 0 V70" stroke="#0b1211" stroke-width="3"/>
+  <g id="lampe-500"><path d="M500 0 V70" stroke="#0b1211" stroke-width="3"/>
   <path d="M494 70 h12 l-2 10 h-8 Z" fill="#0b1211"/>
   <path d="M460 96 C464 82 482 78 492 78 L508 78 C518 78 536 82 540 96 Z" fill="#1f5a44"/>
   <path d="M460 96 C464 82 482 78 492 78" fill="none" stroke="#5fa184" stroke-width="1.5" opacity="0.7"/>
   <ellipse cx="500" cy="97" rx="40" ry="4" fill="#ffe2a0"/>
-  <path d="M1180 0 V58" stroke="#0b1211" stroke-width="3"/>
+  <rect x="498.5" y="97" width="3" height="20" fill="#6a5a34"/>
+  <path d="M495 116 h10 l-2 5 h-6 Z" fill="#8a7440"/>
+  <circle cx="500" cy="107" r="15" fill="#ffd27a" opacity="0.25"/>
+  <path d="M500 116 C494 112 495 105 500 98 C505 105 506 112 500 116 Z" fill="#ffc64a"/>
+  <path d="M500 115 C497 112 497.5 108 500 103 C502.5 108 503 112 500 115 Z" fill="#fff4d0"/></g>
+  <g id="lampe-1180"><path d="M1180 0 V58" stroke="#0b1211" stroke-width="3"/>
   <path d="M1174 58 h12 l-2 10 h-8 Z" fill="#0b1211"/>
   <path d="M1140 84 C1144 70 1162 66 1172 66 L1188 66 C1198 66 1216 70 1220 84 Z" fill="#1f5a44"/>
   <path d="M1140 84 C1144 70 1162 66 1172 66" fill="none" stroke="#5fa184" stroke-width="1.5" opacity="0.7"/>
   <ellipse cx="1180" cy="85" rx="40" ry="4" fill="#ffe2a0"/>
+  <rect x="1178.5" y="85" width="3" height="20" fill="#6a5a34"/>
+  <path d="M1175 104 h10 l-2 5 h-6 Z" fill="#8a7440"/>
+  <circle cx="1180" cy="95" r="15" fill="#ffd27a" opacity="0.25"/>
+  <path d="M1180 104 C1174 100 1175 93 1180 86 C1185 93 1186 100 1180 104 Z" fill="#ffc64a"/>
+  <path d="M1180 103 C1177 100 1177.5 96 1180 91 C1182.5 96 1183 100 1180 103 Z" fill="#fff4d0"/></g>
 
   <!-- ═══ Plan 4 : lumière, poussière, brouillard ═══ -->
   <circle cx="500" cy="96" r="420" fill="url(#gaz)"/>

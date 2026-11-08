@@ -4,7 +4,7 @@
   "setting": "Londres, automne 1888. Whitechapel et l'East End : ruelles, garnis, brouillard et becs de gaz.",
   "tone": "Enquête victorienne sombre et réaliste, fidèle aux faits. La violence reste hors champ : on enquête sur ce qu'elle laisse derrière elle, et les victimes sont traitées avec respect.",
   "synopsis": "Le joueur est un petit reporter de l'East End qui rêve de devenir détective privé ; il reconstitue chaque affaire dans sa gazette. Automne 1888 : une série de meurtres frappe Whitechapel. Le 31 août à Buck's Row, puis le 8 septembre à Hanbury Street. Dans la nuit du 30 septembre, l'assassin tue deux fois, à King's Row puis à Wallace Street ; au poste, le chef de la police découvre que The Comet sait déjà tout. Une lettre signée « Jack the Ripper », reçue par une agence de presse, est publiée : le nom fait le tour du monde. Le 16 octobre, le président du comité de vigilance reçoit un colis « From hell ». Le 9 novembre, la dernière victime est retrouvée dans sa chambre de Miller's Court ; la veille, le chef de la police a démissionné. L'assassin ne sera jamais identifié.",
-  "notes": "Les faits, les dates et les lieux sont réels. Par respect, les noms des personnes et des journaux sont changés :\n- Sir Charles Warren → Alan Winkoff (chef de la police métropolitaine)\n- Sir Robert Anderson → Sir Robert Ansell (chef de la police judiciaire)\n- Henry Matthews → Henry Mallory (ministre de l'Intérieur)\n- Thomas Arnold → le surintendant Thomas Arden (division H)\n- Frederick Abberline → l'inspecteur Frederick Hollis\n- Edmund Reid → l'inspecteur Edmund Reeve\n- Major Henry Smith → le major Henry Sinclair (police de la City)\n- Daniel Halse → le détective Daniel Hurst (police de la City)\n- Alfred Long → l'agent Alfred Lane\n- Edward Watkins → l'agent Edward Walton\n- Louis Diemschutz → Louis Hartmann (le cocher de Berner Street)\n- George Lusk → Joseph Larkin (comité de vigilance)\n- John Moore → John Moorland (directeur de l'agence Mercury)\n- Tom Bulling → Tom Bellamy (reporter de l'agence Mercury)\n- Adolphus Williamson → l'inspecteur principal Arthur Wilkins\n- John Pizer, dit « Tablier de cuir » → John Pilcher\n- Victimes : Mary Ann Nichols → Ellen Holt ; Annie Chapman → Agnes Croft ; Elizabeth Stride → Elsa Lindqvist ; Catherine Eddowes → Kate Ashby ; Mary Jane Kelly → Jenny Doyle\n- Journaux : The Star → The Comet ; Illustrated London News → The London Pictorial ; The Times → The Daily Ledger ; Daily News → The Morning Courier ; Le Figaro → Le Matinal ; New York Herald → New York Sentinel ; Central News Agency → l'agence Mercury\nLe surnom « Jack the Ripper » (Jack l'Éventreur) et les lieux sont gardés. Chapitre 1, version de l'auteur : le double meurtre a lieu à King's Row et à Wallace Street (lieux inventés). Victimes : une inconnue et Margaret Jenkins, couturière ; témoin : Elisabeth Coyle. L'adjoint William Stone et son neveu Tim Stone, qui signe Tim Bradford, sont inventés.",
+  "notes": "Les faits, les dates et les lieux sont réels. Par respect, les noms des personnes et des journaux sont changés :\n- Sir Charles Warren → Alan Winkoff (chef de la police métropolitaine)\n- Sir Robert Anderson → Sir Robert Ansell (chef de la police judiciaire)\n- Henry Matthews → Henry Mallory (ministre de l'Intérieur)\n- Thomas Arnold → le surintendant Thomas Arden (division H)\n- Frederick Abberline → l'inspecteur Frederick Hollis\n- Edmund Reid → l'inspecteur Edmund Reeve\n- Major Henry Smith → le major Henry Sinclair (police de la City)\n- Daniel Halse → le détective Daniel Hurst (police de la City)\n- Alfred Long → l'agent Alfred Lane\n- Edward Watkins → l'agent Edward Walton\n- Louis Diemschutz → Louis Hartmann (le cocher de Berner Street)\n- George Lusk → Joseph Larkin (comité de vigilance)\n- John Moore → John Moorland (directeur de l'agence Mercury)\n- Tom Bulling → Tom Bellamy (reporter de l'agence Mercury)\n- Adolphus Williamson → l'inspecteur principal Arthur Wilkins\n- John Pizer, dit « Tablier de cuir » → John Pilcher\n- Victimes : Mary Ann Nichols → Ellen Holt ; Annie Chapman → Agnes Croft ; Elizabeth Stride → Elsa Lindqvist ; Catherine Eddowes → Kate Ashby ; Mary Jane Kelly → Jenny Doyle\n- Journaux : The Star → The Comet ; Illustrated London News → The London Pictorial ; The Times → The Daily Ledger ; Daily News → The Morning Courier ; Le Figaro → Le Matinal ; New York Herald → New York Sentinel ; Central News Agency → l'agence Mercury\nLe surnom « Jack the Ripper » (Jack l'Éventreur) et les lieux sont gardés. Chapitre 1, version de l'auteur : le double meurtre a lieu à King's Row et à Wallace Street (lieux inventés). Victimes : une inconnue et Margaret Jenkins, couturière ; témoin : Elisabeth Coyle. L'adjoint William Stone et son neveu Tim Stone, qui signe Tim Bradford, sont inventés.\nChapitre 4 : Frances Coles → Frances Hale ; James Sadler → James Selwyn ; Swallow Gardens → Swift Gardens ; l'agent Ernest Thompson → Ernest Thorne ; Duncan Campbell → Duncan Cameron ; J. Havelock Wilson → Harry Wilkes ; le Winestead → le Winfield ; le Fez → le Tanger. Le gardien Pell et la modiste Mme Venn sont inventés. L'inconnue de King's Row retrouve son nom : Elsa Lindqvist. Tim signe enfin de son vrai nom, Tim Stone.",
   "prologue": [
     {
       "heading": "Londres, automne 1888",
@@ -86,7 +86,8 @@
       "id": "hollis",
       "name": "Inspecteur Frederick Hollis",
       "role": "Inspecteur de Scotland Yard envoyé à Whitechapel",
-      "notes": "D'après l'inspecteur Frederick Abberline, qui connaissait le quartier pour y avoir servi des années."
+      "notes": "D'après l'inspecteur Frederick Abberline, qui connaissait le quartier pour y avoir servi des années.",
+      "appearance": "Chapeau melon, favoris en côtelettes, courte pèlerine sur le pardessus, un billet à la main."
     },
     {
       "id": "lane",
@@ -123,7 +124,7 @@
       "id": "inconnue-kings-row",
       "name": "L'inconnue de King's Row",
       "role": "Victime, 30 septembre 1888, King's Row",
-      "notes": "Prostituée dont on ignore le nom, découverte par un cocher à 1 h du matin."
+      "notes": "Prostituée dont on ignore le nom, découverte par un cocher à 1 h du matin. Son nom est retrouvé en 1891 (affaire 7) : Elsa Lindqvist, d'après Elizabeth Stride."
     },
     {
       "id": "jenkins",
@@ -219,6 +220,126 @@
       "role": "Inconnu qui guette la maison de Joseph Larkin",
       "appearance": "Chapeau mou à large bord, grande barbe, long manteau au col relevé, mains dans les poches.",
       "notes": "D'après l'homme barbu qui, selon Lusk, lui demanda son adresse peu avant l'arrivée du colis. Jamais identifié."
+    },
+    {
+      "id": "mcallister",
+      "name": "John McAllister",
+      "role": "Logeur de Miller's Court, épicier au 27 Dorset Street",
+      "appearance": "Crâne chauve, tablier, gros cahier des loyers relié de rouge.",
+      "motive": "Récupérer ses loyers ; il a fait forcer la porte à la pioche.",
+      "notes": "D'après John McCarthy, logeur de Mary Jane Kelly."
+    },
+    {
+      "id": "boyd",
+      "name": "Thomas Boyd",
+      "role": "Homme à tout faire du logeur, ancien soldat",
+      "appearance": "Vieux, moustache blanche, casquette plate, rubans de médailles sur sa capote.",
+      "motive": "Envoyé chercher le loyer à 10 h 45, il a vu la chambre par le carreau cassé.",
+      "notes": "D'après Thomas Bowyer, ancien soldat de l'armée des Indes."
+    },
+    {
+      "id": "cullen",
+      "name": "Mary Ann Cullen",
+      "role": "Veuve, voisine du n° 5 de Miller's Court",
+      "appearance": "Châle noir, bonnet sombre.",
+      "motive": "Elle a vu Jenny rentrer à 23 h 45 avec un homme roux, un pot de bière à la main.",
+      "notes": "D'après Mary Ann Cox."
+    },
+    {
+      "id": "porter",
+      "name": "Elizabeth Porter",
+      "role": "Voisine du dessus, chambre 20",
+      "appearance": "Châle gris-vert, cheveux relevés, un chaton noir sur l'appui de la fenêtre.",
+      "motive": "Réveillée par son chaton vers 4 h, elle a entendu crier « Oh, murder ! ».",
+      "notes": "D'après Elizabeth Prater."
+    },
+    {
+      "id": "lowe",
+      "name": "Sarah Lowe",
+      "role": "Blanchisseuse, de passage dans la cour la nuit du meurtre",
+      "motive": "À 2 h 30, elle a vu un homme en chapeau mou guetter la cour.",
+      "notes": "D'après Sarah Lewis. N'apparaît que dans le dossier de l'enquête."
+    },
+    {
+      "id": "maxton",
+      "name": "Caroline Maxton",
+      "role": "Voisine de Dorset Street",
+      "motive": "Elle jure avoir vu Jenny à 8 h 30 du matin ; le coroner l'avertit.",
+      "notes": "D'après Caroline Maxwell. N'apparaît que dans le dossier de l'enquête."
+    },
+    {
+      "id": "bennett",
+      "name": "Joseph Bennett",
+      "role": "Porteur au marché de Billingsgate, ancien compagnon de Jenny",
+      "motive": "Parti le 30 octobre après une dispute ; interrogé quatre heures, relâché.",
+      "notes": "D'après Joseph Barnett. N'apparaît que dans les documents."
+    },
+    {
+      "id": "hutchings",
+      "name": "George Hutchings",
+      "role": "Journalier, témoin tardif",
+      "appearance": "Petit et trapu, tête nue, foulard rouge au cou ; son chapeau mou noir posé sur le comptoir.",
+      "motive": "Après la fin de l'enquête, il décrit avec précision un homme élégant au col d'astrakan. Était-il l'homme au chapeau mou ?",
+      "notes": "D'après George Hutchinson, venu au poste de Commercial Street le 12 novembre 1888 à 18 h."
+    },
+    {
+      "id": "baird",
+      "name": "Sergent Edward Baird",
+      "role": "Sergent de service au poste de Commercial Street",
+      "appearance": "Uniforme bleu, chevrons, plume à la main, derrière le comptoir.",
+      "notes": "D'après le sergent Edward Badham, qui recueillit la déposition de Hutchinson."
+    },
+    {
+      "id": "bland",
+      "name": "Docteur Thomas Bland",
+      "role": "Chirurgien de la police",
+      "notes": "D'après le docteur Thomas Bond. N'apparaît que dans son rapport."
+    },
+    {
+      "id": "hale",
+      "name": "Frances Hale",
+      "role": "Victime, 13 février 1891, Swift Gardens",
+      "notes": "D'après Frances Coles, 26 ans. Trouvée vivante encore sous l'arche du chemin de fer par l'agent Thorne, à 2 h 15."
+    },
+    {
+      "id": "selwyn",
+      "name": "James Selwyn",
+      "role": "Chauffeur de navire, arrêté pour le meurtre de Frances Hale",
+      "appearance": "Trapu, barbe courte, la tête bandée, vareuse courte, menottes aux poignets.",
+      "motive": "Il a passé la soirée avec Frances. The Comet en fait l'Éventreur ; il était en mer en 1888.",
+      "notes": "D'après James Thomas Sadler, relâché le 3 mars 1891."
+    },
+    {
+      "id": "thorne",
+      "name": "Agent Ernest Thorne",
+      "role": "Jeune agent, 240 H, en service depuis une semaine",
+      "appearance": "Rasé de près, casque, tunique neuve, au garde-à-vous.",
+      "motive": "Il a entendu des pas s'éloigner et n'a pas couru : il ne pouvait pas laisser Frances seule.",
+      "notes": "D'après l'agent Ernest Thompson."
+    },
+    {
+      "id": "wilkes",
+      "name": "Harry Wilkes",
+      "role": "Délégué du syndicat des marins et chauffeurs",
+      "appearance": "Chapeau melon, grosse moustache tombante, pardessus, insigne bleu.",
+      "motive": "Le syndicat paie l'avocat de Selwyn ; il apporte le journal de bord du Winfield.",
+      "notes": "D'après J. Havelock Wilson."
+    },
+    {
+      "id": "cameron",
+      "name": "Duncan Cameron",
+      "role": "Marin, au Foyer des marins",
+      "appearance": "Bonnet de laine, grande barbe, vareuse croisée.",
+      "motive": "Il a acheté le couteau de Selwyn le matin du crime, pour un shilling et un bout de tabac.",
+      "notes": "D'après Duncan Campbell."
+    },
+    {
+      "id": "pell",
+      "name": "Gardien John Pell",
+      "role": "Garde-magasin de la réserve du poste de Leman Street",
+      "appearance": "Crâne chauve, barbe blanche, lunettes, tunique boutonnée, son registre.",
+      "motive": "Ici, rien ne se perd.",
+      "notes": "Inventé. Il garde la boîte de l'inconnue de King's Row depuis 1888."
     }
   ],
   "chapters": [

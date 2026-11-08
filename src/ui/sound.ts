@@ -41,6 +41,7 @@ const AMBIENCES: Record<string, Ambience> = {
   morgue: 'morgue',
   'agence-mercury': 'station',
   'colis-mile-end': 'station',
+  'pas-lui': 'station',
 };
 export const ambienceFor = (caseId: string): Ambience => AMBIENCES[caseId] ?? 'street';
 
@@ -54,6 +55,8 @@ const ZONE_SOUNDS: Record<string, Record<string, Sound>> = {
   fruiterie: { cour: 'hooves', sergent: 'steps' },
   'agence-mercury': { agent: 'steps', sacs: 'sheet', bureau: 'drawer' },
   'colis-mile-end': { pendule: 'chime', tiroir: 'drawer', fenetre: 'steps' },
+  'millers-court': { passage: 'hooves', hollis: 'steps', horloge: 'chime' },
+  'pas-lui': { fenetre: 'hooves', pendule: 'chime', thorne: 'steps', pell: 'steps' },
 };
 export const zoneSound = (caseId: string, zoneId: string): Sound | null => ZONE_SOUNDS[caseId]?.[zoneId] ?? null;
 

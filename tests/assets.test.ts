@@ -66,6 +66,10 @@ describe('assets', () => {
       '02-morgue/autopsie.svg',
       '05-colis-mile-end/scene.svg',
       '05-colis-mile-end/musee.svg',
+      '06-millers-court/scene.svg',
+      '06-millers-court/poste.svg',
+      '07-pas-lui/scene.svg',
+      '07-pas-lui/reserve.svg',
     ];
     for (const fichier of scenes) {
       const scene = readFileSync(new URL(`src/cases/${fichier}`, root), 'utf8');
